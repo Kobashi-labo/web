@@ -32,9 +32,12 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        h1 {
+        .header-text h1 {
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
             font-weight: 700;
@@ -44,6 +47,38 @@
             font-size: 1.2rem;
             opacity: 0.95;
             font-weight: 300;
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem;
+            border-radius: 25px;
+        }
+
+        .lang-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .lang-btn.active {
+            background: white;
+            color: #1e3a8a;
+        }
+
+        .lang-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .lang-btn.active:hover {
+            background: white;
         }
 
         nav {
@@ -156,6 +191,7 @@
             color: #1e3a8a;
             margin-bottom: 0.5rem;
             font-size: 1.3rem;
+            margin-top: 0;
         }
 
         .research-card p {
@@ -352,29 +388,22 @@
             text-decoration: underline;
         }
 
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-right: 0.5rem;
-            margin-top: 0.5rem;
+        .lang-content {
+            display: none;
         }
 
-        .badge-new {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-
-        .badge-hot {
-            background: #fee2e2;
-            color: #991b1b;
+        .lang-content.active {
+            display: block;
         }
 
         @media (max-width: 768px) {
-            h1 {
+            .header-text h1 {
                 font-size: 1.8rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
             }
             
             .profile {
@@ -395,272 +424,526 @@
 <body>
     <header>
         <div class="header-content">
-            <h1>小橋研究室 | Kobashi Laboratory</h1>
-            <p class="subtitle">Medical Image Processing Group (MIPG) - University of Hyogo</p>
+            <div class="header-text">
+                <h1 id="main-title">小橋研究室 | Kobashi Laboratory</h1>
+                <p class="subtitle" id="subtitle">Medical Image Processing Group (MIPG) - University of Hyogo</p>
+            </div>
+            <div class="lang-switch">
+                <button class="lang-btn active" onclick="switchLang('ja')">日本語</button>
+                <button class="lang-btn" onclick="switchLang('en')">English</button>
+            </div>
         </div>
     </header>
 
-            <nav>
-        <div class="nav-content">
-            <a href="#about">研究室について</a>
-            <a href="#recent">Publications</a>
-            <a href="#research">研究分野</a>
-            <a href="#professor">教授紹介</a>
-            <a href="#projects">研究プロジェクト</a>
-            <a href="#contact">お問い合わせ</a>
-        </div>
-    </nav>
+    <!-- Japanese Content -->
+    <div class="lang-content active" id="content-ja">
+        <nav>
+            <div class="nav-content">
+                <a href="#about">研究室について</a>
+                <a href="#recent">Publications</a>
+                <a href="#research">研究分野</a>
+                <a href="#professor">教授紹介</a>
+                <a href="#projects">研究プロジェクト</a>
+                <a href="#contact">お問い合わせ</a>
+            </div>
+        </nav>
 
-    <div class="container">
-        <div class="hero" id="about">
-            <h2>医用画像処理における人工知能研究</h2>
-            <p>兵庫県立大学 先端医療工学研究所に所属する当研究室では、医用画像処理とコンピュータ支援診断を中心とした最先端の研究を行っています。深層学習などの人工知能技術を活用し、臨床医との共同研究を通じて、患者さんの診断や治療をサポートする革新的なシステムの開発に取り組んでいます。</p>
-        </div>
+        <div class="container">
+            <div class="hero" id="about">
+                <h2>医用画像処理における人工知能研究</h2>
+                <p>兵庫県立大学 先端医療工学研究所に所属する当研究室では、医用画像処理とコンピュータ支援診断を中心とした最先端の研究を行っています。深層学習などの人工知能技術を活用し、臨床医との共同研究を通じて、患者さんの診断や治療をサポートする革新的なシステムの開発に取り組んでいます。</p>
+            </div>
 
-        <div class="section" id="recent">
-            <h2>Publications - 研究業績</h2>
-            <p style="margin-bottom: 1.5rem; color: #555;">
-                詳細な業績リストは各リンク先をご覧ください。論文総数：328編（査読付き）
-            </p>
-            
-            <div class="publications-links">
-                <a href="https://researchmap.jp/read0134502/published_papers" target="_blank" class="pub-link-card">
-                    <h3>📄 Journal Papers</h3>
-                    <p>査読付き学術論文（328編）</p>
-                </a>
+            <div class="section" id="recent">
+                <h2>Publications - 研究業績</h2>
+                <p style="margin-bottom: 1.5rem; color: #555;">
+                    詳細な業績リストは各リンク先をご覧ください。論文総数：328編（査読付き）
+                </p>
                 
-                <a href="https://sites.google.com/site/syojikobashi/publications/book-chapters" target="_blank" class="pub-link-card">
-                    <h3>📚 Book Chapters</h3>
-                    <p>書籍の章</p>
-                </a>
+                <div class="publications-links">
+                    <a href="https://researchmap.jp/read0134502/published_papers" target="_blank" class="pub-link-card">
+                        <h3>📄 Journal Papers</h3>
+                        <p>査読付き学術論文（328編）</p>
+                    </a>
+                    
+                    <a href="https://sites.google.com/site/syojikobashi/publications/book-chapters" target="_blank" class="pub-link-card">
+                        <h3>📚 Book Chapters</h3>
+                        <p>書籍の章</p>
+                    </a>
+                    
+                    <a href="https://sites.google.com/site/syojikobashi/publications/conference-proceeding-papers" target="_blank" class="pub-link-card">
+                        <h3>🎤 Conference Proceeding Papers</h3>
+                        <p>国際会議論文集</p>
+                    </a>
+                    
+                    <a href="https://researchmap.jp/read0134502/presentations" target="_blank" class="pub-link-card">
+                        <h3>🗣️ Invited Talks</h3>
+                        <p>招待講演（268件）</p>
+                    </a>
+                    
+                    <a href="https://sites.google.com/site/syojikobashi/publications/edited-special-issues" target="_blank" class="pub-link-card">
+                        <h3>📝 Editors</h3>
+                        <p>特集号編集</p>
+                    </a>
+                    
+                    <a href="https://sites.google.com/site/syojikobashi/publications/panelist" target="_blank" class="pub-link-card">
+                        <h3>👥 Panelist</h3>
+                        <p>パネリスト</p>
+                    </a>
+                    
+                    <a href="https://sites.google.com/site/syojikobashi/publications/surveys" target="_blank" class="pub-link-card">
+                        <h3>📊 Surveys</h3>
+                        <p>解説論文・サーベイ論文</p>
+                    </a>
+                    
+                    <a href="https://sites.google.com/site/syojikobashij/研究業績/国内研究会報告" target="_blank" class="pub-link-card">
+                        <h3>🇯🇵 Technical Notes in Japanese</h3>
+                        <p>国内研究会報告・技術ノート</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>研究目標</h2>
+                <div class="goal-list">
+                    <ul>
+                        <li><strong>新しいアルゴリズムの発見：</strong>医用画像処理のための革新的な深層学習手法を開発します</li>
+                        <li><strong>臨床応用の推進：</strong>患者の診断精度向上と手術プロセスの改善に貢献します</li>
+                        <li><strong>新分野の開拓：</strong>医用画像処理アルゴリズムの新しい応用領域を探索します</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section" id="research">
+                <h2>主要研究分野</h2>
                 
-                <a href="https://sites.google.com/site/syojikobashi/publications/conference-proceeding-papers" target="_blank" class="pub-link-card">
-                    <h3>🎤 Conference Proceeding Papers</h3>
-                    <p>国際会議論文集</p>
-                </a>
+                <h3>🩺 医用画像診断支援システム</h3>
+                <div class="research-areas">
+                    <div class="research-card">
+                        <h3>🧠 新生児・小児脳画像解析</h3>
+                        <p>新生児の脳発達評価、発達障害リスク予測、脳疾患の早期診断支援。CT・MRI画像からの脳年齢推定、時空間統計的形状モデルによる発達解析。</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>🫁 呼吸器疾患診断支援</h3>
+                        <p>胸部X線画像からの慢性肺疾患（BPD）早期予測、新生児の肺病変自動検出。深層学習による日齢別発症リスク評価システムの開発。</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>🦴 整形外科画像診断</h3>
+                        <p>超音波画像による離断性骨軟骨炎（野球肘）の自動検出、CT画像からの骨盤骨折・大腿骨近位部骨折の自動検出、腱板筋脂肪浸潤評価。</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>🦷 歯科画像診断支援</h3>
+                        <p>パノラマX線画像からの親知らず埋伏分類、歯牙自動認識システム。深層学習による埋伏深度・角度の自動測定。</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>🧬 神経疾患鑑別診断</h3>
+                        <p>MRIによる特発性正常圧水頭症（iNPH）と進行性核上性麻痺（PSP）の鑑別。Mixture of Expertsを用いた高精度診断モデル。</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>🩻 腹部画像解析</h3>
+                        <p>腹部X線画像からの便・ガス領域セグメンテーション、慢性便秘症診断支援。U-Netベースの自動セグメンテーションシステム。</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 3rem;">🤖 AI・機械学習技術</h3>
+                <div class="research-areas">
+                    <div class="research-card">
+                        <h3>深層学習モデル開発</h3>
+                        <p>医用画像診断に特化したCNN、U-Net、Transformerアーキテクチャの開発。マルチモーダル学習、Attention機構の応用。</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>Radiomics解析</h3>
+                        <p>医用画像から定量的特徴量を抽出し、機械学習による予後予測・リスク評価。頸動脈プラーク解析、腱板筋評価への応用。</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>説明可能AI (XAI)</h3>
+                        <p>Grad-CAM、SHAP値を用いたAI診断モデルの解釈性向上。臨床医が信頼できる透明性の高い診断支援システムの構築。</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 3rem;">🏥 臨床応用研究</h3>
+                <div class="research-areas">
+                    <div class="research-card">
+                        <h3>🦵 膝関節運動解析</h3>
+                        <p>コンピュータ支援整形外科、前十字靭帯（ACL）再建術の最適化、3次元動態解析システムによる術後評価。</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>🩺 手術ナビゲーション</h3>
+                        <p>整形外科手術における器具検出と工程認識、3次元画像を用いたERCP（内視鏡的逆行性胆管膵管造影）ナビゲーション支援。</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>💊 治療効果予測</h3>
+                        <p>ESWL（体外衝撃波結石破砕術）の転帰予測、術後患者満足度予測、心血管疾患発症リスク評価システム。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" id="professor">
+                <h2>教授紹介</h2>
+                <div class="profile">
+                    <div class="profile-image">小橋</div>
+                    <div class="profile-info">
+                        <h3>小橋 昌司 (Syoji Kobashi)</h3>
+                        <p><strong>所属：</strong>兵庫県立大学 工学研究科 電子情報工学専攻 教授</p>
+                        <p><strong>役職：</strong>先端医療工学研究所 所長（2022年4月～）</p>
+                        <p><strong>兼任：</strong>国立循環器病研究センター 特任部長（2021年8月～）</p>
+                        <p><strong>学位：</strong>博士（工学）- 姫路工業大学（2000年）</p>
+                        <p><strong>経歴：</strong>ペンシルバニア大学 客員教授（2011-2012年）</p>
+                    </div>
+                </div>
                 
-                <a href="https://researchmap.jp/read0134502/presentations" target="_blank" class="pub-link-card">
-                    <h3>🗣️ Invited Talks</h3>
-                    <p>招待講演（268件）</p>
-                </a>
+                <div class="info-grid" style="margin-top: 2rem;">
+                    <div class="info-item">
+                        <strong>主要な役職</strong>
+                        <p>• IEEE SMC Japan Chapter Chair (2020-2025)<br>
+                        • バイオメディカルファジィシステム学会 副会長 (2025-2027)<br>
+                        • 日本医用画像学会 理事 (2024-2026)<br>
+                        • 日本知能情報ファジィ学会 理事 (2023-2025)</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>国際的な活動</strong>
+                        <p>• IEEE SMC Society Associate Vice President (2023-2025)<br>
+                        • Journal of Advanced Computational Intelligence Editor<br>
+                        • International Journal of BSCHS Editor-in-Chief<br>
+                        • IEEE CIS Fuzzy Systems TC Member</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>最近の受賞歴</strong>
+                        <p>• 日本知能情報ファジィ学会 貢献賞（2025年・2023年）<br>
+                        • JACIII Distinguished Editor Award（2024年）<br>
+                        • バイオメディカル・ファジィ・システム学会 貢献賞（2023年）<br>
+                        • ISIS Best Presentation Award（2023年）×2件</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" id="projects">
+                <h2>現在進行中の研究プロジェクト</h2>
+                <div class="project-list">
+                    <div class="project-item">
+                        <div class="project-title">3次元データを用いた疑似画像生成による2次元単純X線AI病変検出モデル確立</div>
+                        <div class="project-period">科研費 基盤研究(C) | 2023年4月 - 2026年3月 | 研究代表者</div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-title">AIを活用した人工呼吸器ケア安全管理支援システムの開発</div>
+                        <div class="project-period">科研費 基盤研究(C) | 2023年4月 - 2027年3月 | 研究分担者</div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-title">CTEPH肺動脈末梢病変の胸部CT診断のためのAI-CAD開発</div>
+                        <div class="project-period">科研費 基盤研究(C) | 2023年4月 - 2026年3月 | 研究分担者</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>研究実績</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>論文数</strong>
+                        <p>328編の査読付き論文を発表<br>
+                        <span style="font-size: 0.9rem; color: #666;">（2024-2025年に10編以上の国際論文）</span></p>
+                    </div>
+                    <div class="info-item">
+                        <strong>受賞</strong>
+                        <p>33の学会賞・国際会議賞を受賞<br>
+                        <span style="font-size: 0.9rem; color: #666;">（2023年に4件の受賞）</span></p>
+                    </div>
+                    <div class="info-item">
+                        <strong>特許</strong>
+                        <p>12件の産業財産権を保有<br>
+                        <span style="font-size: 0.9rem; color: #666;">（2024年に2件登録）</span></p>
+                    </div>
+                    <div class="info-item">
+                        <strong>研究費</strong>
+                        <p>25件の競争的資金を獲得<br>
+                        <span style="font-size: 0.9rem; color: #666;">（現在3件が進行中）</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta">
+                <h2>大学院生募集中！</h2>
+                <p>修士課程・博士課程で一緒に研究しませんか？<br>医用画像処理と人工知能に興味のある方、ぜひご連絡ください。</p>
+                <a href="#contact" class="cta-button">お問い合わせはこちら</a>
+            </div>
+
+            <div class="section" id="contact">
+                <h2>お問い合わせ</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>所在地</strong>
+                        <p>兵庫県立大学 工学研究科<br>先端医療工学研究所</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>リンク</strong>
+                        <p>
+                            <a href="https://sites.google.com/site/syojikobashi" target="_blank">研究室サイト（英語）</a><br>
+                            <a href="https://researchmap.jp/read0134502" target="_blank">researchmap</a><br>
+                            <a href="https://orcid.org/0000-0003-3659-4114" target="_blank">ORCID</a>
+                        </p>
+                    </div>
+                    <div class="info-item">
+                        <strong>研究者番号</strong>
+                        <p>00332966<br>
+                        <a href="https://jglobal.jst.go.jp/detail?JGLOBAL_ID=200901031674454407" target="_blank">J-GLOBAL</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- English Content -->
+    <div class="lang-content" id="content-en">
+        <nav>
+            <div class="nav-content">
+                <a href="#about">About</a>
+                <a href="#recent">Publications</a>
+                <a href="#research">Research</a>
+                <a href="#professor">Professor</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="hero" id="about">
+                <h2>Artificial Intelligence in Medical Image Analysis</h2>
+                <p>Our laboratory at the Advanced Medical Engineering Research Institute, University of Hyogo, specializes in cutting-edge research in medical image processing and computer-aided diagnosis. We develop innovative systems using deep learning and AI technologies through collaborative research with clinicians to support patient diagnosis and treatment.</p>
+            </div>
+
+            <div class="section" id="recent">
+                <h2>Publications</h2>
+                <p style="margin-bottom: 1.5rem; color: #555;">
+                    For detailed publication lists, please visit the links below. Total: 328 peer-reviewed papers
+                </p>
                 
-                <a href="https://sites.google.com/site/syojikobashi/publications/edited-special-issues" target="_blank" class="pub-link-card">
-                    <h3>📝 Editors</h3>
-                    <p>特集号編集</p>
-                </a>
+                <div class="publications-links">
+                    <a href="https://researchmap.jp/read0134502/published_papers" target="_blank" class="pub-link-card">
+                        <h3>📄 Journal Papers</h3>
+                        <p>Peer-reviewed academic papers (328 papers)</p>
+                    </a>
+                    
+                    <a href="https://sites.google.com/site/syojikobashi/publications/book-chapters" target="_blank" class="pub-link-card">
+                        <h3>📚 Book Chapters</h3>
+                        <p>Book chapters and contributions</p>
+                    </a>
+                    
+                    <a href="https://sites.google.com/site/syojikobashi/publications/conference-proceeding-papers" target="_blank" class="pub-link-card">
+                        <h3>🎤 Conference Papers</h3>
+                        <p>International conference proceedings</p>
+                    </a>
+                    
+                    <a href="https://researchmap.jp/read0134502/presentations" target="_blank" class="pub-link-card">
+                        <h3>🗣️ Invited Talks</h3>
+                        <p>Invited presentations (268 talks)</p>
+                    </a>
+                    
+                    <a href="https://sites.google.com/site/syojikobashi/publications/edited-special-issues" target="_blank" class="pub-link-card">
+                        <h3>📝 Editors</h3>
+                        <p>Special issue editorial work</p>
+                    </a>
+                    
+                    <a href="https://sites.google.com/site/syojikobashi/publications/panelist" target="_blank" class="pub-link-card">
+                        <h3>👥 Panelist</h3>
+                        <p>Panel participation</p>
+                    </a>
+                    
+                    <a href="https://sites.google.com/site/syojikobashi/publications/surveys" target="_blank" class="pub-link-card">
+                        <h3>📊 Surveys</h3>
+                        <p>Survey papers and reviews</p>
+                    </a>
+                    
+                    <a href="https://sites.google.com/site/syojikobashij/研究業績/国内研究会報告" target="_blank" class="pub-link-card">
+                        <h3>🇯🇵 Technical Notes</h3>
+                        <p>Domestic conference reports (Japanese)</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Research Goals</h2>
+                <div class="goal-list">
+                    <ul>
+                        <li><strong>Algorithm Discovery:</strong> Develop innovative deep learning methods for medical image processing</li>
+                        <li><strong>Clinical Application:</strong> Improve diagnostic accuracy and surgical procedures for patients</li>
+                        <li><strong>New Frontiers:</strong> Explore new application areas for medical image processing algorithms</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section" id="research">
+                <h2>Research Areas</h2>
                 
-                <a href="https://sites.google.com/site/syojikobashi/publications/panelist" target="_blank" class="pub-link-card">
-                    <h3>👥 Panelist</h3>
-                    <p>パネリスト</p>
-                </a>
+                <h3>🩺 Medical Image Diagnosis Support Systems</h3>
+                <div class="research-areas">
+                    <div class="research-card">
+                        <h3>🧠 Neonatal & Pediatric Brain Analysis</h3>
+                        <p>Brain development assessment, developmental disorder risk prediction, early disease diagnosis. Brain age estimation from CT/MRI, spatiotemporal statistical shape modeling.</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>🫁 Respiratory Disease Diagnosis</h3>
+                        <p>Early prediction of chronic lung disease (BPD) from chest X-rays, automatic lung lesion detection in neonates. Deep learning-based risk assessment by postnatal day.</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>🦴 Orthopedic Image Diagnosis</h3>
+                        <p>Automatic detection of osteochondritis dissecans (baseball elbow) from ultrasound, pelvic and femoral fracture detection from CT, rotator cuff muscle fat infiltration assessment.</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>🦷 Dental Image Diagnosis</h3>
+                        <p>Impacted wisdom tooth classification from panoramic X-rays, automatic tooth recognition. Deep learning-based automatic measurement of impaction depth and angle.</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>🧬 Neurological Disease Differentiation</h3>
+                        <p>Differentiation between idiopathic normal pressure hydrocephalus (iNPH) and progressive supranuclear palsy (PSP) using MRI. High-accuracy diagnosis with Mixture of Experts.</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>🩻 Abdominal Image Analysis</h3>
+                        <p>Stool and gas region segmentation from abdominal X-rays, chronic constipation diagnosis support. U-Net-based automatic segmentation system.</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 3rem;">🤖 AI & Machine Learning Technologies</h3>
+                <div class="research-areas">
+                    <div class="research-card">
+                        <h3>Deep Learning Model Development</h3>
+                        <p>Development of CNN, U-Net, and Transformer architectures specialized for medical image diagnosis. Multimodal learning and attention mechanism applications.</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>Radiomics Analysis</h3>
+                        <p>Extraction of quantitative features from medical images for prognosis prediction and risk assessment using machine learning. Applications in carotid plaque and rotator cuff analysis.</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>Explainable AI (XAI)</h3>
+                        <p>Improving interpretability of AI diagnostic models using Grad-CAM and SHAP values. Building transparent diagnostic support systems trusted by clinicians.</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 3rem;">🏥 Clinical Applications</h3>
+                <div class="research-areas">
+                    <div class="research-card">
+                        <h3>🦵 Knee Joint Motion Analysis</h3>
+                        <p>Computer-assisted orthopedic surgery, ACL reconstruction optimization, post-operative assessment using 3D kinematic analysis systems.</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>🩺 Surgical Navigation</h3>
+                        <p>Instrument detection and procedure recognition in orthopedic surgery, ERCP navigation support using 3D imaging.</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>💊 Treatment Outcome Prediction</h3>
+                        <p>ESWL outcome prediction, post-operative patient satisfaction prediction, cardiovascular disease risk assessment systems.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" id="professor">
+                <h2>Professor</h2>
+                <div class="profile">
+                    <div class="profile-image">SK</div>
+                    <div class="profile-info">
+                        <h3>Syoji Kobashi, Ph.D.</h3>
+                        <p><strong>Position:</strong> Professor, Graduate School of Engineering, University of Hyogo</p>
+                        <p><strong>Director:</strong> Advanced Medical Engineering Research Institute (2022-)</p>
+                        <p><strong>Concurrent:</strong> Special Appointment Department Head, National Cerebral and Cardiovascular Center (2021-)</p>
+                        <p><strong>Ph.D.:</strong> Engineering, Himeji Institute of Technology (2000)</p>
+                        <p><strong>Experience:</strong> Visiting Professor, University of Pennsylvania (2011-2012)</p>
+                    </div>
+                </div>
                 
-                <a href="https://sites.google.com/site/syojikobashi/publications/surveys" target="_blank" class="pub-link-card">
-                    <h3>📊 Surveys</h3>
-                    <p>解説論文・サーベイ論文</p>
-                </a>
-                
-                <a href="https://sites.google.com/site/syojikobashij/研究業績/国内研究会報告" target="_blank" class="pub-link-card">
-                    <h3>🇯🇵 Technical Notes in Japanese</h3>
-                    <p>国内研究会報告・技術ノート</p>
-                </a>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>研究目標</h2>
-            <div class="goal-list">
-                <ul>
-                    <li><strong>新しいアルゴリズムの発見：</strong>医用画像処理のための革新的な深層学習手法を開発します</li>
-                    <li><strong>臨床応用の推進：</strong>患者の診断精度向上と手術プロセスの改善に貢献します</li>
-                    <li><strong>新分野の開拓：</strong>医用画像処理アルゴリズムの新しい応用領域を探索します</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="section" id="research">
-            <h2>主要研究分野</h2>
-            
-            <h3>🩺 医用画像診断支援システム</h3>
-            <div class="research-areas">
-                <div class="research-card">
-                    <h3>🧠 新生児・小児脳画像解析</h3>
-                    <p>新生児の脳発達評価、発達障害リスク予測、脳疾患の早期診断支援。CT・MRI画像からの脳年齢推定、時空間統計的形状モデルによる発達解析。</p>
-                </div>
-                <div class="research-card">
-                    <h3>🫁 呼吸器疾患診断支援</h3>
-                    <p>胸部X線画像からの慢性肺疾患（BPD）早期予測、新生児の肺病変自動検出。深層学習による日齢別発症リスク評価システムの開発。</p>
-                </div>
-                <div class="research-card">
-                    <h3>🦴 整形外科画像診断</h3>
-                    <p>超音波画像による離断性骨軟骨炎（野球肘）の自動検出、CT画像からの骨盤骨折・大腿骨近位部骨折の自動検出、腱板筋脂肪浸潤評価。</p>
-                </div>
-                <div class="research-card">
-                    <h3>🦷 歯科画像診断支援</h3>
-                    <p>パノラマX線画像からの親知らず埋伏分類、歯牙自動認識システム。深層学習による埋伏深度・角度の自動測定。</p>
-                </div>
-                <div class="research-card">
-                    <h3>🧬 神経疾患鑑別診断</h3>
-                    <p>MRIによる特発性正常圧水頭症（iNPH）と進行性核上性麻痺（PSP）の鑑別。Mixture of Expertsを用いた高精度診断モデル。</p>
-                </div>
-                <div class="research-card">
-                    <h3>🩻 腹部画像解析</h3>
-                    <p>腹部X線画像からの便・ガス領域セグメンテーション、慢性便秘症診断支援。U-Netベースの自動セグメンテーションシステム。</p>
+                <div class="info-grid" style="margin-top: 2rem;">
+                    <div class="info-item">
+                        <strong>Major Positions</strong>
+                        <p>• IEEE SMC Japan Chapter Chair (2020-2025)<br>
+                        • Vice President, Biomedical Fuzzy Systems Association (2025-2027)<br>
+                        • Director, Japan Society of Medical Imaging Technology (2024-2026)<br>
+                        • Director, Japan Society for Fuzzy Theory and Intelligent Informatics (2023-2025)</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>International Activities</strong>
+                        <p>• IEEE SMC Society Associate Vice President (2023-2025)<br>
+                        • Editor, Journal of Advanced Computational Intelligence<br>
+                        • Editor-in-Chief, International Journal of BSCHS<br>
+                        • Member, IEEE CIS Fuzzy Systems TC</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>Recent Awards</strong>
+                        <p>• Contribution Award, SOFT (2025, 2023)<br>
+                        • JACIII Distinguished Editor Award (2024)<br>
+                        • Contribution Award, BMFSA (2023)<br>
+                        • ISIS Best Presentation Award (2023) ×2</p>
+                    </div>
                 </div>
             </div>
 
-            <h3 style="margin-top: 3rem;">🤖 AI・機械学習技術</h3>
-            <div class="research-areas">
-                <div class="research-card">
-                    <h3>深層学習モデル開発</h3>
-                    <p>医用画像診断に特化したCNN、U-Net、Transformerアーキテクチャの開発。マルチモーダル学習、Attention機構の応用。</p>
-                </div>
-                <div class="research-card">
-                    <h3>Radiomics解析</h3>
-                    <p>医用画像から定量的特徴量を抽出し、機械学習による予後予測・リスク評価。頸動脈プラーク解析、腱板筋評価への応用。</p>
-                </div>
-                <div class="research-card">
-                    <h3>説明可能AI (XAI)</h3>
-                    <p>Grad-CAM、SHAP値を用いたAI診断モデルの解釈性向上。臨床医が信頼できる透明性の高い診断支援システムの構築。</p>
-                </div>
-            </div>
-
-            <h3 style="margin-top: 3rem;">🏥 臨床応用研究</h3>
-            <div class="research-areas">
-                <div class="research-card">
-                    <h3>🦵 膝関節運動解析</h3>
-                    <p>コンピュータ支援整形外科、前十字靭帯（ACL）再建術の最適化、3次元動態解析システムによる術後評価。</p>
-                </div>
-                <div class="research-card">
-                    <h3>🩺 手術ナビゲーション</h3>
-                    <p>整形外科手術における器具検出と工程認識、3次元画像を用いたERCP（内視鏡的逆行性胆管膵管造影）ナビゲーション支援。</p>
-                </div>
-                <div class="research-card">
-                    <h3>💊 治療効果予測</h3>
-                    <p>ESWL（体外衝撃波結石破砕術）の転帰予測、術後患者満足度予測、心血管疾患発症リスク評価システム。</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="section" id="professor">
-            <h2>教授紹介</h2>
-            <div class="profile">
-                <div class="profile-image">小橋</div>
-                <div class="profile-info">
-                    <h3>小橋 昌司 (Syoji Kobashi)</h3>
-                    <p><strong>所属：</strong>兵庫県立大学 工学研究科 電子情報工学専攻 教授</p>
-                    <p><strong>役職：</strong>先端医療工学研究所 所長（2022年4月～）</p>
-                    <p><strong>兼任：</strong>国立循環器病研究センター 特任部長（2021年8月～）</p>
-                    <p><strong>学位：</strong>博士（工学）- 姫路工業大学（2000年）</p>
-                    <p><strong>経歴：</strong>ペンシルバニア大学 客員教授（2011-2012年）</p>
-                </div>
-            </div>
-            
-            <div class="info-grid" style="margin-top: 2rem;">
-                <div class="info-item">
-                    <strong>主要な役職</strong>
-                    <p>• IEEE SMC Japan Chapter Chair (2020-2025)<br>
-                    • バイオメディカルファジィシステム学会 副会長 (2025-2027)<br>
-                    • 日本医用画像学会 理事 (2024-2026)<br>
-                    • 日本知能情報ファジィ学会 理事 (2023-2025)</p>
-                </div>
-                <div class="info-item">
-                    <strong>国際的な活動</strong>
-                    <p>• IEEE SMC Society Associate Vice President (2023-2025)<br>
-                    • Journal of Advanced Computational Intelligence Editor<br>
-                    • International Journal of BSCHS Editor-in-Chief<br>
-                    • IEEE CIS Fuzzy Systems TC Member</p>
-                </div>
-                <div class="info-item">
-                    <strong>最近の受賞歴</strong>
-                    <p>• 日本知能情報ファジィ学会 貢献賞（2025年・2023年）<br>
-                    • JACIII Distinguished Editor Award（2024年）<br>
-                    • バイオメディカル・ファジィ・システム学会 貢献賞（2023年）<br>
-                    • ISIS Best Presentation Award（2023年）×2件</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="section" id="projects">
-            <h2>現在進行中の研究プロジェクト</h2>
-            <div class="project-list">
-                <div class="project-item">
-                    <div class="project-title">3次元データを用いた疑似画像生成による2次元単純X線AI病変検出モデル確立</div>
-                    <div class="project-period">科研費 基盤研究(C) | 2023年4月 - 2026年3月 | 研究代表者</div>
-                </div>
-                <div class="project-item">
-                    <div class="project-title">AIを活用した人工呼吸器ケア安全管理支援システムの開発</div>
-                    <div class="project-period">科研費 基盤研究(C) | 2023年4月 - 2027年3月 | 研究分担者</div>
-                </div>
-                <div class="project-item">
-                    <div class="project-title">CTEPH肺動脈末梢病変の胸部CT診断のためのAI-CAD開発</div>
-                    <div class="project-period">科研費 基盤研究(C) | 2023年4月 - 2026年3月 | 研究分担者</div>
+            <div class="section" id="projects">
+                <h2>Current Research Projects</h2>
+                <div class="project-list">
+                    <div class="project-item">
+                        <div class="project-title">AI-Based Lesion Detection Model for 2D X-rays Using Synthetic Images from 3D Data</div>
+                        <div class="project-period">JSPS KAKENHI Grant-in-Aid (C) | 2023-2026 | Principal Investigator</div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-title">AI-Powered Safety Management System for Ventilator Care</div>
+                        <div class="project-period">JSPS KAKENHI Grant-in-Aid (C) | 2023-2027 | Co-Investigator</div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-title">AI-CAD Development for CTEPH Peripheral Pulmonary Artery Lesion Diagnosis</div>
+                        <div class="project-period">JSPS KAKENHI Grant-in-Aid (C) | 2023-2026 | Co-Investigator</div>
+                    </div>
                 </div>
             </div>
 
-            <h3>過去の主要プロジェクト</h3>
-            <div class="project-list">
-                <div class="project-item">
-                    <div class="project-title">時空間統計的形状モデルを用いた発達障害発症リスク評価法の確立</div>
-                    <div class="project-period">新学術領域研究 | 2017年4月 - 2019年3月</div>
-                </div>
-                <div class="project-item">
-                    <div class="project-title">新生児脳の成長統計形状モデル構築による子どもの発達障害発症リスク評価</div>
-                    <div class="project-period">新学術領域研究 | 2015年4月 - 2017年3月</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>研究実績</h2>
-            <div class="info-grid">
-                <div class="info-item">
-                    <strong>論文数</strong>
-                    <p>328編の査読付き論文を発表<br>
-                    <span style="font-size: 0.9rem; color: #666;">（2024-2025年に10編以上の国際論文）</span></p>
-                </div>
-                <div class="info-item">
-                    <strong>受賞</strong>
-                    <p>33の学会賞・国際会議賞を受賞<br>
-                    <span style="font-size: 0.9rem; color: #666;">（2023年に4件の受賞）</span></p>
-                </div>
-                <div class="info-item">
-                    <strong>特許</strong>
-                    <p>12件の産業財産権を保有<br>
-                    <span style="font-size: 0.9rem; color: #666;">（2024年に2件登録）</span></p>
-                </div>
-                <div class="info-item">
-                    <strong>研究費</strong>
-                    <p>25件の競争的資金を獲得<br>
-                    <span style="font-size: 0.9rem; color: #666;">（現在3件が進行中）</span></p>
+            <div class="section">
+                <h2>Research Achievements</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Publications</strong>
+                        <p>328 peer-reviewed papers<br>
+                        <span style="font-size: 0.9rem; color: #666;">(10+ international papers in 2024-2025)</span></p>
+                    </div>
+                    <div class="info-item">
+                        <strong>Awards</strong>
+                        <p>33 academic and conference awards<br>
+                        <span style="font-size: 0.9rem; color: #666;">(4 awards in 2023)</span></p>
+                    </div>
+                    <div class="info-item">
+                        <strong>Patents</strong>
+                        <p>12 industrial property rights<br>
+                        <span style="font-size: 0.9rem; color: #666;">(2 registered in 2024)</span></p>
+                    </div>
+                    <div class="info-item">
+                        <strong>Research Funding</strong>
+                        <p>25 competitive grants<br>
+                        <span style="font-size: 0.9rem; color: #666;">(3 currently active)</span></p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="cta">
-            <h2>大学院生募集中！</h2>
-            <p>修士課程・博士課程で一緒に研究しませんか？<br>医用画像処理と人工知能に興味のある方、ぜひご連絡ください。</p>
-            <a href="#contact" class="cta-button">お問い合わせはこちら</a>
-        </div>
+            <div class="cta">
+                <h2>Graduate Students Wanted!</h2>
+                <p>Join us in our research for Master's or Ph.D. programs!<br>If you're interested in medical image processing and AI, please contact us.</p>
+                <a href="#contact" class="cta-button">Contact Us</a>
+            </div>
 
-        <div class="section" id="contact">
-            <h2>お問い合わせ</h2>
-            <div class="info-grid">
-                <div class="info-item">
-                    <strong>所在地</strong>
-                    <p>兵庫県立大学 工学研究科<br>先端医療工学研究所</p>
-                </div>
-                <div class="info-item">
-                    <strong>リンク</strong>
-                    <p>
-                        <a href="https://sites.google.com/site/syojikobashi" target="_blank">研究室サイト（英語）</a><br>
-                        <a href="https://researchmap.jp/read0134502" target="_blank">researchmap</a><br>
-                        <a href="https://orcid.org/0000-0003-3659-4114" target="_blank">ORCID</a>
-                    </p>
-                </div>
-                <div class="info-item">
-                    <strong>研究者番号</strong>
-                    <p>00332966<br>
-                    <a href="https://jglobal.jst.go.jp/detail?JGLOBAL_ID=200901031674454407" target="_blank">J-GLOBAL</a></p>
+            <div class="section" id="contact">
+                <h2>Contact Information</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Address</strong>
+                        <p>Graduate School of Engineering<br>Advanced Medical Engineering Research Institute<br>University of Hyogo</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>Links</strong>
+                        <p>
+                            <a href="https://sites.google.com/site/syojikobashi" target="_blank">Lab Website</a><br>
+                            <a href="https://researchmap.jp/read0134502" target="_blank">researchmap</a><br>
+                            <a href="https://orcid.org/0000-0003-3659-4114" target="_blank">ORCID</a>
+                        </p>
+                    </div>
+                    <div class="info-item">
+                        <strong>Researcher ID</strong>
+                        <p>00332966<br>
+                        <a href="https://jglobal.jst.go.jp/detail?JGLOBAL_ID=200901031674454407" target="_blank">J-GLOBAL</a></p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -668,7 +951,32 @@
 
     <footer>
         <p>&copy; 2025 Kobashi Laboratory, University of Hyogo. All rights reserved.</p>
-        <p><a href="https://sites.google.com/site/syojikobashi" target="_blank">English Version</a> | <a href="https://researchmap.jp/read0134502" target="_blank">researchmap</a></p>
+        <p><a href="https://sites.google.com/site/syojikobashi" target="_blank">Original Site</a> | <a href="https://researchmap.jp/read0134502" target="_blank">researchmap</a></p>
     </footer>
+
+    <script>
+        function switchLang(lang) {
+            // Hide all language content
+            document.querySelectorAll('.lang-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Show selected language content
+            document.getElementById('content-' + lang).classList.add('active');
+            
+            // Update button states
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update title
+            if (lang === 'ja') {
+                document.getElementById('main-title').textContent = '小橋研究室 | Kobashi Laboratory';
+            } else {
+                document.getElementById('main-title').textContent = 'Kobashi Laboratory | 小橋研究室';
+            }
+        }
+    </script>
 </body>
 </html>
