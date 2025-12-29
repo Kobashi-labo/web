@@ -1,1962 +1,1028 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Journal Papers | Kobashi Laboratory</title>
-  <style>
-    body{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans JP",sans-serif;margin:0;background:#eef2f7;color:#111827}
-    header{background:#1f3b84;color:#fff;padding:36px 28px}
-    header h1{margin:0;font-size:54px;letter-spacing:.5px}
-    header .sub{margin-top:10px;opacity:.95;font-size:18px}
-    .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-    .back a{display:inline-block;color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.35);
-      padding:12px 18px;border-radius:999px}
-    .wrap{max-width:1100px;margin:0 auto;padding:24px 18px 60px}
-    .meta{background:#fff;border-radius:20px;padding:18px 20px;box-shadow:0 16px 40px rgba(15,23,42,.08);
-      margin-top:-26px}
-    .meta b{margin-right:18px}
-    .year-block{margin-top:26px}
-    .year-head{display:flex;align-items:center;gap:14px;margin:14px 0}
-    .year{font-size:38px;font-weight:800;color:#1f3b84}
-    .badge{width:42px;height:42px;border-radius:999px;background:#1f3b84;color:#fff;
-      display:flex;align-items:center;justify-content:center;font-weight:800}
-    .olist{margin:0;padding-left:24px}
-    .item{margin:14px 0}
-    .card{background:#fff;border-radius:18px;padding:18px 18px;box-shadow:0 14px 36px rgba(15,23,42,.07)}
-    .ref{font-size:18px;line-height:1.65}
-    .plink{margin-top:8px}
-    .plink a{color:#1f3b84;text-decoration:underline}
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Journal Papers | Kobashi Laboratory</title>
+<style>
+  :root {
+    --blue: #1e3a8a;
+    --bg: #f3f6fb;
+    --card: #ffffff;
+    --muted: #6b7280;
+    --shadow: 0 10px 30px rgba(0,0,0,0.08);
+    --radius: 18px;
+  }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", "Noto Sans JP", sans-serif;
+    background: var(--bg);
+    color: #111827;
+  }
+  header {
+    background: var(--blue);
+    color: white;
+    padding: 48px 32px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header h1 { margin: 0; font-size: 56px; letter-spacing: .5px; }
+  header p { margin: 8px 0 0; opacity: .9; font-size: 18px; }
+  .back {
+    position: absolute;
+    right: 28px;
+    top: 28px;
+    color: white;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,.35);
+    padding: 10px 16px;
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 28px 18px 60px; }
+  .meta {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 22px;
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: -24px;
+  }
+  .meta b { color: #111827; }
+  .meta span { color: var(--muted); }
+  .year-section { margin-top: 28px; }
+  .year-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 22px 0 10px;
+  }
+  .year {
+    font-size: 44px;
+    font-weight: 800;
+    color: var(--blue);
+    letter-spacing: .5px;
+  }
+  .badge {
+    background: var(--blue);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-weight: 700;
+  }
+  ol.papers { margin: 0; padding-left: 0; list-style: none; }
+  .paper { margin: 14px 0; }
+  .paper-box {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 20px;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+  .num {
+    font-weight: 800;
+    color: var(--blue);
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  .cite {
+    font-size: 18px;
+    line-height: 1.75;
+  }
+  .plink { margin-left: 6px; }
+  .plink:visited { color: #374151; }
+  @media (max-width: 768px) {
+    header h1 { font-size: 38px; }
+    .year { font-size: 32px; }
+    .paper-box { grid-template-columns: 32px 1fr; }
+    .cite { font-size: 16px; }
+  }
+</style>
 </head>
 <body>
-  <header>
-    <div class="topbar">
-      <div>
-        <h1>Journal Papers</h1>
-        <div class="sub">論文誌（Journal papers only）</div>
-      </div>
-      <div class="back"><a href="../index.html#recent-ja">← Publications に戻る</a></div>
-    </div>
-  </header>
+<header>
+  <a class="back" href="../index.html#recent-ja">← Publications に戻る</a>
+  <h1>Journal Papers</h1>
+  <p>論文誌（Journal papers only）</p>
+</header>
 
-  <div class="wrap">
-    <div class="meta">
-      <b>Updated:</b> 2025-12-29　
-      <b>Items:</b> 317　
-      <b>Source:</b> researchmap API (generated daily via GitHub Actions)
-    </div>
-
-    <section class="year-block">
-        <div class="year-head">
-          <div class="year">----</div>
-          <div class="badge">317</div>
-        </div>
-        <ol class="olist">
-          <li class="item">
-          <div class="card">
-            <div class="ref">Fubuki Sawa Daisuke Fujita Kenichi Shimada Hideo Aihara Toshiyuki Uehara Yutaka Koide Ryota Kawasaki Kazunari Ishii Syoji Kobashi, “Dynamic multi-scale deep learning with mixture of experts for differentiating iNPH and PSP using MRI.,” International journal of computer assisted radiology and surgery, vol. 20, no. 12.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Md Anas Ali Ryunosuke Maeda Daisuke Fujita Naoyuki Miyahara Fumihiko Namba Syoji Kobashi, “Early prediction of bronchopulmonary dysplasia in preterm infants using chest X-rays through a comparative analysis of 13 CNN models across different post-birth days,” Discover Computing, vol. 28, no. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yukihiro Imaoka Katsuhiro Mikami Ai Fuchita Satoshi Ikeda Nice Ren Shogo Watanabe Soichiro Abe Tomohide Yoshie Satoshi Namitome Syoji Kobashi Hirotoshi Imamura Koji Iihara, “Comparative safety of stent retriever designs for intracranial atherosclerotic disease related large vessel occlusion using agarose models.,” Scientific reports, vol. 15, no. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yudai Adachi Yuta Kawase Masanori Gonda Arata Sakai Yuzo Kodama Syoji Kobashi, “Computer-Aided Surgery System Using Three-Dimensional Tomographic Images for Endoscopic Retrograde Cholangiopancreatography (ERCP): Preliminary Study,” Proc. of The 26th International Symposium on Advanced Intelligent Systems.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Sodai Yokoyama Takashi Mizobe Hideo Aihara Tomokazu Hayashi Tetsuya Urata Syoji Kobashi, “Predicting Therapeutic Intervention in Asymptomatic Carotid Plaque: A Comparative Study of Multi-modal MRI Radiomics and Deep Learning,” Proc. of The 26th International Symposium on Advanced Intelligent Systems.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Naoya Takashima Tsuyoshi Sanuki Yoshikazu Kinoshita Center Syoji Kobashi, “Stool-Prioritized Segmentation via Anatomically Guided Multi-Task U-Net Segmentation in Abdominal X-ray Images,” Proc. of The 26th International Symposium on Advanced Intelligent Systems.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Siam Tahsin Bhuiyan Rashedur Rahman Sefatul Wasi Naomi Yagi Syoji Kobashi Ashraful Islam Saadia Binte Alam, “Invisible Yet Detected: PelFANet with Attention-Guided Anatomical Fusion for Pelvic Fracture Diagnosis.,” CoRR, vol. abs/2509.13873.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">“Image-to-Biomarker Prediction of CSF Amyloid-β via Multimodal Deep Learning on MRI and Brain Perfusion SPECT,” 29th International Conference on Knowledge-Based and Intelligent Information &amp; Engineering Systems.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yuya Sakaguchi Takayuki Fujita Syoji Kobashi, “Self-Extubation Early Warning via Autoencoder Anomaly Detection and a Novel Simulator for Quantitative Evaluation,” 29th International Conference on Knowledge-Based and Intelligent Information &amp; Engineering Systems.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yukihiro Imaoka Nice Ren Soshiro Ogata Shogo Watanabe Tomoya Itatani Eri Kiyoshige Hirotoshi Imamura Kunihiro Nishimura Syoji Kobashi Yasuyuki Kaku Koichi Arimura Hitoshi Fukuda Masafumi Ihara Tsuyoshi Ohta Yuji Matsumaru Nobuyuki Sakai Takanari Kitazono Shigeru Fujimoto Kuniaki Ogasawara Koji Yoshimoto Akitake Mukasa Koji Iihara, “Community-Level Compact City Design, Health Care Provision, and Outcomes of Patients With Stroke.,” Journal of the American Heart Association, vol. 14, no. 15.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">“MAP-CARE: PREDICTING FUTURE SURGICAL INTERVENTION IN ASYMPTOMATIC CAROTID STENOSIS VIA MULTI-MODAL RADIOMICS,” International Conference on Machine Learning and Cybernetics.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">NAOYA TAKASHIMA TSUYOSHI SANUKI YOSHIKAZU KINOSHITA SYOJI KOBASHI, “IMPROVING STOOL SEGMENTATION IN ABDOMINAL X-RAYS USING GAS MASK GUIDANCE WITH U-NET,” the International Conference on Machine Learning and Cybernetics.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Fubuki Sawa Naoya Takashima Saya Ando Naomi Yagi Kumiko Ando Reiichi Ishikawa Syoji Kobashi, “Perturbation-Based Deep Learning Reveals Dynamic Spatiotemporal Shifts in Pediatric Brain Development from CT Imaging,” International Conference on Machine Learning and Cybernetics.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Md Anas Ali Daisuke Fujita Hiromitsu Kishimoto Yuna Makihara Kazuma Noguchi Syoji Kobashi, “Automated Impaction Angulation Measurement of Mandibular Third Molars for Winter’s Classification Using Deep Learning,” Journal of Advanced Computational Intelligence and Intelligent Informatics, vol. 29, no. 2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kenta Takatsuji Yoshikazu Kida Kenta Sasaki Daisuke Fujita Yusuke Kobayashi Tsuyoshi Sukenari Yoshihiro Kotoura Masataka Minami Syoji Kobashi Kenji Takahashi, “Deep Learning-Based Computer-Aided Diagnosis of Osteochondritis Dissecans of the Humeral Capitellum Using Ultrasound Images.,” The Journal of bone and joint surgery. American volume, vol. 106, no. 23.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yukihiro Imaoka Nice Ren Soshiro Ogata Hirotoshi Imamura Yasuyuki Kaku Koichi Arimura Shogo Watanabe Eri Kiyoshige Kunihiro Nishimura Syoji Kobashi Masafumi Ihara Kenji Kamiyama Masafumi Morimoto Tsuyoshi Ohta Hidenori Endo Yuji Matsumaru Nobuyuki Sakai Takanari Kitazono Shigeru Fujimoto Kuniaki Ogasawara Koji Iihara, “CHA2DS2-VASc score and prior oral anticoagulant use on endovascular treatment for acute ischemic stroke.,” Annals of clinical and translational neurology, vol. 11, no. 12.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Shuya Ishida Kento Morita Kinta Hatakeyama Nice Ren Shogo Watanabe Syoji Kobashi Koji Iihara Tetsushi Wakabayashi, “Prediction of cardiovascular events after carotid endarterectomy using pathological images and clinical data.,” International journal of computer assisted radiology and surgery.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Shuya Ishida Kento Morita Kinta Hatakeyama Nice Ren Shogo Watanabe Syoji Kobashi Koji Iihara Tetsushi Wakabayashi, “Prediction of Cardiovascular Disease Development for CEA Patients Using Multimodal Learning,” 2024 Joint 13th International Conference on Soft Computing and Intelligent Systems and 25th International Symposium on Advanced Intelligent Systems, SCIS and ISIS 2024.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Md Anas Ali Daisuke Fujita Yuna Makihara Kazuma Noguchi Syoji Kobashi, “Automated Depth-Level Classification of Impacted Mandibular Third Molars Using Deep Learning on Panoramic X-Rays,” 2024 Joint 13th International Conference on Soft Computing and Intelligent Systems and 25th International Symposium on Advanced Intelligent Systems, SCIS and ISIS 2024.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Fubuki Sawa Daisuke Fujita Kenichi Shimada Kazunari Ishii Syoji Kobashi, “Differentiating Idiopathic Normal Pressure Hydrocephalus Using Multi-Head Attention CNN with Diversify-Loss in Brain MRI,” 2024 Joint 13th International Conference on Soft Computing and Intelligent Systems and 25th International Symposium on Advanced Intelligent Systems, SCIS and ISIS 2024.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Soya Kobayashi Daisuke Fujita Hironobu Shibutani Shinsuke Gohara Syoji Kobashi, “ESWL Outcome Prediction with SMOTE and Stratified Sampling,” 2024 Joint 13th International Conference on Soft Computing and Intelligent Systems and 25th International Symposium on Advanced Intelligent Systems, SCIS and ISIS 2024.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Md Anas Ali Daisuke Fujita Syoji Kobashi, “Automated Detection and Classification of Mandibular Third Molar Impactions in Panoramic X-Rays,” 2024 Joint 13th International Conference on Soft Computing and Intelligent Systems and 25th International Symposium on Advanced Intelligent Systems, SCIS and ISIS 2024.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kenta Sasaki Daisuke Fujita Kenta Takatsuji Yoshihiro Kotoura Masataka Minami Yusuke Kobayashi Tsuyoshi Sukenari Yoshikazu Kida Kenji Takahashi Syoji Kobashi, “Deep learning-based osteochondritis dissecans detection in ultrasound images with humeral capitellum localization.,” International journal of computer assisted radiology and surgery, vol. 19, no. 11.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Md. Anas Ali Daisuke Fujita Syoji Kobashi, “Advanced YOLOv7-Based Detection and Enumeration of Teeth and Restorations in Panoramic X-rays,” Proceedings ofInternational Conference on Machine Learning and Cybernetics.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">N. A. Roza R. Rahman D. Fujita S. Misaki A. Seko S. Tsuji Y. Watanabe S. Kobashi, “Novel Cine MRI Feature Extraction Method for Assessing Cesarean Scar Syndrome,” World Automation Congress.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">A. Nagasawa D. Fujita S. Watanabe N. Ren K. Iihara S. Kobashi, “Hierarchical U-Net and Image Patch Technique for Intracerebral Hematoma Segmentation in Thick-Slice CT Images,” World Automation Congress.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">N. Takashima S. Ando D. Fujita M. Nii K. Ando R. Ishikura S. Kobashi, “Effects of Brain Injury on Brain Age Estimation in Pediatric Brain CT images,&quot; World Automation Congress, in press.,” World Automation Congress.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Shogo Watanabe Nice Ren Soshiro Ogata Yuriko Nakaoku Akihito Hagihara Syoji Kobashi Haruhiko Hiramatsu Tsuyoshi Ohta Teruo Noguchi Hiroharu Kataoka Masahumi Ihara Kunihiro Nishimura Koji Iihara, “Recurrent prediction within 1, 3, and 5 years after acute ischemic stroke based on machine learning using 10 years J-ASPECT study,” Japanese Journal of Stroke.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Takao Sato Tomoka Nishino Natsuki Kawaguchi Hisashi Mori Hayato Uchida Kiichiro Murotani Yuichi Kimura Isao Mizukura Syoji Kobashi Orlando Arrieta, “Personalized heart rate management through data-driven dynamic exercise control.,” Scientific reports, vol. 14, no. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Daisuke FUJITA Yuki ADACHI Syoji KOBASHI, “根管治療痕を考慮したパノラマX線画像における歯牙自動認識法,” Journal of Japan Society for Fuzzy Theory and Intelligent Informatics, vol. 36, no. 2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Rashedur Rahman Naomi Yagi Keigo Hayashi Akihiro Maruo Hirotsugu Muratsu Syoji Kobashi, “Enhancing fracture diagnosis in pelvic X-rays by deep convolutional neural network with synthesized images from 3D-CT.,” Scientific reports, vol. 14, no. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kenta Sasaki Daisuke Fujita Syoji Kobashi, “Detection of Osteochondritis Dissecans from Ultrasound Images by Ensemble Deep Learning,” The 24th International Symposium on Advanced Intelligent Systems (ISIS),.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yamato Muroi Daisuke Fujita Syoji Kobashi Takayuki Fujita, “A Preliminary Study on a Sheet-Type Self-Extubation Detection Device,” The 24th International Symposium on Advanced Intelligent Systems (ISIS).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Ryosuke Maeda Daisuke Fujita Syoji Kobashi, “Deep Learning Approach for Early Detection and Prediction of Chronic Lung Disease in Neonates Chest X-ray Images,” The 24th International Symposium on Advanced Intelligent Systems (ISIS).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Soya Kobayashi Daisuke Fujita Syoji Kobashi, “Interpretability of ESWL Outcome Prediction Model and Feature Selection Using SHAP values,,” 24th International Symposium on Advanced Intelligent Systems.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Naoya Takashima Daisuke Fujita Syoji Kobashi, “Comparison of U-Net Backbones on Segmenting Gas and Stool Regions from Abdominal X-Ray Images,” The 24th International Symposium on Advanced Intelligent Systems (ISIS).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">MD. ANAS ALI DAISUKE FUJITA SYOJI KOBASHI, “Teeth detection and numbering method in dental panoramic X-ray images using YOLOv7,” The 24th International Symposium on Advanced Intelligent Systems (ISIS).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syed Alif Ul Alam Saadia Binte Alam Sourav Saha Mahmudul Haque Rashedur Rahman Syoji Kobashi, “Pelvic bone region segmentation (PBRS) from X-ray image using convolutional neural network (CNN),” 2023 26th International Conference on Computer and Information Technology, ICCIT 2023.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Md Anas Ali Daisuke Fujita Syoji Kobashi, “Teeth and prostheses detection in dental panoramic X-rays using CNN-based object detector and a priori knowledge-based algorithm,” Scientific Reports, vol. 13, no. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Noriyasu Kondo Daisuke Fujita Syoji Kobashi Takayuki Fujita, “Prediction of Bed-Leaving Behaviors Using Edge AI to Prevent Medical Accidents,” Conference Proceedings - IEEE International Conference on Systems, Man and Cybernetics.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Shuya Ishida Kento Morita Nice Ren Shogo Watanabe Shoji Kobashi Kinta Hatakeyama Koji Iihara Tetsushi Wakabayashi, “Prognostic Estimation of Cardiovascular Disease Using Anomaly Detection and Pathological Image of CEA Patients,” 17th International Conference on Innovative Computing, Information and Control (ICICIC2023).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Soya Kobayashi Daisuke Fujita Hironobu Shibutani Shinsuke Gohara Syoji Kobashi, “Prediction of ESWL Outcome by Combining CT/X-Ray Images and Clinical Findings,” 17th International Conference on Innovative Computing, Information and Control (ICICIC2023).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Naoya Takashima Daisuke Fujita Tsuyoshi Sanuki Yoshikazu Kinoshita Syoji Kobashi, “A Preliminary Study on Abdominal X-Ray Image Segmentation Using U-Net Models,” 17th International Conference on Innovative Computing, Information and Control (ICICIC2023).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">藤田大輔 山本偉嗣 諸岡孝俊 井石琢也 牛飼武 吉矢晋一 小橋昌司, “Development of TKA treatment strategy by factor extraction method for patient satisfaction,” Japanese Journal of Clinical Biomechanics (Web), vol. 44.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Rashedur Rahman Daisuke Fujita Naomi Yagi Syoj Kobahsi, “Fracture Recognition from Pelvic X-ray Images Using Deep Convolutional Neural Networks,” International Conference on TECHNOLOGY;BUSINESS, AND JUSTICE;TOWARDS SMART;BANGLADESH.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Sefatul Wasi Saadia Binte Alam Rashedur Rahman M. Ashraful Amin Syoji Kobashi, “Kidney Tumor Recognition from Abdominal CT Images using Transfer Learning,” Proceedings of The International Symposium on Multiple-Valued Logic, vol. 2023-May.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Tanzila Tahsin Mayabee Kazi Tahsinul Haque Saadia Binte Alam Rashedur Rahman M. Ashraful Amin Syoji Kobashi, “ECG Signal Classification Using Transfer Learning and Convolutional Neural Networks,” Lecture Notes in Networks and Systems, vol. 618 LNNS.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Shinya OKUDA Daisuke FUJITA Hiroshi TANAKA Tomoyuki MUTO Hiroaki INUI Syoji KOBASHI, “Detection of Shoulder Rotator Cuff Tears from X-Ray Image by Using Convolutional Neural Network,” Journal of Japan Society for Fuzzy Theory and Intelligent Informatics, vol. 35, no. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Fahmida Haque Mamun B. I. Reaz Muhammad E. H. Chowdhury Mohd Ibrahim bin Shapiai Rayaz A. Malik Mohammed Alhatou Syoji Kobashi Iffat Ara Sawal H. M. Ali Ahmad A. A. Bakar Mohammad Arif Sobhan Bhuiyan, “A Machine Learning-Based Severity Prediction Tool for the Michigan Neuropathy Screening Instrument,” Diagnostics, vol. 13, no. 2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kazunori Oka Daisuke Fujita Koichi Arimura Koji Iihara Syoji Kobashi, “Discrimination of Intracerebral Hematoma and Intraventricular Hemorrhage in Initial CT Images Using Hierarchical Region Extraction Method,” Proceedings of SPIE - The International Society for Optical Engineering, vol. 12592.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kazunori Oka Daisuke Fujita Koichi Arimura Koji Iihara Syoji Kobashi, “Discrimination of ICH and IVH in Initial CT Images Using Hierarchical Region Extraction Мethod,” International Workshop on Advanced Imaging Technology (IWAIT) 2023.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Tatsuya Mori Daisuke Fujita Tomokazu Hayashi Takashi Mizobe Hideo Aihara Syoji Kobashi, “Radiomics Based Prediction of Symptomatic Carotid Plaque in MR Images,” Proceedings - International Conference on Machine Learning and Cybernetics.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Md Anas Ali Mahmudul Haque Saadia Binte Alam Rashedur Rahman Mashraful Amin Syoji Kobashi, “Medical Personal Protective Equipment Detection Using YOLOV7,” Proceedings - International Conference on Machine Learning and Cybernetics.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Rashedur Rahman Naomi Yagi Keigo Hayashi Akihiro Maruo Hirotsugu Muratsu Syoji Kobashi, “Fragility Fracture of Pelvis Prediction from Computed Tomography Using Boring Survey and Convolutional Neural Network,” Journal of Advanced Computational Intelligence and Intelligent Informatics, vol. 27, no. 6.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Ryunosuke Maeda Daisuke Fujita Kosuke Tanaka Jyunichi Ozawa Mitsuhiro Haga Naoyuki Miyahara Fumihiko Nanba Syoji Kobashi, “Predicting the Development of Chronic Lung Disease in Neonataes from Chest X-ray Images Using Deep Learning,” Proceedings of The International Symposium on Multiple-Valued Logic, vol. 2023-May.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kenta Sasaki Daisuke Fujita Kenta Takatsuji Yoshihiro Kotoura Tsuyoshi Sukenari Masataka Minami Yusuke Kobayashi Yoshikazu Kida Kenji Takahashi Syoji Kobashi, “Detection of osteochondritis dissecans using convolutional neural networks for computer-aided diagnosis of baseball elbow,” Proceedings of The International Symposium on Multiple-Valued Logic, vol. 2023-May.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yamato Muroi Daisuke Fujita Kazumi Takahama Syoji Kobashi Takayuki Fujita, “Medical Tubing Self-Extraction Trouble Avoidance Support System Using Flexible Sensor and IoT,” 2022 Joint 12th International Conference on Soft Computing and Intelligent Systems and 23rd International Symposium on Advanced Intelligent Systems (SCIS&amp;amp;ISIS).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Ren Morita Saya Ando Daisuke Fujita Sho Ishikawa Koji Onoue Kumiko Ando Reiichi Ishikura Syoji Kobashi, “Quantification of Pediatric Brain Development with X-ray CT Images using 3D-CNN,” 2022 Joint 12th International Conference on Soft Computing and Intelligent Systems and 23rd International Symposium on Advanced Intelligent Systems (SCIS&amp;amp;ISIS).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Ren Morita Saya Ando Daisuke Fujita Sho Ishikawa Koji Onoue Kumiko Ando Reiichi Ishikura Syoji Kobashi, “Pediatric Brain CT Image Segmentation Methods for Effective Age Prediction Models,” 2022 World Automation Congress (WAC), vol. 2022-October.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Ryunosuke Maeda Daisuke Fujita Kosuke Tanaka Jyunichi Ozawa Mitsuhiro Haga Haoyuki Miyahara Fumihiko Nanba Syoji Kobashi, “Predicting the severity of Neonatal Chronic Lung Disease from chest X-ray images using deep learning,” 2022 IEEE International Conference on Systems, Man, and Cybernetics (SMC), vol. 2022-October.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kenta Sasaki Daisuke Fujita Kenta Takatsuji Yoshihiro Kotoura Masataka Minami Yusuke Kobayashi Tsuyoshi Sukenari Yoshikazu Kida Kenji Takahashi Syoji Kobashi, “Detection of osteochondritis dissecans in ultrasound images for computer-aided diagnosis of baseball elbow,” 2022 IEEE International Conference on Systems, Man, and Cybernetics (SMC), vol. 2022-October.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kazunori Oka Anas Ali Daisuke Fujita Syoji Kobashi, “Tooth Recognition in X-Ray Dental Panoramic Images with Prosthetic Detection,” 2022 International Conference on Machine Learning and Cybernetics (ICMLC), vol. 2022-September.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Naoto Yamamoto Daisuke Fujita Md. Rashedur Rahman Naomi Yagi Keigo Hayashi Akihiro Maruo Hirotsugu Muratsu Syoji Kobashi, “The challenge of detecting impact fracture of the pelvis in CT images using the CNN model.,” LifeTech.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kohei Nakatsu Rashedur Rahman Kento Morita Daisuke Fujita Syoji Kobashi, “Automatic Carpal Site Detection Method for Evaluation of Rheumatoid Arthritis Using Deep Learning,” Journal of Advanced Computational Intelligence and Intelligent Informatics, vol. 26, no. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Fahmida Haque Mamun Bin Ibne Reaz Muhammad Enamul Hoque Chowdhury Rayaz Malik Mohammed Alhatou Syoji Kobashi Iffat Ara Sawal Hamid Md. Ali Ahmad Ashrif A. Bakar Geetika Srivastava, “A machine learning-based severity prediction tool for diabetic sensorimotor polyneuropathy using Michigan neuropathy screening instrumentations.,” CoRR, vol. abs/2203.15151.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Daisuke FUJITA Shota HARUMOTO Ryusuke DEGUCHI Shimpei YAMASHITA Syoji KOBASHI, “Prediction of Ureter ESWL Outcome by Machine Learning and Model Interpretation Approach Using SHAP,” International Journal of Biomedical Soft Computing and Human Sciences, vol. 26, no. 2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Fahmida Haque Mamun Bin Ibne Reaz Muhammad E.H. Chowdhury Sawal Hamid Md Ali Ahmad Ashrif A Bakar Tawsifur Rahman Syoji Kobashi Chitra A. Dhawale Mohammad Arif Sobhan Bhuiyan, “A nomogram-based diabetic sensorimotor polyneuropathy severity prediction using Michigan neuropathy screening instrumentations,” Computers in Biology and Medicine, vol. 139.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Solaiman Ahmed Tanveer Ahmed Bhuiyan Taiki Kishi Manabu Nii Syoji Kobashi, “Human Activity Classification Based on Angle Variance Analysis Utilizing the Poincare Plot,” Applied Sciences, vol. 11, no. 16.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kazutoshi Ukai Rashedur Rahman Naomi Yagi Keigo Hayashi Akihiro Maruo Hirotsugu Muratsu Syoji Kobashi, “Detecting pelvic fracture on 3D-CT using deep convolutional neural networks with multi-orientated slab images.,” Scientific reports, vol. 11, no. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Naoto Yamamoto Daisuke Fujita Md. Rashedur Rahman Naomi Yagi Keigo Hayashi Akihiro Maruo Hirotsugu Muratsu Shoji Kobashi, “Boring Survey Based Fracture Detection (BSFD) for Fragility Fracture of the Pelvis in CT Images.,” ICMLC.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kazunori Oka Daisuke Fujita Yasunobu Nohara Sozo Inoue Koichi Arimura Koji Iihara Syoji Kobashi, “CNN Based Hierarchical Intracerebral Hematoma Region Extraction Method in Head Thick-Slice CT Images.,” ICMLC.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Ren Morita Saya Ando Daisuke Fujita Manabu Nii Kumiko Ando Reiichi Ishikura Syoji Kobashi, “Brain Devlopment Age Prediction Using Convolutnal Neural Network on Pediatrics Brain Ct Mages.,” ICMLC.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">中津康平 田中洋 乾浩明 信原克哉 小橋昌司, “Machine learning based player level estimation with 3-D kinematic analysis of throwing motion capture.,” 臨床バイオメカニクス, vol. 42.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Fahad Parvez Mahdi Syoji Kobashi, “A Deep Learning Technique for Automatic Teeth Recognition in Dental Panoramic X-Ray Images Using Modified Palmer Notation System,” Intelligent Learning for Computer Vision.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kohei Nakatsu Kento Morita 0001 Daisuke Fujita Syoji Kobashi, “Comparison of Machine Learning Methods for Predicting Modified Total Shape Score in X-ray Radiography.,” 2021 World Automation Congress(WAC).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kazunori Oka Takumi Hirahara Yasunobu Nohara Sozo Inoue Koichi Arimura Syoji Kobashi Koji Iihara, “Predictors of Intracerebral Hematoma Enlargement Using Brain CT Images in Emergency Medical Care.,” 5th IEEE International Conference on Cybernetics(CYBCONF), vol. 37th.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Fahad Parvez Mahdi Kota Motoki Syoji Kobashi, “Optimization technique combined with deep learning method for teeth recognition in dental panoramic radiographs,” Scientific Reports, vol. 10, no. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Naoto Yamamoto Rashedur Rahman Naomi Yagi Keigo Hayashi Akihiro Maruo Hirotsugu Muratsu Syoji Kobashi, “An automated fracture detection from pelvic CT images with 3-D convolutional neural networks,” 2020 International Symposium on Community-Centric Systems, CcS 2020.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kohei Nakatsu Kento Morita Naomi Yagi Syoji Kobashi, “Finger Joint Detection Method in Hand X-ray Radiograph Images Using Statistical Shape Model and Support Vector Machine,” 2020 International Symposium on Community-Centric Systems, CcS 2020.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Fahad Parvez Mahdi Tomoyuki Muto Hiroshi Tanaka Hiroaki Inui Katsuya Nobuhara Syoji Kobashi, “Construction of 3-D humeral head statistical shape model in CT images,” Applied Sciences (Switzerland), vol. 10, no. 16.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Shoichi Nishio Belayat Hossain Naomi Yagi Manabu Nii Takafumi Hiranaka Syoji Kobashi, “Surgical Phase Recognition Method with a Sequential Consistency for CAOS-AI Navigation System,” LifeTech 2020 - 2020 IEEE 2nd Global Conference on Life Sciences and Technologies.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yuki Kubo Manabu Nii Tomoyuki Muto Hiroshi Tanaka Hiroaki Inui Naomi Yagi Katsuya Nobuhara Syoji Kobashi, “Artificial humeral head modeling using Kmeans++ clustering and PCA,” LifeTech 2020 - 2020 IEEE 2nd Global Conference on Life Sciences and Technologies.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Fahad Parvez MAHDI Hiroshi TANAKA Katsuya NOBUHARA Syoji KOBASHI, “Automatic segmentation of the humerus region in 3-D shoulder CT images using U-Net,” International Journal of Biomedical Soft Computing and Human Sciences: the official journal of the Biomedical Fuzzy Systems Association, vol. 25, no. 2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Shoichi NISHIO Belayat HOSSAIN Manabu NII Naomi YAGI Takafumi HIRANAKA Syoji KOBASHI, “Surgical Phase Recognition with Wearable Video Camera for Computer-aided Orthopaedic Surgery-AI Navigation System,” International Journal of Affective Engineering, vol. 19, no. 2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Shadman Sakib Belayat Hossain Takafumi Hiranaka Syoji Kobashi, “Hand Frame Extraction in Surgical Video Images Using Convolutional Neural Network.,” Joint 11th International Conference on Soft Computing and Intelligent Systems and 21st International Symposium on Advanced Intelligent Systems(SCIS/ISIS).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kota Motoki Fahad Parvez Mahdi Naomi Yagi Manabu Nii Syoji Kobashi, “Automatic Teeth Recognition Method from Dental Panoramic Images Using Faster R-CNN and Prior Knowledge Model.,” Joint 11th International Conference on Soft Computing and Intelligent Systems and 21st International Symposium on Advanced Intelligent Systems(SCIS/ISIS).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Fahad Parvez Mahdi Naomi Yagi Syoji Kobashi, “Automatic Teeth Recognition in Dental X-Ray Images Using Transfer Learning Based Faster R-CNN.,” 50th IEEE International Symposium on Multiple-Valued Logic(ISMVL).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Hiroshi Tanaka Toyohiko Hayashi Hiroaki Inui Tomoyuki Muto Kohnan Tsuchiyama Hiroki Ninomiya Yasuo Nakamura Syoji Kobashi Katsuya Nobuhara, “Stride-Phase Kinematic Parameters That Predict Peak Elbow Varus Torque,” Orthopaedic Journal of Sports Medicine, vol. 8, no. 12.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Binte Alam Manabu Nii Akinobu Shimizu Syoji Kobashi, “Spatiotemporal statistical shape model for temporal shape change analysis of adult brain,” Current Medical Imaging Reviews, vol. 16, no. 5.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Belayat Hossain Shoichi Nishio Hiranaka Takafunio Syoji Kobashi, “A deep learning approach for surgical instruments detection in orthopaedic surgery using transfer learning,” Proceedings of SPIE - The International Society for Optical Engineering, vol. 11315.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kento Morita Manabu Nii Min Sung Koh Kaori Kashiwa Hiroshi Nakayama Shunichiro Kambara Shinichi Yoshiya Syoji Kobashi, “Bone tunnel placement determination method for 3-D images and its evaluation for anterior cruciate ligament reconstruction,” Current Medical Imaging Reviews, vol. 16, no. 5.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Naomi Yagi Manabu Nii Syoji Kobashi, “Abdominal organ area segmentation using u-net for cancer radiotherapy support,” Conference Proceedings - IEEE International Conference on Systems, Man and Cybernetics, vol. 2019-October.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Tomoyuki Muto Hiroaki Inui Hiroki Ninomiya Hiroshi Tanaka Kazuki Ishiro Kento Morita Syoji Kobashi Katsuya Nobuhara, “MRIによる腱板断裂の画像診断 MRI画像を用いた3次元形状腱板断裂モデルの構築,” Clinical Orthopaedic Surgery, vol. 54, no. 9.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Naziah Tasnim Fahad Parvez Mahdi Saadia Binte Alam Naomi Yagi Akira Nakashima Isamu Komesu Yoshimitsu Tokunaga Tetsuro Sakumoto Syoji Kobashi, “A Quantification Approach of Uterine Peristalsis Propagated from the Cervix and the Fundus,” Proceedings - International Conference on Machine Learning and Cybernetics, vol. 2019-July.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Solaiman Ahmed Taiki Kishi Manabu Nii Kohei Higuchi Syoji Kobashi, “Estimation of Human Activities by Fuzzy Classification Systems for Understanding Subject Persons&#39; Situation,” Proceedings - International Conference on Machine Learning and Cybernetics, vol. 2019-July.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kazutoshi Ukai Rashedur Rahman Syoji Kobashi, “Facial skin blood perfusion change based liveness detection using video images,” Electronics and Communications in Japan, vol. 102, no. 6.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Takatoshi Morooka Makiko Okuno Daisuke Seino Takuya Iseki Shigeo Fukunishi Syoji Kobashi Shinichi Yoshiya, “Intraoperative kinematic analysis of posterior stabilized total knee arthroplasty with asymmetric helical post-cam design,” European Journal of Orthopaedic Surgery and Traumatology, vol. 29, no. 3.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">盛田健人 小橋昌司, “医療と情報 第1部 ヘルスケア・インフォマティクスの先端技術 2)医用画像診断の未来,” 情報処理, vol. 60, no. 4.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Belayat Hossain Takatoshi Morooka Makiko Okuno Manabu Nii Shinichi Yoshiya Syoji Kobashi, “Surgical outcome prediction in total knee arthroplasty using machine learning,” Intelligent Automation and Soft Computing, vol. 25, no. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Manabu Nii Yusuke Kato Masakazu Morimoto Shoji Kobashi Naotake Kamiura Yutaka Hata Setsuro Imawaki Tomomoto Ishikawa Hidehiko Matsubayashi, “Ovarian follicle classification using numerical and B-mode image features from ultrasound scanning devices,” 2018 Joint 7th International Conference on Informatics, Electronics and Vision and 2nd International Conference on Imaging, Vision and Pattern Recognition, ICIEV-IVPR 2018.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Belayat Hossain Takatoshi Morooka Makiko Okuno Manabu Nii Shinichi Yoshiya Syoji Kobashi, “Implanted knee kinematics prediction: Comparative performance analysis of machine learning techniques,” 2018 Joint 7th International Conference on Informatics, Electronics and Vision and 2nd International Conference on Imaging, Vision and Pattern Recognition, ICIEV-IVPR 2018.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Moazzem Hossain Soichi Nishio Takafumi Hiranaka Syoji Kobashi, “Real-time surgical tools recognition in total knee arthroplasty using deep neural networks,” 2018 Joint 7th International Conference on Informatics, Electronics and Vision and 2nd International Conference on Imaging, Vision and Pattern Recognition, ICIEV-IVPR 2018.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yoshio Taniguchi Yoshihiko Kubota Setsuo Tsuruta Takayuki Muranushi Yuko Hada-Muranushi Yoshiyuki Mizuno Syoji Kobashi Yoshitaka Sakurai Rainer Knauf Andrea Kutics, “A SVM integrated Case Based Learning Data GA for Solar Flare Prediction,” Proceedings of the 2018 IEEE Symposium Series on Computational Intelligence, SSCI 2018.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kazutoshi Ukai Rashedur Rahman Syoji Kobashi, “Facial skin blood perfusion change based liveness detection using video images,” IEEJ Transactions on Sensors and Micromachines, vol. 139, no. 2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">盛田 健人 田下 徳起 新居 学 小橋 昌司, “SVRを用いた手関節X線画像におけるリウマチmTSスコアの推定,” MEDICAL IMAGING TECHNOLOGY, vol. 36, no. 5.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">神原 俊一郎 中山 寛 小橋 昌司 吉矢 晋一, “内反変形膝に対するDouble Level Osteotomyの術後回旋アライメントの変化 3次元CTを用いた解析,” 臨床バイオメカニクス, vol. 39.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yutaka Hata Shoji Kobashi Hiroshi Nakajima, “Special issue on the power of fuzzy-dedicated to the father of fuzzy logic,” Journal of Advanced Computational Intelligence and Intelligent Informatics, vol. 22, no. 5.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Atsuki Tashita Kento Morita Kento Morita Manabu Nii Natsuko Nakagawa Syoji Kobashi, “Automated estimation of mTS score in hand joint X-ray image using machine learning,” 2017 6th International Conference on Informatics, Electronics and Vision and 2017 7th International Symposium in Computational Medical and Health Technology, ICIEV-ISCMHT 2017, vol. 2018-January.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Manabu Nii Shota Okajima Reiko Sakashita Misao Hamada Syoji Kobashi, “Tongue movement classification in chewing and swallowing using electromyography,” 2017 6th International Conference on Informatics, Electronics and Vision and 2017 7th International Symposium in Computational Medical and Health Technology, ICIEV-ISCMHT 2017, vol. 2018-January.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Marin Yasugi Belayat Hossain Manabu Nii Syoji Kobashi, “Relationship Between Cerebral Aneurysm Development and Cerebral Artery Shape,” JOURNAL OF ADVANCED COMPUTATIONAL INTELLIGENCE AND INTELLIGENT INFORMATICS, vol. 22, no. 2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Md Atiqur Rahman Ahad Syoji Kobashi João Manuel R S Tavares, “Advancements of Image Processing and Vision in Healthcare.,” Journal of healthcare engineering, vol. 2018.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Saadia Binte Alam Syoji Kobashi Jayaram K. Udupa, “Fuzzy object growth model for neonatal brain MR understanding,” Intelligent Systems Reference Library, vol. 140.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Moazzem Hossain Soichi Nishio Takafumi Hiranaka Syoji Kobashi, “Real-time Surgical Tools Recognition in Total Knee Arthroplasty Using Deep Neural Networks.,” CoRR, vol. abs/1806.02031.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kento Morita 0001 Manabu Nii Norikazu Ikoma Takatoshi Morooka Shinichi Yoshiya Syoji Kobashi, “Implanted Knee Joint Kinematics Recognition in Digital Radiograph Images Using Particle Filter.,” J. Adv. Comput. Intell. Intell. Informatics, vol. 22, no. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yutaka Hata Shoji Kobashi Hiroshi Nakajima, “Editorial: the Power of Fuzzy - Dedicated to the Father of Fuzzy Logic.,” JACIII, vol. 22, no. 5.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Wataru Marui Shigenobu Kan Manabu Nii Masahiko Shibata Syoji Kobashi, “MD-LMS Algorithm Based Brain Functional Connectivity Analysis in Resting State fMRI.,” 2018 World Automation Congress, WAC 2018, Stevenson, WA, USA, June 3-6, 2018.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yuki Kubo Md Belayat Hossain Manabu Nii Tomoyuki Muto Hiroshi Tanaka Hiroaki Inui Katsuya Nobuhara Syoji Kobashi, “3-D Statistical Shape Model of the Humerus Towards Artificial Shoulder Joint Design.,” 2018 World Automation Congress, WAC 2018, Stevenson, WA, USA, June 3-6, 2018.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yoshio Taniguchi Yoshihiko Kubota Setsuo Tsuruta Takayuki Muranushi Yuko Hada Muranushi Yoshiyuki Mizuno Syoji Kobashi Yoshitaka Sakurai Rainer Knauf Andrea Kutics, “A SVM integrated Case Based Learning Data GA for Solar Flare Prediction.,” IEEE Symposium Series on Computational Intelligence, SSCI 2018, Bangalore, India, November 18-21, 2018.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kento Morita 0001 Patrick Chan Manabu Nii Natsuko Nakagawa Syoji Kobashi, “Finger Joint Detection Method for the Automatic Estimation of Rheumatoid Arthritis Progression Using Machine Learning.,” Proceedings - 2018 IEEE International Conference on Systems, Man, and Cybernetics, SMC 2018.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Saadia Binte Alam Akinobu Shimizu Kumiko Ando Reiichi Ishikura Syoji Kobashi, “Disorder Development Onset Prediction Based on Spatiotemporal Statistical Shape Model.,” Proceedings - 2018 IEEE International Conference on Systems, Man, and Cybernetics, SMC 2018.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Soichi Nishio Moazzem Hossain Md Belayat Hossain Manabu Nii Takafumi Hiranaka Syoji Kobashi, “Real-Time Orthopedic Surgery Procedure Recognition Method with Video Images from Smart Glasses Using Convolutional Neural Network.,” Proceedings - 2018 IEEE International Conference on Systems, Man, and Cybernetics, SMC 2018.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Rashedur Rahman Kazutoshi Ukai Syoji Kobashi, “A Filter-Based Method to Calculate Heart Rate from Near Infrared Video.,” 2018 Joint 10th International Conference on Soft Computing and Intelligent Systems (SCIS) and 19th International Symposium on Advanced Intelligent Systems (ISIS), Toyama, Japan, December 5-8, 2018.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Fahad Parvez Mahdi Syoji Kobashi, “Quantum Particle Swarm Optimization for Multilevel Thresholding-Based Image Segmentation on Dental X-Ray Images.,” 2018 Joint 10th International Conference on Soft Computing and Intelligent Systems (SCIS) and 19th International Symposium on Advanced Intelligent Systems (ISIS), Toyama, Japan, December 5-8, 2018.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kento Morita Manabu Nii Norikazu Ikoma Takatoshi Morooka Shinichi Yoshiya Syoji Kobashi, “Particle filter based implanted knee kinematics analysis for the postoperative evaluation,” 2017 IEEE International Conference on Systems, Man, and Cybernetics, SMC 2017, vol. 2017-.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">井城一輝 盛田健人 新居学 田中洋 小橋昌司 信原克哉, “Reconstruction of 3-D torn rotator cuff model in open MRI for computer-aided diagnosis.,” 臨床バイオメカニクス, vol. 38.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Tomoyuki Muto Hiroaki Inui Hiroshi Tanaka Kazuki Ishiro Kento Morita Hiroki Ninomiya Masahiko Komai Yoshiaki Kanatani Kotaro Hashimoto Syoji Kobashi Katsuya Nobuhara, “MRI-based 3D-shape model improves diagnosis of rotator cuff tear,” 2017 6th International Conference on Informatics, Electronics and Vision &amp; 2017 7th International Symposium in Computational Medical and Health Technology (ICIEV-ISCMHT).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Naotake Kamiura Shoji Kobashi Manabu Nii Takayuki Yumoto Ichiro Yamamoto, “On Map-Based Analysis of Item Relationships in Specific Health Examination Data for Subjects Possibly Having Diabetes,” IEICE TRANSACTIONS ON INFORMATION AND SYSTEMS, vol. E100D, no. 8.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">NII Manabu NII Manabu KASHIWAKI Riku MORIMOTO Masakazu KOBASHI Syoji KAMIURA Naotake HATA Yutaka IMAWAKI Seturo ISHIKAWA Tomomoto MATSUBAYASHI Hidehiko, “Ovarian Follicle Classification without Direct Deformation Information from Ultrasonic Images,” International Journal of Biomedical Soft Computing and Human Sciences, vol. 22, no. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Belayat Hossain Manabu Nii Syunichiro Kambara Takatoshi Morooka Makiko Okuno Shiichi Yoshiya, “Prediction of post-operative implanted knee function using machine learning in clinical big data,” Proceedings - International Conference on Machine Learning and Cybernetics, vol. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Belayat Hossain Manabu Nii Syunichiro Kambara Takatoshi Morooka Makiko Okuno Shiichi Yoshiya, “Prediction of post-operative implanted knee function using machine learning in clinical big data,” Proceedings - International Conference on Machine Learning and Cybernetics, vol. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kento Morita Manabu Nii Shunichiro Kambara Kaori Kashiwa Hiroshi Nakayama Shinichi Yoshiya Syoji Kobashi, “Clinical big image data based pre-operative planning in ACL reconstruction,” Proceedings - International Conference on Machine Learning and Cybernetics, vol. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yutaka Hata Syoji Kobashi Hiroshi Nakajima, “Medical and health management system of systems,” Systems of Systems Engineering: Principles and Applications.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yoshihiko Kubota Setsuo Tsuruta Syoji Kobashi Yoshitaka Sakurai Rainer Knauf, “Evaluation of a classification method for MR image segmentation.,” 2017 IEEE International Conference on Systems, Man, and Cybernetics, SMC 2017, vol. 2017-.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Saadia Binte Alam Rashedur Rahman Syoji Kobashi Yutaka Hata, “Muscle thickness measurement from ultrasonic wave using continuous wavelet analysis.,” 2017 International Conference on Machine Learning and Cybernetics, ICMLC 2017, Ningbo, China, July 9-12, 2017.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kento Morita 0001 Atsuki Tashita Manabu Nii Syoji Kobashi, “Computer-aided diagnosis system for Rheumatoid Arthritis using machine learning.,” Proceedings of 2017 International Conference on Machine Learning and Cybernetics, ICMLC 2017, vol. 2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Atsushi Yukawa Atsushi Kono Tatsuya Nishii Naotake Kamiura Syoji Kobashi Yutaka Hata, “Pulmonary artery domain region extraction from MDCT image,” INTERNATIONAL JOURNAL OF APPLIED ELECTROMAGNETICS AND MECHANICS, vol. 52, no. 1-2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kobashi, S. Ahad, M.A.R. Kim, N. Tong, Y. Yagi, N., “Special issue on soft computing in medical informatics,” International Journal of Innovative Computing, Information and Control, vol. 12, no. 4.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yukiko Yamamoto Daichi Itoh Setsuo Tsuruta Takayuki Muranushi Yuko Hada-Muranushi Syoji Kobashi Yoshiyuki Mizuno Rainer Knauf, “Solar Flare Prediction by SVM Integrated CBGA with Dynamic Mutation Rate,” 2016 WORLD AUTOMATION CONGRESS (WAC), vol. 2016-October.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Saadia Binte Alam Syoji Kobashi, “Simple Brain Atrophy Quantification Method Using MR Images,” 2016 5TH INTERNATIONAL CONFERENCE ON INFORMATICS, ELECTRONICS AND VISION (ICIEV).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yukiko Yamamoto Daichi Itoh Setsuo Tsuruta Takayuki Muranushi Yuko Hada-Muranushi Syoji Kobashi Yoshiyuki Mizuno Rainer Knauf, “SVM integrated Case Based Restarting GA for further Improving Solar Flare Prediction,” 2016 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Atsuki Tashita Syoji Kobashi Manabu Nii Yuki Mori Yoshichika Yoshioka Yutaka Hata, “Macrophage learning-tracking algorithm in time-lapse MR images.,” Proceedings - International Conference on Machine Learning and Cybernetics, vol. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Marin Yasugi Belayat Hossain Hironobu Shibutani Tamotsu Nomura Manabu Nii Masakazu Morimoto Syoji Kobashi, “Cerebral aneurysm occurrence prediction by morphometric analysis of the Willis ring,” 2016 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yukiko Yamamoto Setsuo Tsuruta Syoji Kobashi Yoshitaka Sakurai Rainer Knauf, “An Efficient Classification Method for Knee MR Image Segmentation,” 2016 12TH INTERNATIONAL CONFERENCE ON SIGNAL-IMAGE TECHNOLOGY &amp; INTERNET-BASED SYSTEMS (SITIS).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Md Belayat Hossain Manabu Nii Syoji Kobashi, “Construction of Statistical Shape Model of Femoral Bone Using MR Images,” 2016 5TH INTERNATIONAL CONFERENCE ON INFORMATICS, ELECTRONICS AND VISION (ICIEV).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Alam, S.B. Nakano, R. Kobashi, S., “Brain age estimation using multiple regression analysis in brain mr images,” International Journal of Innovative Computing, Information and Control, vol. 12, no. 4.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kobashi S Alam S.B Nii M, “Machine learning approaches for brain morphology analysis in MR images,” ISCIIA 2016 - 7th International Symposium on Computational Intelligence and Industrial Applications.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yukiko Yamamoto Daichi Itoh Setsuo Tsuruta Takayuki Muranushi Yuko Hada-Muranushi Syoji Kobashi Yoshiyuki Mizuno Rainer Knauf, “SVM integrated Case Based Restarting GA for further Improving Solar Flare Prediction,” 2016 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Naotake Kamiura Shoji Kobashi Manabu Nii Takayuki Yumoto Ken-ichi Sorachi, “Application of Self-Organizing Maps to Data Classification and Data Prediction for Female Subjects with Unhealthy-Level Visceral Fat,” 2016 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Marin Yasugi Belayat Hossain Hironobu Shibutani Tamotsu Nomura Manabu Nii Masakazu Morimoto Syoji Kobashi, “Cerebral aneurysm occurrence prediction by morphometric analysis of the Willis ring,” 2016 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Manabu Nii Hideaki Kozakai Masakazu Morimoto Shoji Kobashi Naotake Kamiura Yutaka Hata Seturo Imawaki Tomomoto Ishikawa Hidehiko Matsubayashi, “Identification of Ovarian Follicle with Ovum from Ultrasonic Images,” 2016 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yukiko Yamamoto Setsuo Tsuruta Syoji Kobashi Yoshitaka Sakurai Rainer Knauf, “An Efficient Classification Method for Knee MR Image Segmentation,” 2016 12TH INTERNATIONAL CONFERENCE ON SIGNAL-IMAGE TECHNOLOGY &amp; INTERNET-BASED SYSTEMS (SITIS).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kento Morita Manabu Nii Fumiaki Imamura Takatoshi Morooka Shinichi Yoshiya Syoji Kobashi, “Implanted Knee Kinematics Analysis by 2-D/3-D Registration Using Particle Filter,” 2016 JOINT 8TH INTERNATIONAL CONFERENCE ON SOFT COMPUTING AND INTELLIGENT SYSTEMS (SCIS) AND 17TH INTERNATIONAL SYMPOSIUM ON ADVANCED INTELLIGENT SYSTEMS (ISIS).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Atsuki Tashita Syoji Kobashi Manabu Nii Yuki Mori Yoshichika Yoshioka Yutaka Hata, “Macrophage learning-tracking algorithm in time-lapse MR images.,” International Conference on Machine Learning and Cybernetics, ICMLC 2016, Jeju Island, South Korea, July 10-13, 2016.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Hossain, B.M. Nii, M. Morooka, T. Okuno, M. Yoshiya, S. Kobashi, S., “Post-operative implanted knee kinematics prediction in total knee arthroscopy using clinical big data,” Lecture Notes in Computer Science (including subseries Lecture Notes in Artificial Intelligence and Lecture Notes in Bioinformatics), vol. 9835.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kento Morita Syoji Kobashi Kaori Kashiwa Hiroshi Nakayama Shunichiro Kambara Masakazu Morimoto Shinichi Yoshiya Satoru Aikawa, “Blumensaat&#39;s Line Detection for Quadrant Method on MR Images,” 2016 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ-IEEE).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yukiko Yamamoto Setsuo Tsuruta Yuko Hada-Muranushi Yoshiyuki Mizuno Takayuki Muranushi Syoji Kobashi Rainer Knauf, “Solar Flare Prediction by SVM integrated GA,” 2016 IEEE CONGRESS ON EVOLUTIONARY COMPUTATION (CEC).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kobashi, S. Nyúl, L.G. Udupa, J.K., “Soft Computing in Medical Image Processing,” Computational and Mathematical Methods in Medicine, vol. 2016.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Masakazu Morimoto Syohei Hagihara Shoji Kobashi Satoru Aikawa, “A Meal Menu Recognition System using RGB-D Sensor,” 2016 5TH INTERNATIONAL CONFERENCE ON INFORMATICS, ELECTRONICS AND VISION (ICIEV).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Shoichi Furukawa Shoji Kobashi Naotake Kamiura Yutaka Hata Seturo Imawaki Tomomoto Ishikawa, “Continuous-wavelet-transform-based visualization for seminiferous tubule using broadband ultrasonic imaging,” INTERNATIONAL JOURNAL OF APPLIED ELECTROMAGNETICS AND MECHANICS, vol. 52, no. 1-2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kento Morita Syoji Kobashi Yuki Wakata Kumiko Ando Reiichi Ishikura Naotake Kamiura, “ICP based neonatal brain MRI normalization method,” IEEE International Conference on Fuzzy Systems, vol. 2015-.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kento Morita Syoji Kobashi Kaori Kashiwa Hiroshi Nakayama Shunichiro Kambara Masakazu Morimoto Shinichi Yoshiya Satoru Aikawa, “Computer-aided Surgical Planning of Anterior Cruciate Ligament Reconstruction in MR Images,” KNOWLEDGE-BASED AND INTELLIGENT INFORMATION &amp; ENGINEERING SYSTEMS 19TH ANNUAL CONFERENCE, KES-2015, vol. 60.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Saadia Binte Alam Ryosuke Nakano Syoji Kobashi Naotake Kamiura, “Feature selection of manifold learning using principal component analysis in brain MR image,” 2015 4TH INTERNATIONAL CONFERENCE ON INFORMATICS, ELECTRONICS &amp; VISION ICIEV 15.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yukiko Yamamoto Setsuo Tsuruta Takayuki Muranushi Yuko Hada Muranushi Syoji Kobashi Yoshiyuki Mizuno Rainer Knauf, “Improvement of Sun Flare Prediction by SVM integrated GA,” 2015 11TH INTERNATIONAL CONFERENCE ON SIGNAL-IMAGE TECHNOLOGY &amp; INTERNET-BASED SYSTEMS (SITIS).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Atsuki Tashita Syoji Kobashi Yuki Mori Masakazu Morimoto Satoru Aikawa Yoshichika Yoshioka Yutaka Hata, “Macrophage tracking using the Hungarian algorithm in time lapse MR images,” 2015 7TH INTERNATIONAL CONFERENCE ON EMERGING TRENDS IN ENGINEERING &amp; TECHNOLOGY (ICETET), vol. 2016-March.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Manabu Nii Masakazu Momimoto Syoji Kobashi Naotake Kamiura Yutaka Hata Ken-ichi Sorachi, “Medical Checkup and Image Data Analysis for Preventing Life Style Diseases,” 2015 7TH INTERNATIONAL CONFERENCE ON EMERGING TRENDS IN ENGINEERING &amp; TECHNOLOGY (ICETET), vol. 2016-March.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Ryosuke Nakano Syoji Kobashi Saadia Binte Alam Masakazu Morimoto Yuki Wakata Kumiko Ando Reiichi Ishikura Shozo Hirota Satoru Aikawa, “Neonatal Brain Age Estimation Using Manifold Learning Regression Analysis,” 2015 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC 2015): BIG DATA ANALYTICS FOR HUMAN-CENTRIC SYSTEMS.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Matsuo, Y. Watanabe, M. Taniike, M. Mohri, I. Kobashi, S. Tachibana, M. Kobayashi, Y. Kitamura, Y.K., “Gap effect abnormalities during a visually guided Pro-Saccade task in children with attention deficit hyperactivity disorder,” PLoS ONE, vol. 10, no. 5.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Tsutsui Ryota Kamiura Naotake Isokawa Teijiro Kobashi Syoji Tabuchi Hitoshi Yamauchi Tomofusa, “On Personal Identication for Ophthalmological Patients Based on Clinical Data Measured by Optical Coherence Tomography,” Transactions of the Institute of Systems, Control and Information Engineers, vol. 28, no. 4.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Hiroaki Komori Shoji Kobashi Naotake Kamiura Yutaka Hata Ken-ichi Sorachi, “On Relationship Analysis of Health Examination Items Using Self-Organizing Maps,” 2015 4TH INTERNATIONAL CONFERENCE ON INFORMATICS, ELECTRONICS &amp; VISION ICIEV 15.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kento Morita Syoji Kobashi Yuki Wakata Kumiko Ando Reiichi Ishikura Naotake Kamiura, “ICP based Neonatal Brain MRI Normalization Method,” 2015 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ-IEEE 2015).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Saadia Binte Alam Ryosuke Nakano Naotake Kamiura Syoji Kobashi, “Morphological changes of aging brain structure in MRI analysis,” 2014 JOINT 7TH INTERNATIONAL CONFERENCE ON SOFT COMPUTING AND INTELLIGENT SYSTEMS (SCIS) AND 15TH INTERNATIONAL SYMPOSIUM ON ADVANCED INTELLIGENT SYSTEMS (ISIS).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Mori, Y. Chen, T. Fujisawa, T. Kobashi, S. Ohno, K. Yoshida, S. Tago, Y. Komai, Y. Hata, Y. Yoshioka, Y., “From cartoon to real time MRI: In vivo monitoring of phagocyte migration in mouse brain,” Scientific Reports, vol. 4.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Naotake Kamiura Tomoka Hara Shoji Kobashi Kei Kuramoto Takashi Fujii, “On Reduction of Sojourn Time for Patients at Department of Cardiology,” 2014 7TH INTERNATIONAL CONFERENCE ON BIOMEDICAL ENGINEERING AND INFORMATICS (BMEI 2014).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Kenjiro Iwasa Takaaki Fujishiro Shiya Hayashi Shingo Hashimoto Ryosuke Kuroda Masahiro Kurosaka Naotake Kamiura, “MDCT Image Based Assessment of Acetabular Cup Orientation in Total Hip Arthroplasty,” 2014 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS (SMC), vol. 2014-January.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Hata, H. Imawaki, S. Kuramoto, K. Kobashi, S. Hata, Y., “Ultrasonic muscular thickness measurement in temperature variation,” Advances in Intelligent Systems and Computing, vol. 268.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yuki Mori Yasunobu Arima Ting Chen Dasong Zhu Yutaka Komai Masaaki Murakami Yoshichika Yoshioka Tetsuya Fujisawa Syoji Kobashi Yutaka Hata, “In vivo MRI monitoring of inflammatory alterations and cellular dynamics in the central nervous system,” 2014 WORLD AUTOMATION CONGRESS (WAC): EMERGING TECHNOLOGIES FOR A NEW PARADIGM IN SYSTEM OF SYSTEMS ENGINEERING.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Fujisawa, T. Egawa, T. Taniguchi, K. Kobashi, S. Hata, Y., “An energy visualization by camera monitoring,” Advances in Intelligent Systems and Computing, vol. 268.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Takeda, T. Sakai, Y. Kobashi, S. Kuramoto, K. Hata, Y., “Foot age estimation system from walking dynamics based on fuzzy logic,” Journal of Advanced Computational Intelligence and Intelligent Informatics, vol. 18, no. 4.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kikuchi, S. Kaku, Y. Kuramoto, K. Kobashi, S. Hata, Y., “Regional analysis and predictive modeling for asthmatic attacks in Himeji City,” Advances in Intelligent Systems and Computing, vol. 268.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Yuki Mori Yoshichika Yoshioka Yutaka Hata, “Image Alignment for Single-cell Imaging of Macrophage in the Mouse Brain Using 11.7T MRI,” 2014 WORLD AUTOMATION CONGRESS (WAC): EMERGING TECHNOLOGIES FOR A NEW PARADIGM IN SYSTEM OF SYSTEMS ENGINEERING.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Ryosuke Nakano Kei Kuramoto Yuki Wakata Kumiko Ando Reiichi Ishikura Tomomoto Ishikawa Shozo Hirota Yutaka Hata Naotake Kamiura, “Neonatal Brain Segmentation Using 4-D Fuzzy Object Model,” 2014 INTERNATIONAL CONFERENCE ON INFORMATICS, ELECTRONICS &amp; VISION (ICIEV).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Hayashi, S. Nishiyama, T. Fujishiro, T. Kanzaki, N. Shibanuma, N. Kobashi, S. Kurosaka, M., “Automated pelvic anatomical coordinate system is reproducible for determination of anterior pelvic plane,” Computer Methods in Biomechanics and Biomedical Engineering, vol. 16, no. 9.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Naomi Yagi Tomomoto Ishikawa Kei Kuramoto Syoji Kobashi Yutaka Hata, “Noninvasive cellular quantity measurement in Bone Marrow Stromal Cells/ Beta-tricalcium phosphate.,” Annual International Conference of the IEEE Engineering in Medicine and Biology Society. IEEE Engineering in Medicine and Biology Society. Annual International Conference, vol. 2013.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Jayaram K Udupa, “Fuzzy connectedness image segmentation for newborn brain extraction in MR images.,” Annual International Conference of the IEEE Engineering in Medicine and Biology Society. IEEE Engineering in Medicine and Biology Society. Annual International Conference, vol. 2013.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Naomi Yagi Kei Kuramoto Syoji Kobashi Yutaka Hata Tomomoto Ishikawa, “Ultrasonic Frequency Response Analysis for Quantitative Measurements in Bone Marrow Stromal Cells,” 2013 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC 2013).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Kei Kuramoto Yutaka Hata, “Interactive fuzzy connectedness image segmentation for neonatal brain MR image segmentation,” 2013 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC 2013).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Akihiko Toda Nao Shibanuma Yutaka Hata, “Quantitative Evaluation of Patient Specific Instrument for Total Knee Arthoroplasty,” 2013 INTERNATIONAL CONFERENCE ON SIGNAL-IMAGE TECHNOLOGY &amp; INTERNET-BASED SYSTEMS (SITIS).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Akihiko Toda Nao Shibanuma Yutaka Hata, “Image-based evaluation of patient specific instrument attachment in TKA,” Procedia Computer Science, vol. 22.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Masato Kuki Hiroshi Nakajima Naoki Tsuchiya Kei Kuramoto Syoji Kobashi Yutaka Hata, “Mining multi human locations using thermopile array sensors,” Proceedings of The International Symposium on Multiple-Valued Logic.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Takahiro Takeda Kei Kuramoto Syoji Kobashi Yutaka Hata, “A fuzzy human detection for security system using infrared laser camera,” Proceedings of The International Symposium on Multiple-Valued Logic.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Koki Tsukuda Tadahito Egawa Kazuhiko Taniguchi Kei Kuramoto Syoji Kobashi Yutaka Hata, “Fuzzy Damage Extraction Method for Ultrasonic Nondestructive Testing Images,” 2013 IEEE 43RD INTERNATIONAL SYMPOSIUM ON MULTIPLE-VALUED LOGIC (ISMVL 2013).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Tatsuhiro Fujimoto Hiroshi Nakajima Naoki Tsuchiya Hideya Marukawa Kei Kuramoto Syoji Kobashi Yutaka Hata, “Wearable Human Activity Recognition by Electrocardiograph and Accelerometer,” 2013 IEEE 43RD INTERNATIONAL SYMPOSIUM ON MULTIPLE-VALUED LOGIC (ISMVL 2013).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Jayaram K. Udupa, “Fuzzy object models for newborn brain MR image segmentation,” MEDICAL IMAGING 2013: BIOMEDICAL APPLICATIONS IN MOLECULAR, STRUCTURAL, AND FUNCTIONAL IMAGING, vol. 8672.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Hossain Mahbub Elahi Didar Islam Imtiaz Ahmed Syoji Kobashi Md Atiqur Rahman Ahad, “Webcam-based Accurate Eye-central Localization,” 2013 SECOND INTERNATIONAL CONFERENCE ON ROBOT, VISION AND SIGNAL PROCESSING (RVSP).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Jeng Shyang Pan Junzo Watada Mong Fong Horng Syoji Kobashi, “Preface: RVSP 2013,” Proceedings - 2013 2nd International Conference on Robot, Vision and Signal Processing, RVSP 2013, no. 4628.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Shohei Tada Syoji Kobashi Kei Kuramoto Fumiaki Imamura Takatoshi Morooka Kei Kuramoto Shinich Yoshiya Yutaka Hata, “On a priori knowledge in particle filter for in-vivo analysis of implanted knee,” 2013 SECOND INTERNATIONAL CONFERENCE ON ROBOT, VISION AND SIGNAL PROCESSING (RVSP).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yagi, N. Nakamura, M. Kuramoto, K. Kobashi, S. Hata, Y., “Noninvasive Diagnosis of Blood Flow for Transcranial Doppler Ultrasonography,” International Journal of Intelligent Computing in Medical Sciences and Image Processing, vol. 5, no. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Takeda, T. Kuramoto, K. Kobashi, S. Hata, Y., “A Fuzzy Moving Object Estimation Using Infrared TOF Camera,” International Journal of Intelligent Computing in Medical Sciences and Image Processing, vol. 5, no. 2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kobashi, S. Kuramoto, K. Wakata, Y. Ando, K. Ishikura, R. Ishikawa, T. Hirota, S. Hata, Y., “Newborn Brain MR Image Segmentation Using Deformable Surface Model Based on Fuzzy Knowledge Models,” International Journal of Intelligent Computing in Medical Sciences and Image Processing, vol. 5, no. 2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Aya Hashioka Yuki Wakata Kumiko Ando Reiichi Ishikura Kei Kuramoto Tomomoto Ishikawa Shozo Hirota Yutaka Hata, “A priori knowledge based deformable surface model for newborn brain MR image segmentation,” Proceedings of the 2013 4th International Workshop on Computational Intelligence in Medical Imaging, CIMI 2013 - 2013 IEEE Symposium Series on Computational Intelligence, SSCI 2013.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Hokuto Mita Kazuya Nakagawa Koji Nishiyama Hitoshi Maeno Kei Kuramoto Yutaka Hata, “Maritime Space Understanding Using Multiple Radar Systems by Iterative Image Reconstuction Algorithm,” PROCEEDINGS OF THE 2013 IEEE WORKSHOP ON ROBOTIC INTELLIGENCE IN INFORMATIONALLY STRUCTURED SPACE (RIISS).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Takeda, T. Kuramoto, K. Kobashi, S. Hata, Y., “On optimal operator for combining left and right sole pressure data in biometrics security,” Advances in Fuzzy Systems.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Gerald Schaefer Syoji Kobashi Kouki Nagamune, “Workshop on medical image and signal analysis WS-MISA: Editorial,” Proceedings - 2013 International Conference on Signal-Image Technology and Internet-Based Systems, SITIS 2013.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Jayaram K. Udupa, “Fuzzy Object Model Based Fuzzy Connectedness Image Segmentation of Newborn Brain MR Images,” PROCEEDINGS 2012 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yusho Kaku Kei Kuramoto Syoji Kobashi Yutaka Hata, “Predict Time Series Data for The Number of Asthmatic Attacks in Himeji by Fuzzy-AR Model,” PROCEEDINGS OF THE 2012 FIFTH INTERNATIONAL CONFERENCE ON EMERGING TRENDS IN ENGINEERING AND TECHNOLOGY (ICETET 2012).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Takahiro Takeda Kei Kuramoto Syoji Kobashi Yutaka Hata, “Biometrics Personal Identification by Wearable Pressure Sensor,” PROCEEDINGS OF THE 2012 FIFTH INTERNATIONAL CONFERENCE ON EMERGING TRENDS IN ENGINEERING AND TECHNOLOGY (ICETET 2012).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yuya Takashima Tomomoto Ishikawa Syoji Kobashi Kei Kuramoto Yutaka Hata, “Ultrasonic Evaluation of Seminiferous Tubules by Frequency Map,” PROCEEDINGS OF THE 2012 FIFTH INTERNATIONAL CONFERENCE ON EMERGING TRENDS IN ENGINEERING AND TECHNOLOGY (ICETET 2012).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Hideaki Tanii Kei Kuramoto Hiroshi Nakajima Syoji Kobashi Naoki Tsuchiya Yutaka Hata, “A Fuzzy-AR Model to Predict Human Body Weights,” 2012 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ-IEEE).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yuya Takashima Tomomoto Ishikawa Kei Kuramoto Syoji Kobashi Yutaka Hata, “Ultrasonic Thickness Evaluation of Seminiferous Tubule by Fuzzy Inference,” 2012 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ-IEEE).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yusho Kaku Kei Kuramoto Syoji Kobashi Yutaka Hata, “Asthmatic Attacks Prediction Considering Weather Factors Based on Fuzzy-AR Model,” 2012 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ-IEEE).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Hashioka, A. Kobashi, S. Kuramoto, K. Wakata, Y. Ando, K. Ishikura, R. Ishikawa, T. Hirota, S. Hata, Y., “A neonatal brain MR image template of 1 week newborn,” International Journal of Computer Assisted Radiology and Surgery, vol. 7, no. 2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Hideaki Tanii Kei Kuramoto Hiroshi Nakajima Syoji Kobashi Naoki Tsuchiya Yutaka Hata, “A Fuzzy Time-Series Prediction Model with Multi-Biological Data for Health Management,” 6TH INTERNATIONAL CONFERENCE ON SOFT COMPUTING AND INTELLIGENT SYSTEMS, AND THE 13TH INTERNATIONAL SYMPOSIUM ON ADVANCED INTELLIGENT SYSTEMS.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Aya Hashioka Kei Kuramoto Syoji Kobashi Yuki Wakata Kumiko Ando Reiichi Ishikura Tomomoto Ishikawa Shozo Hirota Yutaka Hata, “Fuzzy Object Shape Model for Newborn Brain MR Image Segmentation,” 6TH INTERNATIONAL CONFERENCE ON SOFT COMPUTING AND INTELLIGENT SYSTEMS, AND THE 13TH INTERNATIONAL SYMPOSIUM ON ADVANCED INTELLIGENT SYSTEMS.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Aya Hashioka Syoji Kobashi Kei Kuramoto Yuki Wakata Kumiko Ando Reiichi Ishikura Tomomoto Ishikawa Shozo Hirota Yutaka Hata, “Shape and Appearance Knowledge Based Brain Segmentation for Neonatal MR Images,” 2012 WORLD AUTOMATION CONGRESS (WAC).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Hokuto Mita Syoji Kobashi Kazuya Nakagawa Kohji Nishiyama Hitoshi Maeno Kei Kuramoto Yutaka Hata, “A Fusion Method for Marine Radar Images Using EM Algorithm,” 2012 WORLD AUTOMATION CONGRESS (WAC).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yutaka Hata Kei Kuramoto Syoji Kobashi Hiroshi Nakajima, “A Survey of Fuzzy Logic in Medical and Health Technology,” 2012 WORLD AUTOMATION CONGRESS (WAC).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Aya Hashioka Kei Kuramoto Syoji Kobashi Yuki Wakata Kumiko Ando Reiichi Ishikura Tomomoto Ishikawa Shozo Hirota Yutaka Hata, “Fuzzy Object Shape Model for Newborn Brain MR Image Segmentation,” 6TH INTERNATIONAL CONFERENCE ON SOFT COMPUTING AND INTELLIGENT SYSTEMS, AND THE 13TH INTERNATIONAL SYMPOSIUM ON ADVANCED INTELLIGENT SYSTEMS, vol. 8672.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yohei Tsumori Shinichi Yoshiya Masahiro Kurosaka Shoji Kobashi Nao Shibanuma Motoi Yamaguchi, “Analysis of Weight-Bearing Kinematics of Posterior-Stabilized Total Knee Arthroplasty With Novel Helical Post-Cam Design,” JOURNAL OF ARTHROPLASTY, vol. 26, no. 8.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Takahiro Takeda Kei Kuramoto Syoji Kobashi Yutaka Hata, “A Challenge to Biometrics by Sole Pressure while Walking,” IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ 2011).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Hideaki Tanii Kei Kuramoto Hiroshi Nakajima Syoji Kobashi Naoki Tsuchiya Yutaka Hata, “A Fuzzy Logic Approach to Predict Human Body Weight Based on AR Model,” IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ 2011).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yuya Takashima Kei Kuramoto Syoji Kobashi Yutaka Hata Tomomoto Ishikawa, “A Testicular Tubule Evaluation Method by Ultrasonic Array Probe,” IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ 2011).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kobashi, S. Yokomichi, D. Wakata, Y. Ando, K. Ishikura, R. Kuramoto, K. Hirota, S. Hata, Y., “Cerebral contour extraction with particle method in neonatal MR images,” Journal of Advanced Computational Intelligence and Intelligent Informatics, vol. 15, no. 3.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Seigo Kanazawa Kazuhiko Taniguchi Kazunari Asari Kei Kuramoto Syoji Kobashi Yutaka Hata, “A Fuzzy Automated Object Classification by Infrared Laser Camera,” INDEPENDENT COMPONENT ANALYSES, WAVELETS, NEURAL NETWORKS, BIOSYSTEMS, AND NANOENGINEERING IX, vol. 8058.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Daisuke Yokomichi Syoji Kobashi Yuki Wakata Kumiko Ando Reiichi Ishikura Kei Kuramoto Tomomoto Ishikawa Shozo Hirota Yutaka Hata, “Particle method for sub-voxel extraction of cerebral surface in neonatal MR images,” Proceedings of the 2011 International Conference on Image Processing, Computer Vision, and Pattern Recognition, IPCV 2011, vol. 2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Nobuyoshi Kawakami Yuri T. Kitamura Kuriko K. Shimono Kei Kuramoto Masako Taniike Tomomoto Ishikawa Yutaka Hata, “Fractal dimension-based cortical dysplasia detection using MR images for children with epilepsy,” Proceedings of the 2011 International Conference on Image Processing, Computer Vision, and Pattern Recognition, IPCV 2011, vol. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Noboru Takagi, “Special issue on computer automation,” International Journal of Intelligent Computing in Medical Sciences and Image Processing, vol. 4, no. 2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Takahiro Takeda Yoshitada Sakai Kei Kuramoto Syoji Kobashi Tomomoto Ishikawa Yutaka Hata, “Foot Age Estimation for Fall-Prevention using Sole Pressure by Fuzzy logic,” 2011 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Norikazu Ikoma Fumiaki Imamura Nao Shibanuma Kei Kuramoto Tomomoto Ishikawa Yutaka Hata, “Particle Filter for Implanted Knee Kinematic Analysis Using Dynamic Radiograph Video,” 2011 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Masato Nakamura Tomomoto Ishikawa Syoji Kobashi Kei Kuramoto Yutaka Hata, “Blood Flow Detection under Skull by Doppler Effect,” 2011 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">中島 祐介 小橋 昌司 今村 史明, “Automated 3-D kinematis analysis of TKA knee with 2-D digital radiograph video using Monte Carlo method,” Japanese journal of clinical biomechanics, vol. 32.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Takeda, J.T. Kuramoto, K. Kobashi, S. Hata, Y., “Fuzzy-logic is precise-Its application to biometric system,” Scientia Iranica, vol. 18, no. 3 D.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Hata, Y. Kobashi, S. Kuramoto, K. Nakajima, H., “A fuzzy biosignal detection algorithm and its application to health monitoring,” Applied and Computational Mathematics, vol. 10, no. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yutaka Hata Syoji Kobashi Kei Kuramoto Hiroshi Nakajima, “Home care system for aging people confined to bed by detached sensor network,” IEEE SSCI 2011: Symposium Series on Computational Intelligence - RIISS 2011: 2011 IEEE Workshop on Robotic Intelligence in Informationally Structured Space.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Hokuto Mita Syoji Kobashi Kazuya Nakagawa Kohji Nishiyama Hitoshi Maeno Kei Kuramoto Yutaka Hata, “Marine radar system of systems for radar image quality improvement using em algorithm,” Proceedings of 2011 6th International Conference on System of Systems Engineering: SoSE in Cloud Computing, Smart Grid, and Cyber Security, SoSE 2011.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Aya Hashioka Kosuke Yamaguchi Syoji Kobashi Yuki Wakata Kumiko Ando Reiichi Ishikura Kei Kuramoto Tomomoto Ishikawa Shozo Hirota Yutaka Hata, “Neonatal brain MR image segmentation based on system-of-systems in engineering technology,” Proceedings of 2011 6th International Conference on System of Systems Engineering: SoSE in Cloud Computing, Smart Grid, and Cyber Security, SoSE 2011.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Takahiro Takeda Kei Kuramoto Syoji Kobashi Yutaka Hata, “Biometrics Security by Dynamics of Left and Right Sole Pressure while Walking,” INDEPENDENT COMPONENT ANALYSES, WAVELETS, NEURAL NETWORKS, BIOSYSTEMS, AND NANOENGINEERING IX, vol. 8058.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yutaka Hata Kiyotaka Ho Kei Kuramoto Syoji Kobashi Naoki Tsuchiya Hiroshi Nakajima, “YURAGI-Analysis for Detecting Heart Rate by Mat-Type Sensor in Bed,” INDEPENDENT COMPONENT ANALYSES, WAVELETS, NEURAL NETWORKS, BIOSYSTEMS, AND NANOENGINEERING IX, vol. 8058.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">小橋 昌司 畑 豊, “World Automation Congress (WAC) 2010開催報告,” 知能と情報 : 日本知能情報ファジィ学会誌 : journal of Japan Society for Fuzzy Theory and Intelligent Informatics, vol. 22, no. 6.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Sachiko Tsuji-Akimoto Shinsuke Hamada Ichiro Yabe Itaru Tamura Mika Otsuki Syoji Kobashi Hidenao Sasaki, “Writing errors as a result of frontal dysfunction in Japanese patients with amyotrophic lateral sclerosis.,” Journal of neurology, vol. 257, no. 12.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">山口弘祐 小橋昌司 倉本 圭 喜多村祐里 毛利育子 今脇節朗 谷池雅子 畑 豊, “&quot;脳形状相同モデル化による脳形状定量化の評価,&quot; メディカルイメージング連合フォーラム,” 信学技報.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Yutaka Hata, “Lung lobar segmentation using tubular tissue density from multidetector-row CT images,” International Journal of Innovative Computing, Information and Control, vol. 6, no. 3.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Nao Shibanuma Yutaka Hata, “Fuzzy visual hull algorithm for three-dimensional shape reconstruction of TKA implants from X-ray cone-beam images,” Journal of Advanced Computational Intelligence and Intelligent Informatics, vol. 14, no. 2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Hayato Yamaguchi Hiroshi Nakajima Kazuhiko Taniguchi Syoji Kobashi Yutaka Hata, “An ultrasonic and air pressure sensing system for detection of behavior before getting out of bed aided by fuzzy theory,” IEICE Transactions on Information and Systems, vol. E93-D, no. 3.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">KOBASHI Syoji NAKAJIMA Yusuke YOSHIYA Shinichi, “Automated 3-D Kinematics Analysis of Implanted Knee with 2-D Digital Radiography Video,” Medical Imaging Technology, vol. 28, no. 5.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Daisuke Yokomichi Kosuke Yamaguchi Kei Kuramoto Setsuro Imawaki Yutaka Hata, “Computer-aided diagnosis system of systems for neonatal human brain MR images,” 2010 5th International Conference on System of Systems Engineering, SoSE 2010.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kiyotaka Ho Kenta Yamamoto Naoki Tsuchiya Hiroshi Nakajima Kei Kuramoto Syoji Kobashi Yutaka Hata, “Multi Sensor Approach to Detection of Heartbeat and Respiratory Rate Aided by Fuzzy Logic,” 2010 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ-IEEE 2010).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yusuke Nakajima Syoji Kobashi Yohei Tsumori Nao Shibanuma Fumiaki Imamura Kei Kuramoto Seturo Imawaki Shinichi Yoshiya Yutaka Hata, “A priori Knowledge Based Particle Filter for Estimating 3-D Pose position of Implanted Knee,” 2010 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ-IEEE 2010).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Takahiro Takeda Kazuhiko Taniguchi Kazunari Asari Kei Kuramoto Syoji Kobashi Yutaka Hata, “Biometric Personal Authentication by One Step Foot Pressure Distribution Change by Fuzzy Artificial Immune System,” 2010 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ-IEEE 2010).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kosuke Yamaguchi Yuko Fujimoto Syoji Kobashi Yuki Wakata Reiichi Ishikura Kei Kuramoto Seturo Imawaki Shozo Hirota Yutaka Hata, “Automated Fuzzy Logic Based Skull Stripping in Neonatal and Infantile MR Images,” 2010 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ-IEEE 2010).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yusuke Nakajima Syoji Kobashi Yohei Tsumori Nao Shibanuma Fumiaki Imamura Kei Kuramoto Seturo Imawaki Shinichi Yoshiya Yutaka Hata, “Particle filter based knee kinematics analysis with 2-D/3-D image registration,” 2010 World Automation Congress, WAC 2010.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Takahiro Takeda Kazuhiko Taniguchi Kazunari Asari Kei Kuramoto Syoji Kobashi Yutaka Hata, “Biometric personal identification by dinamics of sole pressure at walking,” 2010 World Automation Congress, WAC 2010.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Takahiro Hozumi Shigeyuki Kan Takahiko Koike Kei Kuramoto Setsuro Imawaki Satoru Miyauchi Yutaka Hata, “Absolute eye gaze tracking system with MR images,” SCIS and ISIS 2010 - Joint 5th International Conference on Soft Computing and Intelligent Systems and 11th International Symposium on Advanced Intelligent Systems.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Akitomo Tomaru Yohei Tsumori Shinichi Yoshiya Kei Kuramoto Seturo Imawaki Yutaka Hata, “Wavelet transform based quantification of pivot-shift testing using inertial and magnetic composite MEMS sensor,” Proceedings - 3rd International Conference on Emerging Trends in Engineering and Technology, ICETET 2010.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Akitomo Tomaru Syoji Kobashi Yohei Tsumori Shinichi Yoshiya Kei Kuramoto Seturo Imawaki Yutaka Hata, “Unconstraint knee joint dynamics estimation system using inertial and magnetic composite MEMS sensor,” Proceedings - 3rd International Conference on Emerging Trends in Engineering and Technology, ICETET 2010.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Nobuyoshi Kawakami Syoji Kobashi Kei Kuramoto Yuri T. Kitamura Kuriko Kagitani-Shimono Seturo Imawaki Masako Taniike Yutaka Hata, “A study on image features using intensity profile for cortical dysplasia degree estimation,” 2010 World Automation Congress, WAC 2010.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kosuke Yamaguchi Syoji Kobashi Kei Kuramoto Yuri T. Kitamura Seturo Imawaki Yutaka Hata, “Statistical quantification of brain shape deformation with homologous brain shape modeling,” 2010 World Automation Congress, WAC 2010.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Satoshi Fujimoto Syoji Kobashi Taka Yuki Nishiyama Noriyuki Kanzaki Takaaki Fujishiro Nao Shibanuma Kei Kuramoto Masahiro Kurosaka Yutaka Hata, “Determination of lower limb coordinate systems and application to clinical study using MDCT images,” 2010 World Automation Congress, WAC 2010.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Akitomo Tomaru Syoji Kobashi Yohei Tsumori Shinichi Yoshiya Kei Kuramoto Seturo Imawaki Yutaka Hata, “A 3-DOF Knee Joint Angle Measurement System with Inertial and Magnetic Sensors,” IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS (SMC 2010).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Daisuke Yokomichi Syoji Kobashi Yuki Wakata Kumiko Ando Reiichi Ishikura Kei Kuramoto Seturo Imawaki Shozo Hirota Yutaka Hata, “Cerebral Surface Extraction Based on Particle Method in Neonatal MR Images,” IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS (SMC 2010).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Takahiro Takeda Hong Ye Kazuhiko Taniguchi Kazunari Asari Yoshitada Sakai Kei Kuramoto Syoji Kobashi Yutaka Hatal, “Foot Age Estimation by Gait Sole Pressure Changes,” IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS (SMC 2010).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Masato Nakamura Yuri T. Kitamura Toshio Yanagida Syoji Kobashi Kei Kuramoto Yutaka Hata, “Free Placement Trans-Skull Doppler System with 1.0MHz Array Ultrasonic Probe,” IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS (SMC 2010).</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kiyotaka Ho Kazuhiko Taniguchi Kazunari Asari Kie Kuramoto Syoji Kobashi Yutaka Hata, “Automated detection of people distribution by a 3D camera,” 2010 World Automation Congress, WAC 2010.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Aya Hashioka Syoji Kobashi Kei Kuramoto Yuki Wakata Kumiko Ando Reiichi Ishikura Seturo Imawaki Shozo Hirota Yutaka Hata, “On a voxel based morphometry analysis in neonatal brain MR images,” SCIS and ISIS 2010 - Joint 5th International Conference on Soft Computing and Intelligent Systems and 11th International Symposium on Advanced Intelligent Systems.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Y. Tsumori S. Yoshiya M. Yagi N. Shibanuma A. Tomaru S. Kobashi K. Kondo Y. Hata, “Pivot shift evaluation in the knee joint using inertial and magnetic sensors,” 2010 World Automation Congress, WAC 2010.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Daisuke Yokomichi Kei Kuramoto Seturo Imawaki Yutaka Hata, “Particle method based sub-voxel cerebral contour extraction in neonatal MR images,” 4th International Symposium on Computational Intelligence and Industrial Applications, ISCIIA 2010.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yutaka Hata Syoji Kobashi, “Fuzzy segmentation of endorrhachis in magnetic resonance images and its fuzzy maximum intensity projection,” APPLIED SOFT COMPUTING, vol. 9, no. 3.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yutaka Hata Syoji Kobashi Hiroshi Nakajima, “Human Health Care System of Systems,” IEEE SYSTEMS JOURNAL, vol. 3, no. 2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Genta Hiramatsu Yuichiro Ikeda Syoji Kobashi Yutaka Hata Seturo Imawaki Yuri Kitamura Toshio Yanagida, “Trans-skull Imaging System by Ultrasonic Array Probe,” 2009 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS (SMC 2009), VOLS 1-9.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kenta Yamamoto Syoji Kobashi Yutaka Hata Naoki Tsuchiya Hiroshi Nakajima, “Real Time Autonomic Nervous System Display with Air Cushion Sensor while Seated,” 2009 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS (SMC 2009), VOLS 1-9.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yutaka Hata Syoji Kobashi Hayato Yamaguchi Osamu Ishikawa Naoki Tsuchiya Hiroshi Nakajima, “Human Health Monitoring System of Systems by Non-Contacted Senors,” 2009 IEEE INTERNATIONAL CONFERENCE ON SYSTEM OF SYSTEMS ENGINEERING SOSE 2009.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kosuke Yamaguchi Syoji Kobashi Ikuko Mohri Seturo Imawaki Masako Taniike Yutaka Hata, “Brain Shape Homologous Modeling Using Sulcal-Distribution Index in MR Images,” 2009 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS (SMC 2009), VOLS 1-9.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Yuko Fujimoto Masayo Ogawa Kumiko Ando Reiichi Ishikura Seturo Imawaki Shozo Hirota Yutaka Hata, “Fuzzy Logic Assisted Quantification of Gyral Deformation Index Using Magnetic Resonance Images for the Infantile Brain,” ISMVL: 2009 39TH IEEE INTERNATIONAL SYMPOSIUM ON MULTIPLE-VALUED LOGIC.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Hong Ye Syoji Kobashi Yutaka Hata Kazuhiko Taniguchi Kazunari Asari, “Biometric System by Foot Pressure Change Based on Neural Network,” ISMVL: 2009 39TH IEEE INTERNATIONAL SYMPOSIUM ON MULTIPLE-VALUED LOGIC.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Hayato Uchida Hayato Yamaguchi Shoji Kobashi Yutaka Hata Naoki Tsuchiya Hiroshi Nakajima, “Fuzzy Estimation System of Dementia Severity Using Biological Information During Sleep,” 2009 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS, VOLS 1-3.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Keiro Kawano Yohei Tsumori Shiinchi Yoshiya Yutaka Hata, “Wearable Joint Kinematic Monitoring System Using Inertial and Magnetic Sensors,” 2009 IEEE WORKSHOP ON ROBOTIC INTELLIGENCE IN INFORMATIONALLY STRUCTURED SPACE.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yutaka Hata Syoji Kobashi Kazuhiko Taniguchi Hiroshi Nakajima, “Human Health Monitoring System of Systems with Fuzzy Logic by Sensor Network,” 2009 IEEE WORKSHOP ON ROBOTIC INTELLIGENCE IN INFORMATIONALLY STRUCTURED SPACE.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Yohei Tsumori Seturo Imawaki Shinichi Yoshiya Yutaka Hata, “Wearable Knee Kinematics Monitoring System of MARG Sensor and Pressure Sensor Systems,” 2009 IEEE INTERNATIONAL CONFERENCE ON SYSTEM OF SYSTEMS ENGINEERING SOSE 2009.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yuri Kitamura Koshiro Maruyama Ken-ichi Okada Yasushi Kobayashi Yuji Yahata Syoji Kobashi Ikuko Mohri Masaya Tachibana Masako Taniike Kanehisa Morimoto, “Using eye-movements as a research tool in children with autistic spectrum disorders.,” Neuroscience Research.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Yuji Yahata Shigeyuki Kan Masaya Misaki Takahiko Koike Katsuya Kondo Satoru Miyauchi Yutaka Hata, “Eye Position Estimation During Sleep Using Infrared Video in Functional MRI.,” JACIII, vol. 12, no. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Takeshi Yamakawa Kazuhiko Taniguchi Kazunari Asari Syoji Kobashi Yutaka Hata, “BIOMETRIC PERSONAL IDENTIFICATION BASED ON GAIT PATTERN USING BOTH FEET PRESSURE CHANGE,” 2008 WORLD AUTOMATION CONGRESS PROCEEDINGS, VOLS 1-3.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Takuma Oshiba Syoji Kobashi Kumiko Ando Refichi Ishikura Katsuya Kondo Yutaka Hata, “Cerebral surface extraction from neonatal MR images using cerebral surface model,” 2007 IEEE INTERNATIONAL CONFERENCE ON SYSTEM OF SYSTEMS ENGINEERING, VOLS 1 AND 2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Keiro Kawano Syoji Kobashi Masayoshi Yagi Katsuya Kondo Shinichi Yoshiya Yutaka Hata, “Analyzing 3D knee kinematics using accelerometers, gyroscopes and magnetometers,” 2007 IEEE INTERNATIONAL CONFERENCE ON SYSTEM OF SYSTEMS ENGINEERING, VOLS 1 AND 2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Satoshi Yamaguchi Kouki Nagamune Keisuke Oe Syoji Kobashi Katsuya Kondo Yutaka Hata, “A fuzzy estimation system for cellular quantity of artificial culture bone,” 2007 IEEE/ICME INTERNATIONAL CONFERENCE ON COMPLEX MEDICAL ENGINEERING, VOLS 1-4.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Daisuke Kubo Syoji Kobashi Akira Okayama Nao Shibanuma Masayoshi Yagi Katsuya Kondo Shinichi Yoshiya Yutaka Hata, “Analyze 3-D knee kinematics after anterior cruciate ligament reconstruction using MDCT and digital radiography,” 2007 IEEE/ICME INTERNATIONAL CONFERENCE ON COMPLEX MEDICAL ENGINEERING, VOLS 1-4.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yuji Yahata Syoji Kobashi Shigeyuki Kan Masaya Misaki Katsuya Kondo Satoru Miyauchi Yutaka Hata, “Training artificial neural network using MR images for visual axes estimation during sleep,” 2007 IEEE/ICME INTERNATIONAL CONFERENCE ON COMPLEX MEDICAL ENGINEERING, VOLS 1-4.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Masahiro Kimura Syoji Kobashi Katsuya Kondo Yutaka Hata Yuri T. Kitamura Toshio Yanagida, “Fuzzy ultrasonic Imaging system for visualizing brain surface under skull considering ultrasonic refraction,” 2007 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS, VOLS 1-8.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yuichiro Ikeda Syoji Kobashi Katsuya Kondo Yutaka Hata, “Fuzzy ultrasonic array system for locating screw holes of intramedullary nail,” 2007 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS, VOLS 1-8.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Takeshi Yamakawa Kazuhiko Taniguchi Toshio Momen Syoji Kobashi Katsuya Kondo Yutaka Hata, “Biometric personal identification using sole information,” 2007 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS, VOLS 1-8.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yuji Yahata Syoji Kobashi Shigeyuki Kan Masaya Misaki Katsuya Kondo Satoru Miyauchi Yutaka Hata, “Estimation of visual axis during sleep by analyzing infrared video using artificial neural network,” 2007 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS, VOLS 1-8.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Nao Shibanuma Katsuya Kondo Masahiro Kurosaka Yutaka Hata, “Robust estimation of knee kinematics after total knee arthroplasty with evolutional computing approach,” 2007 IEEE INTERNATIONAL CONFERENCE ON IMAGE PROCESSING, VOLS 1-7.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Katsuya Kondo Yutaka Hata, “Fully automated segmentation of cerebral ventricles from 3-D SPGR MR images using fuzzy representative line,” SOFT COMPUTING, vol. 10, no. 12.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">D. Kubo S. Kobashi A. Okayama N. Shibanuma M. Yagi K. Kondo S. Yoshiya Y. Hata, “Fully automated measurement of 3D knee kinematics after anterior cruciate ligament reconstruction using multidetector-row CT and X- Ray fluoroscopic images,” International Journal of Computer Assisted Radiology and Surgery, vol. 1, no. SUPPL. 7.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Yuji Fujiki Mieko Matsui Noriko Inoue Katsuya Kondo Yutaka Hata Tohru Sawada, “Interactive segmentation of the cerebral lobes with fuzzy inference in 3T MR images.,” IEEE transactions on systems, man, and cybernetics. Part B, Cybernetics : a publication of the IEEE Systems, Man, and Cybernetics Society, vol. 36, no. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Katsuya Kondo Yutaka Hata, “Computer-aided diagnosis of intracranial aneurysms in MRA images with case-based reasoning,” IEICE Transactions on Fundamentals of Electronics, Communications and Computer Sciences, vol. E89-A, no. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">S Kobashi K Kondo Y Hata, “Computer-aided diagnosis of intracranial aneurysms in MRA images with case-based reasoning,” IEICE TRANSACTIONS ON INFORMATION AND SYSTEMS, vol. E89D, no. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">S. Kobashi T. Tomosada N. Shibanuma M. Yamaguchi H. Muratsu K. Kondo S. Yoshiya M. Kurosaka Y. Hata, “Automated quantification of 3D knee kinematics using 2D X-ray fluoroscopy video sequence images,” International Journal of Computer Assisted Radiology and Surgery, vol. 1, no. 7.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yutaka Hata Syoji Kobashi Katsuya Kondo Yuri T Kitamura Toshio Yanagida, “Transcranial ultrasonography system for visualizing skull and brain surface aided by fuzzy expert system.,” IEEE transactions on systems, man, and cybernetics. Part B, Cybernetics : a publication of the IEEE Systems, Man, and Cybernetics Society, vol. 35, no. 6.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Kobashi S Komosada T Shibanuma N Yamaguchi M Muratsu H Kondo K Yshiya S Hata Y Kurosaka M, “Fuzzy image matching for pose recognition of occulted knee implants using fluoroscopy images,” J Advanced Computational Intelligence and Intelligent Informatics, vol. Vol. 9, No. 2, pp. 181-195, no. 2.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">S Imaeda S Kobashi Y Kitamura K Kondo Y Hata T Yanagida, “Detection of brain activation with no stimulus using wavelet analysis,” INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS, VOL 1-4, PROCEEDINGS.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Sayaka Imaeda Yuri T. Kitamura Katsuya Kondo Yutaka Hata Toshio Yanagida, “Regional Specificity of Hemodynamic Response Delay Analyzed by a New Wavelet Based Method: HAW,” NeuroImage.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">S Kobashi K Kondo Y Hata, “Target image enhancement using representative line in MR cholangiography images,” INTERNATIONAL JOURNAL OF IMAGING SYSTEMS AND TECHNOLOGY, vol. 14, no. 3.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Taro Inazumi Yuri T. Kitamura Katsuya Kondo Yutaka Hata Toshio Yanagida, “Quantitative Evaluation of the Wavelet Based Analyzing Method in ER-fMRI Study and Comparison with SPM99,” NeuroImage.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">T Ohkawa S Kobashi K Kondo Y Hata T Nakano, “Tubular tissue-based segmentation of lung lobes from chest MDCT images,” IEEE EMBS APBME 2003.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">S Kobashi Y Hata M Matsui H Kitagaki E Mori T Kanagawa, “Automated volumetry of lateral entricles in 3-D SPGR MR images using physicians&#39; knowledge represented by fuzzy logic,” CARS 2002: COMPUTER ASSISTED RADIOLOGY AND SURGERY, PROCEEDINGS.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Mika Otsuki Yuri T. Kitamura Syoji Kobashi Hiroaki Naritomi Yutaka Hata Toshio Yanagida, “Functional MRI of Word Retrieval: Differences Depending on the retrieval strategy,” NeuroImage.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Yuri T. Kitamura Mika Otsuki Yutaka Hata Hiroaki Naritomi Toshio Yanagida, “Time Series Analysis in Near- Infrared Spetroscopy Aided by Fuzzy C-means and Wavelet Transforms,” NeuroImage.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yuri T. Kitamura Syoji Kobashi Yutaka Hata Mika Otsuki Hiroaki Naritomi Toshio Yanagida, “Dynamic Brain Activation During Improvement in a Sequential Motor Performance: An NIRS/I Study,” NeuroImage.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">K Sugano K Nagamune S Kobashi Y Hata T Sawayama K Taniguchi, “Am automated tissue discrimination based on fuzzy analysis of ultrasonic wave,” KNOWLEDGE-BASED INTELLIGENT INFORMATION ENGINEERING SYSTEMS &amp; ALLIED TECHNOLOGIES, PTS 1 AND 2, vol. 69.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">M Shibata S Kobashi Y Hata Y Tokimoto M Ishikawa, “Fuzzy rule based segmentation of CT knee images,” KNOWLEDGE-BASED INTELLIGENT INFORMATION ENGINEERING SYSTEMS &amp; ALLIED TECHNOLOGIES, PTS 1 AND 2, vol. 69.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">C Yasuba S Kobashi Y Hata Y Tokimoto M Ishikawa, “3-D visualization of the cholecyst and the bile duct using fuzzy clustering,” KNOWLEDGE-BASED INTELLIGENT INFORMATION ENGINEERING SYSTEMS &amp; ALLIED TECHNOLOGIES, PTS 1 AND 2, vol. 69.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">T Matsuura S Kobashi Y Hata, “A medical image segmentation method using K-means clustering and rough sets,” KNOWLEDGE-BASED INTELLIGENT INFORMATION ENGINEERING SYSTEMS &amp; ALLIED TECHNOLOGIES, PTS 1 AND 2, vol. 69.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Yutaka Hata Syoji Kobashi Yuri Kitamura Toshio Yanagida, “FIG application for 3D medical imagings,” Medical Imaging Technology.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Yutaka Hata Yuri T. Kitamura Toshio Yanagida, “A fuzzy rule-based region growing method for segmentating 3-D dynamic MRI.,” Biomedical Soft Computing and Human Sciences, vol. 6, no. 1.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Syoji Kobashi Yutaka Hata Yuri T. Kitamura Toshio Yanagida, “3-D Visualization of the Structure of Cerebral Blood Vessels Using Fuzzy Image Processing.,” Proceedings of 4th Asian Fuzzy Systems Symposium.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">Y Hata S Kobashi S Hirano, “Medical image segmentation by fuzzy logic techniques,” 1998 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS, VOLS 1-5.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">E Mori M Yasuda H Kitagawa S Kobashi Y Hata, “Automated brain MRI volumetry demonstrated a genetic correlate of brain atrophy in Alzheimer&#39;s disease,” CAR &#39;98 - COMPUTER ASSISTED RADIOLOGY AND SURGERY, vol. 1165.</div>
-            
-          </div>
-        </li>
-<li class="item">
-          <div class="card">
-            <div class="ref">H Kitagaki E Mori K Ishii S Kobashi Y Hata, “Utility of automated hemispheric surface display of MRI in diagnosing for cortical atrophy,” CAR &#39;98 - COMPUTER ASSISTED RADIOLOGY AND SURGERY, vol. 1165.</div>
-            
-          </div>
-        </li>
-        </ol>
-      </section>
+<div class="wrap">
+  <div class="meta">
+    <div><b>Updated:</b> <span>2025-12-29</span></div>
+    <div><b>Items:</b> <span>105</span></div>
+    <div><b>Source:</b> <span>researchmap API (generated daily via GitHub Actions)</span></div>
   </div>
+
+  
+        <section class="year-section">
+          <div class="year-head"><span class="year">2025</span><span class="badge">6</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">1.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Md Anas Ali&quot;} {&quot;name&quot;:&quot;Daisuke Fujita&quot;} {&quot;name&quot;:&quot;Hiromitsu Kishimoto&quot;} {&quot;name&quot;:&quot;Yuna Makihara&quot;} {&quot;name&quot;:&quot;Kazuma Noguchi&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Automated Impaction Angulation Measurement of Mandibular Third Molars for Winter’s Classification Using Deep Learning,” <i>Journal of Advanced Computational Intelligence and Intelligent Informatics</i> vol. 29, no. 2, pp. 325–336 2025.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">2.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Yukihiro Imaoka&quot;} {&quot;name&quot;:&quot;Nice Ren&quot;} {&quot;name&quot;:&quot;Soshiro Ogata&quot;} {&quot;name&quot;:&quot;Shogo Watanabe&quot;} {&quot;name&quot;:&quot;Tomoya Itatani&quot;} {&quot;name&quot;:&quot;Eri Kiyoshige&quot;} {&quot;name&quot;:&quot;Hirotoshi Imamura&quot;} {&quot;name&quot;:&quot;Kunihiro Nishimura&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Yasuyuki Kaku&quot;} {&quot;name&quot;:&quot;Koichi Arimura&quot;} {&quot;name&quot;:&quot;Hitoshi Fukuda&quot;} {&quot;name&quot;:&quot;Masafumi Ihara&quot;} {&quot;name&quot;:&quot;Tsuyoshi Ohta&quot;} {&quot;name&quot;:&quot;Yuji Matsumaru&quot;} {&quot;name&quot;:&quot;Nobuyuki Sakai&quot;} {&quot;name&quot;:&quot;Takanari Kitazono&quot;} {&quot;name&quot;:&quot;Shigeru Fujimoto&quot;} {&quot;name&quot;:&quot;Kuniaki Ogasawara&quot;} {&quot;name&quot;:&quot;Koji Yoshimoto&quot;} {&quot;name&quot;:&quot;Akitake Mukasa&quot;} {&quot;name&quot;:&quot;Koji Iihara&quot;}, “Community-Level Compact City Design, Health Care Provision, and Outcomes of Patients With Stroke.,” <i>Journal of the American Heart Association</i> vol. 14, no. 15 2025.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">3.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Yukihiro Imaoka&quot;} {&quot;name&quot;:&quot;Katsuhiro Mikami&quot;} {&quot;name&quot;:&quot;Ai Fuchita&quot;} {&quot;name&quot;:&quot;Satoshi Ikeda&quot;} {&quot;name&quot;:&quot;Nice Ren&quot;} {&quot;name&quot;:&quot;Shogo Watanabe&quot;} {&quot;name&quot;:&quot;Soichiro Abe&quot;} {&quot;name&quot;:&quot;Tomohide Yoshie&quot;} {&quot;name&quot;:&quot;Satoshi Namitome&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Hirotoshi Imamura&quot;} {&quot;name&quot;:&quot;Koji Iihara&quot;}, “Comparative safety of stent retriever designs for intracranial atherosclerotic disease related large vessel occlusion using agarose models.,” <i>Scientific reports</i> vol. 15, no. 1, pp. 40952–40952 2025.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">4.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Fubuki Sawa&quot;} {&quot;name&quot;:&quot;Daisuke Fujita&quot;} {&quot;name&quot;:&quot;Kenichi Shimada&quot;} {&quot;name&quot;:&quot;Hideo Aihara&quot;} {&quot;name&quot;:&quot;Toshiyuki Uehara&quot;} {&quot;name&quot;:&quot;Yutaka Koide&quot;} {&quot;name&quot;:&quot;Ryota Kawasaki&quot;} {&quot;name&quot;:&quot;Kazunari Ishii&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Dynamic multi-scale deep learning with mixture of experts for differentiating iNPH and PSP using MRI.,” <i>International journal of computer assisted radiology and surgery</i> vol. 20, no. 12, pp. 2413–2422 2025.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">5.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Md Anas Ali&quot;} {&quot;name&quot;:&quot;Ryunosuke Maeda&quot;} {&quot;name&quot;:&quot;Daisuke Fujita&quot;} {&quot;name&quot;:&quot;Naoyuki Miyahara&quot;} {&quot;name&quot;:&quot;Fumihiko Namba&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Early prediction of bronchopulmonary dysplasia in preterm infants using chest X-rays through a comparative analysis of 13 CNN models across different post-birth days,” <i>Discover Computing</i> vol. 28, no. 1 2025.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">6.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Siam Tahsin Bhuiyan&quot;} {&quot;name&quot;:&quot;Rashedur Rahman&quot;} {&quot;name&quot;:&quot;Sefatul Wasi&quot;} {&quot;name&quot;:&quot;Naomi Yagi&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Ashraful Islam&quot;} {&quot;name&quot;:&quot;Saadia Binte Alam&quot;}, “Invisible Yet Detected: PelFANet with Attention-Guided Anatomical Fusion for Pelvic Fracture Diagnosis.,” <i>CoRR</i> vol. abs/2509.13873 2025.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2024</span><span class="badge">8</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">7.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Yukihiro Imaoka&quot;} {&quot;name&quot;:&quot;Nice Ren&quot;} {&quot;name&quot;:&quot;Soshiro Ogata&quot;} {&quot;name&quot;:&quot;Hirotoshi Imamura&quot;} {&quot;name&quot;:&quot;Yasuyuki Kaku&quot;} {&quot;name&quot;:&quot;Koichi Arimura&quot;} {&quot;name&quot;:&quot;Shogo Watanabe&quot;} {&quot;name&quot;:&quot;Eri Kiyoshige&quot;} {&quot;name&quot;:&quot;Kunihiro Nishimura&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Masafumi Ihara&quot;} {&quot;name&quot;:&quot;Kenji Kamiyama&quot;} {&quot;name&quot;:&quot;Masafumi Morimoto&quot;} {&quot;name&quot;:&quot;Tsuyoshi Ohta&quot;} {&quot;name&quot;:&quot;Hidenori Endo&quot;} {&quot;name&quot;:&quot;Yuji Matsumaru&quot;} {&quot;name&quot;:&quot;Nobuyuki Sakai&quot;} {&quot;name&quot;:&quot;Takanari Kitazono&quot;} {&quot;name&quot;:&quot;Shigeru Fujimoto&quot;} {&quot;name&quot;:&quot;Kuniaki Ogasawara&quot;} {&quot;name&quot;:&quot;Koji Iihara&quot;}, “CHA2DS2-VASc score and prior oral anticoagulant use on endovascular treatment for acute ischemic stroke.,” <i>Annals of clinical and translational neurology</i> vol. 11, no. 12, pp. 3103–3114 2024.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">8.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Kenta Takatsuji&quot;} {&quot;name&quot;:&quot;Yoshikazu Kida&quot;} {&quot;name&quot;:&quot;Kenta Sasaki&quot;} {&quot;name&quot;:&quot;Daisuke Fujita&quot;} {&quot;name&quot;:&quot;Yusuke Kobayashi&quot;} {&quot;name&quot;:&quot;Tsuyoshi Sukenari&quot;} {&quot;name&quot;:&quot;Yoshihiro Kotoura&quot;} {&quot;name&quot;:&quot;Masataka Minami&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Kenji Takahashi&quot;}, “Deep Learning-Based Computer-Aided Diagnosis of Osteochondritis Dissecans of the Humeral Capitellum Using Ultrasound Images.,” <i>The Journal of bone and joint surgery. American volume</i> vol. 106, no. 23, pp. 2196–2204 2024.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">9.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Kenta Sasaki&quot;} {&quot;name&quot;:&quot;Daisuke Fujita&quot;} {&quot;name&quot;:&quot;Kenta Takatsuji&quot;} {&quot;name&quot;:&quot;Yoshihiro Kotoura&quot;} {&quot;name&quot;:&quot;Masataka Minami&quot;} {&quot;name&quot;:&quot;Yusuke Kobayashi&quot;} {&quot;name&quot;:&quot;Tsuyoshi Sukenari&quot;} {&quot;name&quot;:&quot;Yoshikazu Kida&quot;} {&quot;name&quot;:&quot;Kenji Takahashi&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Deep learning-based osteochondritis dissecans detection in ultrasound images with humeral capitellum localization.,” <i>International journal of computer assisted radiology and surgery</i> vol. 19, no. 11, pp. 2143–2152 2024.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">10.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Rashedur Rahman&quot;} {&quot;name&quot;:&quot;Naomi Yagi&quot;} {&quot;name&quot;:&quot;Keigo Hayashi&quot;} {&quot;name&quot;:&quot;Akihiro Maruo&quot;} {&quot;name&quot;:&quot;Hirotsugu Muratsu&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Enhancing fracture diagnosis in pelvic X-rays by deep convolutional neural network with synthesized images from 3D-CT.,” <i>Scientific reports</i> vol. 14, no. 1, pp. 8004–8004 2024.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">11.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Takao Sato&quot;} {&quot;name&quot;:&quot;Tomoka Nishino&quot;} {&quot;name&quot;:&quot;Natsuki Kawaguchi&quot;} {&quot;name&quot;:&quot;Hisashi Mori&quot;} {&quot;name&quot;:&quot;Hayato Uchida&quot;} {&quot;name&quot;:&quot;Kiichiro Murotani&quot;} {&quot;name&quot;:&quot;Yuichi Kimura&quot;} {&quot;name&quot;:&quot;Isao Mizukura&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Orlando Arrieta&quot;}, “Personalized heart rate management through data-driven dynamic exercise control.,” <i>Scientific reports</i> vol. 14, no. 1, pp. 17270–17270 2024.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">12.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Shuya Ishida&quot;} {&quot;name&quot;:&quot;Kento Morita&quot;} {&quot;name&quot;:&quot;Kinta Hatakeyama&quot;} {&quot;name&quot;:&quot;Nice Ren&quot;} {&quot;name&quot;:&quot;Shogo Watanabe&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Koji Iihara&quot;} {&quot;name&quot;:&quot;Tetsushi Wakabayashi&quot;}, “Prediction of cardiovascular events after carotid endarterectomy using pathological images and clinical data.,” <i>International journal of computer assisted radiology and surgery</i> 2024.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">13.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Shogo Watanabe&quot;} {&quot;name&quot;:&quot;Nice Ren&quot;} {&quot;name&quot;:&quot;Soshiro Ogata&quot;} {&quot;name&quot;:&quot;Yuriko Nakaoku&quot;} {&quot;name&quot;:&quot;Akihito Hagihara&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Haruhiko Hiramatsu&quot;} {&quot;name&quot;:&quot;Tsuyoshi Ohta&quot;} {&quot;name&quot;:&quot;Teruo Noguchi&quot;} {&quot;name&quot;:&quot;Hiroharu Kataoka&quot;} {&quot;name&quot;:&quot;Masahumi Ihara&quot;} {&quot;name&quot;:&quot;Kunihiro Nishimura&quot;} {&quot;name&quot;:&quot;Koji Iihara&quot;}, “Recurrent prediction within 1, 3, and 5 years after acute ischemic stroke based on machine learning using 10 years J-ASPECT study,” <i>Japanese Journal of Stroke</i> 2024.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">14.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Daisuke FUJITA&quot;} {&quot;name&quot;:&quot;Yuki ADACHI&quot;} {&quot;name&quot;:&quot;Syoji KOBASHI&quot;}, “根管治療痕を考慮したパノラマX線画像における歯牙自動認識法,” <i>Journal of Japan Society for Fuzzy Theory and Intelligent Informatics</i> vol. 36, no. 2, pp. 610–615 2024.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2023</span><span class="badge">5</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">15.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Fahmida Haque&quot;} {&quot;name&quot;:&quot;Mamun B. I. Reaz&quot;} {&quot;name&quot;:&quot;Muhammad E. H. Chowdhury&quot;} {&quot;name&quot;:&quot;Mohd Ibrahim bin Shapiai&quot;} {&quot;name&quot;:&quot;Rayaz A. Malik&quot;} {&quot;name&quot;:&quot;Mohammed Alhatou&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Iffat Ara&quot;} {&quot;name&quot;:&quot;Sawal H. M. Ali&quot;} {&quot;name&quot;:&quot;Ahmad A. A. Bakar&quot;} {&quot;name&quot;:&quot;Mohammad Arif Sobhan Bhuiyan&quot;}, “A Machine Learning-Based Severity Prediction Tool for the Michigan Neuropathy Screening Instrument,” <i>Diagnostics</i> vol. 13, no. 2, pp. 264–264 2023.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">16.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Shinya OKUDA&quot;} {&quot;name&quot;:&quot;Daisuke FUJITA&quot;} {&quot;name&quot;:&quot;Hiroshi TANAKA&quot;} {&quot;name&quot;:&quot;Tomoyuki MUTO&quot;} {&quot;name&quot;:&quot;Hiroaki INUI&quot;} {&quot;name&quot;:&quot;Syoji KOBASHI&quot;}, “Detection of Shoulder Rotator Cuff Tears from X-Ray Image by Using Convolutional Neural Network,” <i>Journal of Japan Society for Fuzzy Theory and Intelligent Informatics</i> vol. 35, no. 1, pp. 593–597 2023.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">17.</span>
+          <div class="cite">{&quot;name&quot;:&quot;藤田大輔&quot;} {&quot;name&quot;:&quot;山本偉嗣&quot;} {&quot;name&quot;:&quot;諸岡孝俊&quot;} {&quot;name&quot;:&quot;井石琢也&quot;} {&quot;name&quot;:&quot;牛飼武&quot;} {&quot;name&quot;:&quot;吉矢晋一&quot;} {&quot;name&quot;:&quot;小橋昌司&quot;}, “Development of TKA treatment strategy by factor extraction method for patient satisfaction,” <i>Japanese Journal of Clinical Biomechanics (Web)</i> vol. 44, pp. 127–133 2023.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">18.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Rashedur Rahman&quot;} {&quot;name&quot;:&quot;Naomi Yagi&quot;} {&quot;name&quot;:&quot;Keigo Hayashi&quot;} {&quot;name&quot;:&quot;Akihiro Maruo&quot;} {&quot;name&quot;:&quot;Hirotsugu Muratsu&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Fragility Fracture of Pelvis Prediction from Computed Tomography Using Boring Survey and Convolutional Neural Network,” <i>Journal of Advanced Computational Intelligence and Intelligent Informatics</i> vol. 27, no. 6, pp. 1079–1085 2023.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">19.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Md Anas Ali&quot;} {&quot;name&quot;:&quot;Daisuke Fujita&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Teeth and prostheses detection in dental panoramic X-rays using CNN-based object detector and a priori knowledge-based algorithm,” <i>Scientific Reports</i> vol. 13, no. 1, pp. 16542–16542 2023.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2022</span><span class="badge">2</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">20.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Fahmida Haque&quot;} {&quot;name&quot;:&quot;Mamun Bin Ibne Reaz&quot;} {&quot;name&quot;:&quot;Muhammad Enamul Hoque Chowdhury&quot;} {&quot;name&quot;:&quot;Rayaz Malik&quot;} {&quot;name&quot;:&quot;Mohammed Alhatou&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Iffat Ara&quot;} {&quot;name&quot;:&quot;Sawal Hamid Md. Ali&quot;} {&quot;name&quot;:&quot;Ahmad Ashrif A. Bakar&quot;} {&quot;name&quot;:&quot;Geetika Srivastava&quot;}, “A machine learning-based severity prediction tool for diabetic sensorimotor polyneuropathy using Michigan neuropathy screening instrumentations.,” <i>CoRR</i> vol. abs/2203.15151 2022.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">21.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Kohei Nakatsu&quot;} {&quot;name&quot;:&quot;Rashedur Rahman&quot;} {&quot;name&quot;:&quot;Kento Morita&quot;} {&quot;name&quot;:&quot;Daisuke Fujita&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Automatic Carpal Site Detection Method for Evaluation of Rheumatoid Arthritis Using Deep Learning,” <i>Journal of Advanced Computational Intelligence and Intelligent Informatics</i> vol. 26, no. 1, pp. 42–50 2022.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2021</span><span class="badge">5</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">22.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Fahmida Haque&quot;} {&quot;name&quot;:&quot;Mamun Bin Ibne Reaz&quot;} {&quot;name&quot;:&quot;Muhammad E.H. Chowdhury&quot;} {&quot;name&quot;:&quot;Sawal Hamid Md Ali&quot;} {&quot;name&quot;:&quot;Ahmad Ashrif A Bakar&quot;} {&quot;name&quot;:&quot;Tawsifur Rahman&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Chitra A. Dhawale&quot;} {&quot;name&quot;:&quot;Mohammad Arif Sobhan Bhuiyan&quot;}, “A nomogram-based diabetic sensorimotor polyneuropathy severity prediction using Michigan neuropathy screening instrumentations,” <i>Computers in Biology and Medicine</i> vol. 139, pp. 104954–104954 2021.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">23.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Kazutoshi Ukai&quot;} {&quot;name&quot;:&quot;Rashedur Rahman&quot;} {&quot;name&quot;:&quot;Naomi Yagi&quot;} {&quot;name&quot;:&quot;Keigo Hayashi&quot;} {&quot;name&quot;:&quot;Akihiro Maruo&quot;} {&quot;name&quot;:&quot;Hirotsugu Muratsu&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Detecting pelvic fracture on 3D-CT using deep convolutional neural networks with multi-orientated slab images.,” <i>Scientific reports</i> vol. 11, no. 1, pp. 11716–11716 2021.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">24.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Solaiman Ahmed&quot;} {&quot;name&quot;:&quot;Tanveer Ahmed Bhuiyan&quot;} {&quot;name&quot;:&quot;Taiki Kishi&quot;} {&quot;name&quot;:&quot;Manabu Nii&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Human Activity Classification Based on Angle Variance Analysis Utilizing the Poincare Plot,” <i>Applied Sciences</i> vol. 11, no. 16, pp. 7230–7230 2021.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">25.</span>
+          <div class="cite">{&quot;name&quot;:&quot;中津康平&quot;} {&quot;name&quot;:&quot;田中洋&quot;} {&quot;name&quot;:&quot;乾浩明&quot;} {&quot;name&quot;:&quot;信原克哉&quot;} {&quot;name&quot;:&quot;小橋昌司&quot;}, “Machine learning based player level estimation with 3-D kinematic analysis of throwing motion capture.,” <i>臨床バイオメカニクス</i> vol. 42, pp. 191–197 2021.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">26.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Daisuke FUJITA&quot;} {&quot;name&quot;:&quot;Shota HARUMOTO&quot;} {&quot;name&quot;:&quot;Ryusuke DEGUCHI&quot;} {&quot;name&quot;:&quot;Shimpei YAMASHITA&quot;} {&quot;name&quot;:&quot;Syoji KOBASHI&quot;}, “Prediction of Ureter ESWL Outcome by Machine Learning and Model Interpretation Approach Using SHAP,” <i>International Journal of Biomedical Soft Computing and Human Sciences</i> vol. 26, no. 2, pp. 97–102 2021.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2020</span><span class="badge">7</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">27.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Fahad Parvez MAHDI&quot;} {&quot;name&quot;:&quot;Hiroshi TANAKA&quot;} {&quot;name&quot;:&quot;Katsuya NOBUHARA&quot;} {&quot;name&quot;:&quot;Syoji KOBASHI&quot;}, “Automatic segmentation of the humerus region in 3-D shoulder CT images using U-Net,” <i>International Journal of Biomedical Soft Computing and Human Sciences: the official journal of the Biomedical Fuzzy Systems Association</i> vol. 25, no. 2, pp. 67–74 2020.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">28.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Kento Morita&quot;} {&quot;name&quot;:&quot;Manabu Nii&quot;} {&quot;name&quot;:&quot;Min Sung Koh&quot;} {&quot;name&quot;:&quot;Kaori Kashiwa&quot;} {&quot;name&quot;:&quot;Hiroshi Nakayama&quot;} {&quot;name&quot;:&quot;Shunichiro Kambara&quot;} {&quot;name&quot;:&quot;Shinichi Yoshiya&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Bone tunnel placement determination method for 3-D images and its evaluation for anterior cruciate ligament reconstruction,” <i>Current Medical Imaging Reviews</i> vol. 16, no. 5, pp. 491–498 2020.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">29.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Fahad Parvez Mahdi&quot;} {&quot;name&quot;:&quot;Tomoyuki Muto&quot;} {&quot;name&quot;:&quot;Hiroshi Tanaka&quot;} {&quot;name&quot;:&quot;Hiroaki Inui&quot;} {&quot;name&quot;:&quot;Katsuya Nobuhara&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Construction of 3-D humeral head statistical shape model in CT images,” <i>Applied Sciences (Switzerland)</i> vol. 10, no. 16, pp. 5591–5591 2020.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">30.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Fahad Parvez Mahdi&quot;} {&quot;name&quot;:&quot;Kota Motoki&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Optimization technique combined with deep learning method for teeth recognition in dental panoramic radiographs,” <i>Scientific Reports</i> vol. 10, no. 1, pp. 19261–19261 2020.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">31.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Binte Alam&quot;} {&quot;name&quot;:&quot;Manabu Nii&quot;} {&quot;name&quot;:&quot;Akinobu Shimizu&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Spatiotemporal statistical shape model for temporal shape change analysis of adult brain,” <i>Current Medical Imaging Reviews</i> vol. 16, no. 5, pp. 499–506 2020.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">32.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Hiroshi Tanaka&quot;} {&quot;name&quot;:&quot;Toyohiko Hayashi&quot;} {&quot;name&quot;:&quot;Hiroaki Inui&quot;} {&quot;name&quot;:&quot;Tomoyuki Muto&quot;} {&quot;name&quot;:&quot;Kohnan Tsuchiyama&quot;} {&quot;name&quot;:&quot;Hiroki Ninomiya&quot;} {&quot;name&quot;:&quot;Yasuo Nakamura&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Katsuya Nobuhara&quot;}, “Stride-Phase Kinematic Parameters That Predict Peak Elbow Varus Torque,” <i>Orthopaedic Journal of Sports Medicine</i> vol. 8, no. 12, pp. 2325967120968068–2325967120968068 2020.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">33.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Shoichi NISHIO&quot;} {&quot;name&quot;:&quot;Belayat HOSSAIN&quot;} {&quot;name&quot;:&quot;Manabu NII&quot;} {&quot;name&quot;:&quot;Naomi YAGI&quot;} {&quot;name&quot;:&quot;Takafumi HIRANAKA&quot;} {&quot;name&quot;:&quot;Syoji KOBASHI&quot;}, “Surgical Phase Recognition with Wearable Video Camera for Computer-aided Orthopaedic Surgery-AI Navigation System,” <i>International Journal of Affective Engineering</i> vol. 19, no. 2, pp. 137–143 2020.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2019</span><span class="badge">6</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">34.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Kazutoshi Ukai&quot;} {&quot;name&quot;:&quot;Rashedur Rahman&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Facial skin blood perfusion change based liveness detection using video images,” <i>Electronics and Communications in Japan</i> vol. 102, no. 6, pp. 42–51 2019.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">35.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Kazutoshi Ukai&quot;} {&quot;name&quot;:&quot;Rashedur Rahman&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Facial skin blood perfusion change based liveness detection using video images,” <i>IEEJ Transactions on Sensors and Micromachines</i> vol. 139, no. 2, pp. 29–37 2019.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">36.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Takatoshi Morooka&quot;} {&quot;name&quot;:&quot;Makiko Okuno&quot;} {&quot;name&quot;:&quot;Daisuke Seino&quot;} {&quot;name&quot;:&quot;Takuya Iseki&quot;} {&quot;name&quot;:&quot;Shigeo Fukunishi&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Shinichi Yoshiya&quot;}, “Intraoperative kinematic analysis of posterior stabilized total knee arthroplasty with asymmetric helical post-cam design,” <i>European Journal of Orthopaedic Surgery and Traumatology</i> vol. 29, no. 3, pp. 675–681 2019.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">37.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Tomoyuki Muto&quot;} {&quot;name&quot;:&quot;Hiroaki Inui&quot;} {&quot;name&quot;:&quot;Hiroki Ninomiya&quot;} {&quot;name&quot;:&quot;Hiroshi Tanaka&quot;} {&quot;name&quot;:&quot;Kazuki Ishiro&quot;} {&quot;name&quot;:&quot;Kento Morita&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Katsuya Nobuhara&quot;}, “MRIによる腱板断裂の画像診断 MRI画像を用いた3次元形状腱板断裂モデルの構築,” <i>Clinical Orthopaedic Surgery</i> vol. 54, no. 9, pp. 877–881 2019.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">38.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Belayat Hossain&quot;} {&quot;name&quot;:&quot;Takatoshi Morooka&quot;} {&quot;name&quot;:&quot;Makiko Okuno&quot;} {&quot;name&quot;:&quot;Manabu Nii&quot;} {&quot;name&quot;:&quot;Shinichi Yoshiya&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Surgical outcome prediction in total knee arthroplasty using machine learning,” <i>Intelligent Automation and Soft Computing</i> vol. 25, no. 1, pp. 105–116 2019.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">39.</span>
+          <div class="cite">{&quot;name&quot;:&quot;盛田健人&quot;} {&quot;name&quot;:&quot;小橋昌司&quot;}, “医療と情報 第1部 ヘルスケア・インフォマティクスの先端技術 2)医用画像診断の未来,” <i>情報処理</i> vol. 60, no. 4 2019.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2018</span><span class="badge">8</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">40.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Md Atiqur Rahman Ahad&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;João Manuel R S Tavares&quot;}, “Advancements of Image Processing and Vision in Healthcare.,” <i>Journal of healthcare engineering</i> vol. 2018, pp. 8458024–8458024 2018.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">41.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Yutaka Hata&quot;} {&quot;name&quot;:&quot;Shoji Kobashi&quot;} {&quot;name&quot;:&quot;Hiroshi Nakajima&quot;}, “Editorial: the Power of Fuzzy - Dedicated to the Father of Fuzzy Logic.,” <i>JACIII</i> vol. 22, no. 5, pp. 739–739 2018.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">42.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Kento Morita 0001&quot;} {&quot;name&quot;:&quot;Manabu Nii&quot;} {&quot;name&quot;:&quot;Norikazu Ikoma&quot;} {&quot;name&quot;:&quot;Takatoshi Morooka&quot;} {&quot;name&quot;:&quot;Shinichi Yoshiya&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Implanted Knee Joint Kinematics Recognition in Digital Radiograph Images Using Particle Filter.,” <i>J. Adv. Comput. Intell. Intell. Informatics</i> vol. 22, no. 1, pp. 113–120 2018.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">43.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Moazzem Hossain&quot;} {&quot;name&quot;:&quot;Soichi Nishio&quot;} {&quot;name&quot;:&quot;Takafumi Hiranaka&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Real-time Surgical Tools Recognition in Total Knee Arthroplasty Using Deep Neural Networks.,” <i>CoRR</i> vol. abs/1806.02031 2018.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">44.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Marin Yasugi&quot;} {&quot;name&quot;:&quot;Belayat Hossain&quot;} {&quot;name&quot;:&quot;Manabu Nii&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Relationship Between Cerebral Aneurysm Development and Cerebral Artery Shape,” <i>JOURNAL OF ADVANCED COMPUTATIONAL INTELLIGENCE AND INTELLIGENT INFORMATICS</i> vol. 22, no. 2, pp. 249–255 2018.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">45.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Yutaka Hata&quot;} {&quot;name&quot;:&quot;Shoji Kobashi&quot;} {&quot;name&quot;:&quot;Hiroshi Nakajima&quot;}, “Special issue on the power of fuzzy-dedicated to the father of fuzzy logic,” <i>Journal of Advanced Computational Intelligence and Intelligent Informatics</i> vol. 22, no. 5 2018.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">46.</span>
+          <div class="cite">{&quot;name&quot;:&quot;盛田 健人&quot;} {&quot;name&quot;:&quot;田下 徳起&quot;} {&quot;name&quot;:&quot;新居 学&quot;} {&quot;name&quot;:&quot;小橋 昌司&quot;}, “SVRを用いた手関節X線画像におけるリウマチmTSスコアの推定,” <i>MEDICAL IMAGING TECHNOLOGY</i> vol. 36, no. 5, pp. 238–242 2018.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">47.</span>
+          <div class="cite">{&quot;name&quot;:&quot;神原 俊一郎&quot;} {&quot;name&quot;:&quot;中山 寛&quot;} {&quot;name&quot;:&quot;小橋 昌司&quot;} {&quot;name&quot;:&quot;吉矢 晋一&quot;}, “内反変形膝に対するDouble Level Osteotomyの術後回旋アライメントの変化 3次元CTを用いた解析,” <i>臨床バイオメカニクス</i> vol. 39, pp. 107–110 2018.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2017</span><span class="badge">3</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">48.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Naotake Kamiura&quot;} {&quot;name&quot;:&quot;Shoji Kobashi&quot;} {&quot;name&quot;:&quot;Manabu Nii&quot;} {&quot;name&quot;:&quot;Takayuki Yumoto&quot;} {&quot;name&quot;:&quot;Ichiro Yamamoto&quot;}, “On Map-Based Analysis of Item Relationships in Specific Health Examination Data for Subjects Possibly Having Diabetes,” <i>IEICE TRANSACTIONS ON INFORMATION AND SYSTEMS</i> vol. E100D, no. 8, pp. 1625–1633 2017.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">49.</span>
+          <div class="cite">{&quot;name&quot;:&quot;NII Manabu&quot;} {&quot;name&quot;:&quot;NII Manabu&quot;} {&quot;name&quot;:&quot;KASHIWAKI Riku&quot;} {&quot;name&quot;:&quot;MORIMOTO Masakazu&quot;} {&quot;name&quot;:&quot;KOBASHI Syoji&quot;} {&quot;name&quot;:&quot;KAMIURA Naotake&quot;} {&quot;name&quot;:&quot;HATA Yutaka&quot;} {&quot;name&quot;:&quot;IMAWAKI Seturo&quot;} {&quot;name&quot;:&quot;ISHIKAWA Tomomoto&quot;} {&quot;name&quot;:&quot;MATSUBAYASHI Hidehiko&quot;}, “Ovarian Follicle Classification without Direct Deformation Information from Ultrasonic Images,” <i>International Journal of Biomedical Soft Computing and Human Sciences</i> vol. 22, no. 1 2017.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">50.</span>
+          <div class="cite">{&quot;name&quot;:&quot;井城一輝&quot;} {&quot;name&quot;:&quot;盛田健人&quot;} {&quot;name&quot;:&quot;新居学&quot;} {&quot;name&quot;:&quot;田中洋&quot;} {&quot;name&quot;:&quot;小橋昌司&quot;} {&quot;name&quot;:&quot;信原克哉&quot;}, “Reconstruction of 3-D torn rotator cuff model in open MRI for computer-aided diagnosis.,” <i>臨床バイオメカニクス</i> vol. 38, pp. 113–118 2017.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2016</span><span class="badge">6</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">51.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Alam, S.B.&quot;} {&quot;name&quot;:&quot;Nakano, R.&quot;} {&quot;name&quot;:&quot;Kobashi, S.&quot;}, “Brain age estimation using multiple regression analysis in brain mr images,” <i>International Journal of Innovative Computing, Information and Control</i> vol. 12, no. 4, pp. 1385–1396 2016.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">52.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Shoichi Furukawa&quot;} {&quot;name&quot;:&quot;Shoji Kobashi&quot;} {&quot;name&quot;:&quot;Naotake Kamiura&quot;} {&quot;name&quot;:&quot;Yutaka Hata&quot;} {&quot;name&quot;:&quot;Seturo Imawaki&quot;} {&quot;name&quot;:&quot;Tomomoto Ishikawa&quot;}, “Continuous-wavelet-transform-based visualization for seminiferous tubule using broadband ultrasonic imaging,” <i>INTERNATIONAL JOURNAL OF APPLIED ELECTROMAGNETICS AND MECHANICS</i> vol. 52, no. 1-2, pp. 461–469 2016.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">53.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Hossain, B.M.&quot;} {&quot;name&quot;:&quot;Nii, M.&quot;} {&quot;name&quot;:&quot;Morooka, T.&quot;} {&quot;name&quot;:&quot;Okuno, M.&quot;} {&quot;name&quot;:&quot;Yoshiya, S.&quot;} {&quot;name&quot;:&quot;Kobashi, S.&quot;}, “Post-operative implanted knee kinematics prediction in total knee arthroscopy using clinical big data,” <i>Lecture Notes in Computer Science (including subseries Lecture Notes in Artificial Intelligence and Lecture Notes in Bioinformatics)</i> vol. 9835, pp. 405–412 2016.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">54.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Atsushi Yukawa&quot;} {&quot;name&quot;:&quot;Atsushi Kono&quot;} {&quot;name&quot;:&quot;Tatsuya Nishii&quot;} {&quot;name&quot;:&quot;Naotake Kamiura&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Yutaka Hata&quot;}, “Pulmonary artery domain region extraction from MDCT image,” <i>INTERNATIONAL JOURNAL OF APPLIED ELECTROMAGNETICS AND MECHANICS</i> vol. 52, no. 1-2, pp. 479–486 2016.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">55.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Kobashi, S.&quot;} {&quot;name&quot;:&quot;Nyúl, L.G.&quot;} {&quot;name&quot;:&quot;Udupa, J.K.&quot;}, “Soft Computing in Medical Image Processing,” <i>Computational and Mathematical Methods in Medicine</i> vol. 2016, pp. 7358162–7358162 2016.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">56.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Kobashi, S.&quot;} {&quot;name&quot;:&quot;Ahad, M.A.R.&quot;} {&quot;name&quot;:&quot;Kim, N.&quot;} {&quot;name&quot;:&quot;Tong, Y.&quot;} {&quot;name&quot;:&quot;Yagi, N.&quot;}, “Special issue on soft computing in medical informatics,” <i>International Journal of Innovative Computing, Information and Control</i> vol. 12, no. 4, pp. 1351–1352 2016.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2015</span><span class="badge">2</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">57.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Matsuo, Y.&quot;} {&quot;name&quot;:&quot;Watanabe, M.&quot;} {&quot;name&quot;:&quot;Taniike, M.&quot;} {&quot;name&quot;:&quot;Mohri, I.&quot;} {&quot;name&quot;:&quot;Kobashi, S.&quot;} {&quot;name&quot;:&quot;Tachibana, M.&quot;} {&quot;name&quot;:&quot;Kobayashi, Y.&quot;} {&quot;name&quot;:&quot;Kitamura, Y.K.&quot;}, “Gap effect abnormalities during a visually guided Pro-Saccade task in children with attention deficit hyperactivity disorder,” <i>PLoS ONE</i> vol. 10, no. 5 2015.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">58.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Tsutsui Ryota&quot;} {&quot;name&quot;:&quot;Kamiura Naotake&quot;} {&quot;name&quot;:&quot;Isokawa Teijiro&quot;} {&quot;name&quot;:&quot;Kobashi Syoji&quot;} {&quot;name&quot;:&quot;Tabuchi Hitoshi&quot;} {&quot;name&quot;:&quot;Yamauchi Tomofusa&quot;}, “On Personal Identication for Ophthalmological Patients Based on Clinical Data Measured by Optical Coherence Tomography,” <i>Transactions of the Institute of Systems, Control and Information Engineers</i> vol. 28, no. 4, pp. 155–160 2015.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2014</span><span class="badge">5</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">59.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Fujisawa, T.&quot;} {&quot;name&quot;:&quot;Egawa, T.&quot;} {&quot;name&quot;:&quot;Taniguchi, K.&quot;} {&quot;name&quot;:&quot;Kobashi, S.&quot;} {&quot;name&quot;:&quot;Hata, Y.&quot;}, “An energy visualization by camera monitoring,” <i>Advances in Intelligent Systems and Computing</i> vol. 268, pp. 51–64 2014.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">60.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Takeda, T.&quot;} {&quot;name&quot;:&quot;Sakai, Y.&quot;} {&quot;name&quot;:&quot;Kobashi, S.&quot;} {&quot;name&quot;:&quot;Kuramoto, K.&quot;} {&quot;name&quot;:&quot;Hata, Y.&quot;}, “Foot age estimation system from walking dynamics based on fuzzy logic,” <i>Journal of Advanced Computational Intelligence and Intelligent Informatics</i> vol. 18, no. 4, pp. 489–498 2014.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">61.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Mori, Y.&quot;} {&quot;name&quot;:&quot;Chen, T.&quot;} {&quot;name&quot;:&quot;Fujisawa, T.&quot;} {&quot;name&quot;:&quot;Kobashi, S.&quot;} {&quot;name&quot;:&quot;Ohno, K.&quot;} {&quot;name&quot;:&quot;Yoshida, S.&quot;} {&quot;name&quot;:&quot;Tago, Y.&quot;} {&quot;name&quot;:&quot;Komai, Y.&quot;} {&quot;name&quot;:&quot;Hata, Y.&quot;} {&quot;name&quot;:&quot;Yoshioka, Y.&quot;}, “From cartoon to real time MRI: In vivo monitoring of phagocyte migration in mouse brain,” <i>Scientific Reports</i> vol. 4, pp. 6997–6997 2014.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">62.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Kikuchi, S.&quot;} {&quot;name&quot;:&quot;Kaku, Y.&quot;} {&quot;name&quot;:&quot;Kuramoto, K.&quot;} {&quot;name&quot;:&quot;Kobashi, S.&quot;} {&quot;name&quot;:&quot;Hata, Y.&quot;}, “Regional analysis and predictive modeling for asthmatic attacks in Himeji City,” <i>Advances in Intelligent Systems and Computing</i> vol. 268, pp. 77–84 2014.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">63.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Hata, H.&quot;} {&quot;name&quot;:&quot;Imawaki, S.&quot;} {&quot;name&quot;:&quot;Kuramoto, K.&quot;} {&quot;name&quot;:&quot;Kobashi, S.&quot;} {&quot;name&quot;:&quot;Hata, Y.&quot;}, “Ultrasonic muscular thickness measurement in temperature variation,” <i>Advances in Intelligent Systems and Computing</i> vol. 268, pp. 65–75 2014.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2013</span><span class="badge">7</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">64.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Takeda, T.&quot;} {&quot;name&quot;:&quot;Kuramoto, K.&quot;} {&quot;name&quot;:&quot;Kobashi, S.&quot;} {&quot;name&quot;:&quot;Hata, Y.&quot;}, “A Fuzzy Moving Object Estimation Using Infrared TOF Camera,” <i>International Journal of Intelligent Computing in Medical Sciences and Image Processing</i> vol. 5, no. 2, pp. 147–160 2013.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">65.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Hayashi, S.&quot;} {&quot;name&quot;:&quot;Nishiyama, T.&quot;} {&quot;name&quot;:&quot;Fujishiro, T.&quot;} {&quot;name&quot;:&quot;Kanzaki, N.&quot;} {&quot;name&quot;:&quot;Shibanuma, N.&quot;} {&quot;name&quot;:&quot;Kobashi, S.&quot;} {&quot;name&quot;:&quot;Kurosaka, M.&quot;}, “Automated pelvic anatomical coordinate system is reproducible for determination of anterior pelvic plane,” <i>Computer Methods in Biomechanics and Biomedical Engineering</i> vol. 16, no. 9, pp. 937–42 2013.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">66.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Jayaram K Udupa&quot;}, “Fuzzy connectedness image segmentation for newborn brain extraction in MR images.,” <i>Annual International Conference of the IEEE Engineering in Medicine and Biology Society. IEEE Engineering in Medicine and Biology Society. Annual International Conference</i> vol. 2013, pp. 7136–9 2013.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">67.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Kobashi, S.&quot;} {&quot;name&quot;:&quot;Kuramoto, K.&quot;} {&quot;name&quot;:&quot;Wakata, Y.&quot;} {&quot;name&quot;:&quot;Ando, K.&quot;} {&quot;name&quot;:&quot;Ishikura, R.&quot;} {&quot;name&quot;:&quot;Ishikawa, T.&quot;} {&quot;name&quot;:&quot;Hirota, S.&quot;} {&quot;name&quot;:&quot;Hata, Y.&quot;}, “Newborn Brain MR Image Segmentation Using Deformable Surface Model Based on Fuzzy Knowledge Models,” <i>International Journal of Intelligent Computing in Medical Sciences and Image Processing</i> vol. 5, no. 2, pp. 115–124 2013.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">68.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Naomi Yagi&quot;} {&quot;name&quot;:&quot;Tomomoto Ishikawa&quot;} {&quot;name&quot;:&quot;Kei Kuramoto&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Yutaka Hata&quot;}, “Noninvasive cellular quantity measurement in Bone Marrow Stromal Cells/ Beta-tricalcium phosphate.,” <i>Annual International Conference of the IEEE Engineering in Medicine and Biology Society. IEEE Engineering in Medicine and Biology Society. Annual International Conference</i> vol. 2013, pp. 2048–51 2013.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">69.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Yagi, N.&quot;} {&quot;name&quot;:&quot;Nakamura, M.&quot;} {&quot;name&quot;:&quot;Kuramoto, K.&quot;} {&quot;name&quot;:&quot;Kobashi, S.&quot;} {&quot;name&quot;:&quot;Hata, Y.&quot;}, “Noninvasive Diagnosis of Blood Flow for Transcranial Doppler Ultrasonography,” <i>International Journal of Intelligent Computing in Medical Sciences and Image Processing</i> vol. 5, no. 1, pp. 67–79 2013.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">70.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Takeda, T.&quot;} {&quot;name&quot;:&quot;Kuramoto, K.&quot;} {&quot;name&quot;:&quot;Kobashi, S.&quot;} {&quot;name&quot;:&quot;Hata, Y.&quot;}, “On optimal operator for combining left and right sole pressure data in biometrics security,” <i>Advances in Fuzzy Systems</i> 2013.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2012</span><span class="badge">1</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">71.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Hashioka, A.&quot;} {&quot;name&quot;:&quot;Kobashi, S.&quot;} {&quot;name&quot;:&quot;Kuramoto, K.&quot;} {&quot;name&quot;:&quot;Wakata, Y.&quot;} {&quot;name&quot;:&quot;Ando, K.&quot;} {&quot;name&quot;:&quot;Ishikura, R.&quot;} {&quot;name&quot;:&quot;Ishikawa, T.&quot;} {&quot;name&quot;:&quot;Hirota, S.&quot;} {&quot;name&quot;:&quot;Hata, Y.&quot;}, “A neonatal brain MR image template of 1 week newborn,” <i>International Journal of Computer Assisted Radiology and Surgery</i> vol. 7, no. 2, pp. 273–80 2012.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2011</span><span class="badge">6</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">72.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Hata, Y.&quot;} {&quot;name&quot;:&quot;Kobashi, S.&quot;} {&quot;name&quot;:&quot;Kuramoto, K.&quot;} {&quot;name&quot;:&quot;Nakajima, H.&quot;}, “A fuzzy biosignal detection algorithm and its application to health monitoring,” <i>Applied and Computational Mathematics</i> vol. 10, no. 1, pp. 133–145 2011.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">73.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Yohei Tsumori&quot;} {&quot;name&quot;:&quot;Shinichi Yoshiya&quot;} {&quot;name&quot;:&quot;Masahiro Kurosaka&quot;} {&quot;name&quot;:&quot;Shoji Kobashi&quot;} {&quot;name&quot;:&quot;Nao Shibanuma&quot;} {&quot;name&quot;:&quot;Motoi Yamaguchi&quot;}, “Analysis of Weight-Bearing Kinematics of Posterior-Stabilized Total Knee Arthroplasty With Novel Helical Post-Cam Design,” <i>JOURNAL OF ARTHROPLASTY</i> vol. 26, no. 8, pp. 1556–1561 2011.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">74.</span>
+          <div class="cite">{&quot;name&quot;:&quot;中島 祐介&quot;} {&quot;name&quot;:&quot;小橋 昌司&quot;} {&quot;name&quot;:&quot;今村 史明&quot;}, “Automated 3-D kinematis analysis of TKA knee with 2-D digital radiograph video using Monte Carlo method,” <i>Japanese journal of clinical biomechanics</i> vol. 32, pp. 497–502 2011.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">75.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Kobashi, S.&quot;} {&quot;name&quot;:&quot;Yokomichi, D.&quot;} {&quot;name&quot;:&quot;Wakata, Y.&quot;} {&quot;name&quot;:&quot;Ando, K.&quot;} {&quot;name&quot;:&quot;Ishikura, R.&quot;} {&quot;name&quot;:&quot;Kuramoto, K.&quot;} {&quot;name&quot;:&quot;Hirota, S.&quot;} {&quot;name&quot;:&quot;Hata, Y.&quot;}, “Cerebral contour extraction with particle method in neonatal MR images,” <i>Journal of Advanced Computational Intelligence and Intelligent Informatics</i> vol. 15, no. 3, pp. 362–369 2011.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">76.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Takeda, J.T.&quot;} {&quot;name&quot;:&quot;Kuramoto, K.&quot;} {&quot;name&quot;:&quot;Kobashi, S.&quot;} {&quot;name&quot;:&quot;Hata, Y.&quot;}, “Fuzzy-logic is precise-Its application to biometric system,” <i>Scientia Iranica</i> vol. 18, no. 3 D, pp. 655–662 2011.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">77.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Noboru Takagi&quot;}, “Special issue on computer automation,” <i>International Journal of Intelligent Computing in Medical Sciences and Image Processing</i> vol. 4, no. 2, pp. 89–91 2011.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2010</span><span class="badge">7</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">78.</span>
+          <div class="cite">{&quot;name&quot;:&quot;山口弘祐&quot;} {&quot;name&quot;:&quot;小橋昌司&quot;} {&quot;name&quot;:&quot;倉本 圭&quot;} {&quot;name&quot;:&quot;喜多村祐里&quot;} {&quot;name&quot;:&quot;毛利育子&quot;} {&quot;name&quot;:&quot;今脇節朗&quot;} {&quot;name&quot;:&quot;谷池雅子&quot;} {&quot;name&quot;:&quot;畑 豊&quot;}, “&quot;脳形状相同モデル化による脳形状定量化の評価,&quot; メディカルイメージング連合フォーラム,” <i>信学技報</i> 2010.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">79.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Hayato Yamaguchi&quot;} {&quot;name&quot;:&quot;Hiroshi Nakajima&quot;} {&quot;name&quot;:&quot;Kazuhiko Taniguchi&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Yutaka Hata&quot;}, “An ultrasonic and air pressure sensing system for detection of behavior before getting out of bed aided by fuzzy theory,” <i>IEICE Transactions on Information and Systems</i> vol. E93-D, no. 3, pp. 542–549 2010.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">80.</span>
+          <div class="cite">{&quot;name&quot;:&quot;KOBASHI Syoji&quot;} {&quot;name&quot;:&quot;NAKAJIMA Yusuke&quot;} {&quot;name&quot;:&quot;YOSHIYA Shinichi&quot;}, “Automated 3-D Kinematics Analysis of Implanted Knee with 2-D Digital Radiography Video,” <i>Medical Imaging Technology</i> vol. 28, no. 5, pp. 317–321 2010.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">81.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Nao Shibanuma&quot;} {&quot;name&quot;:&quot;Yutaka Hata&quot;}, “Fuzzy visual hull algorithm for three-dimensional shape reconstruction of TKA implants from X-ray cone-beam images,” <i>Journal of Advanced Computational Intelligence and Intelligent Informatics</i> vol. 14, no. 2, pp. 122–127 2010.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">82.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Yutaka Hata&quot;}, “Lung lobar segmentation using tubular tissue density from multidetector-row CT images,” <i>International Journal of Innovative Computing, Information and Control</i> vol. 6, no. 3, pp. 829–842 2010.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">83.</span>
+          <div class="cite">{&quot;name&quot;:&quot;小橋 昌司&quot;} {&quot;name&quot;:&quot;畑 豊&quot;}, “World Automation Congress (WAC) 2010開催報告,” <i>知能と情報 : 日本知能情報ファジィ学会誌 : journal of Japan Society for Fuzzy Theory and Intelligent Informatics</i> vol. 22, no. 6, pp. 787–788 2010.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">84.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Sachiko Tsuji-Akimoto&quot;} {&quot;name&quot;:&quot;Shinsuke Hamada&quot;} {&quot;name&quot;:&quot;Ichiro Yabe&quot;} {&quot;name&quot;:&quot;Itaru Tamura&quot;} {&quot;name&quot;:&quot;Mika Otsuki&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Hidenao Sasaki&quot;}, “Writing errors as a result of frontal dysfunction in Japanese patients with amyotrophic lateral sclerosis.,” <i>Journal of neurology</i> vol. 257, no. 12, pp. 2071–7 2010.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2009</span><span class="badge">2</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">85.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Yutaka Hata&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;}, “Fuzzy segmentation of endorrhachis in magnetic resonance images and its fuzzy maximum intensity projection,” <i>APPLIED SOFT COMPUTING</i> vol. 9, no. 3, pp. 1156–1169 2009.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">86.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Yutaka Hata&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Hiroshi Nakajima&quot;}, “Human Health Care System of Systems,” <i>IEEE SYSTEMS JOURNAL</i> vol. 3, no. 2, pp. 231–238 2009.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2008</span><span class="badge">2</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">87.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Yuji Yahata&quot;} {&quot;name&quot;:&quot;Shigeyuki Kan&quot;} {&quot;name&quot;:&quot;Masaya Misaki&quot;} {&quot;name&quot;:&quot;Takahiko Koike&quot;} {&quot;name&quot;:&quot;Katsuya Kondo&quot;} {&quot;name&quot;:&quot;Satoru Miyauchi&quot;} {&quot;name&quot;:&quot;Yutaka Hata&quot;}, “Eye Position Estimation During Sleep Using Infrared Video in Functional MRI.,” <i>JACIII</i> vol. 12, no. 1, pp. 32–40 2008.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">88.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Yuri Kitamura&quot;} {&quot;name&quot;:&quot;Koshiro Maruyama&quot;} {&quot;name&quot;:&quot;Ken-ichi Okada&quot;} {&quot;name&quot;:&quot;Yasushi Kobayashi&quot;} {&quot;name&quot;:&quot;Yuji Yahata&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Ikuko Mohri&quot;} {&quot;name&quot;:&quot;Masaya Tachibana&quot;} {&quot;name&quot;:&quot;Masako Taniike&quot;} {&quot;name&quot;:&quot;Kanehisa Morimoto&quot;}, “Using eye-movements as a research tool in children with autistic spectrum disorders.,” <i>Neuroscience Research</i> 2008.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2006</span><span class="badge">6</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">89.</span>
+          <div class="cite">{&quot;name&quot;:&quot;S. Kobashi&quot;} {&quot;name&quot;:&quot;T. Tomosada&quot;} {&quot;name&quot;:&quot;N. Shibanuma&quot;} {&quot;name&quot;:&quot;M. Yamaguchi&quot;} {&quot;name&quot;:&quot;H. Muratsu&quot;} {&quot;name&quot;:&quot;K. Kondo&quot;} {&quot;name&quot;:&quot;S. Yoshiya&quot;} {&quot;name&quot;:&quot;M. Kurosaka&quot;} {&quot;name&quot;:&quot;Y. Hata&quot;}, “Automated quantification of 3D knee kinematics using 2D X-ray fluoroscopy video sequence images,” <i>International Journal of Computer Assisted Radiology and Surgery</i> vol. 1, no. 7 2006.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">90.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Katsuya Kondo&quot;} {&quot;name&quot;:&quot;Yutaka Hata&quot;}, “Computer-aided diagnosis of intracranial aneurysms in MRA images with case-based reasoning,” <i>IEICE Transactions on Fundamentals of Electronics, Communications and Computer Sciences</i> vol. E89-A, no. 1, pp. 340–350 2006.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">91.</span>
+          <div class="cite">{&quot;name&quot;:&quot;S Kobashi&quot;} {&quot;name&quot;:&quot;K Kondo&quot;} {&quot;name&quot;:&quot;Y Hata&quot;}, “Computer-aided diagnosis of intracranial aneurysms in MRA images with case-based reasoning,” <i>IEICE TRANSACTIONS ON INFORMATION AND SYSTEMS</i> vol. E89D, no. 1, pp. 340–350 2006.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">92.</span>
+          <div class="cite">{&quot;name&quot;:&quot;D. Kubo&quot;} {&quot;name&quot;:&quot;S. Kobashi&quot;} {&quot;name&quot;:&quot;A. Okayama&quot;} {&quot;name&quot;:&quot;N. Shibanuma&quot;} {&quot;name&quot;:&quot;M. Yagi&quot;} {&quot;name&quot;:&quot;K. Kondo&quot;} {&quot;name&quot;:&quot;S. Yoshiya&quot;} {&quot;name&quot;:&quot;Y. Hata&quot;}, “Fully automated measurement of 3D knee kinematics after anterior cruciate ligament reconstruction using multidetector-row CT and X- Ray fluoroscopic images,” <i>International Journal of Computer Assisted Radiology and Surgery</i> vol. 1, no. SUPPL. 7, pp. 237–239 2006.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">93.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Katsuya Kondo&quot;} {&quot;name&quot;:&quot;Yutaka Hata&quot;}, “Fully automated segmentation of cerebral ventricles from 3-D SPGR MR images using fuzzy representative line,” <i>SOFT COMPUTING</i> vol. 10, no. 12, pp. 1181–1191 2006.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">94.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Yuji Fujiki&quot;} {&quot;name&quot;:&quot;Mieko Matsui&quot;} {&quot;name&quot;:&quot;Noriko Inoue&quot;} {&quot;name&quot;:&quot;Katsuya Kondo&quot;} {&quot;name&quot;:&quot;Yutaka Hata&quot;} {&quot;name&quot;:&quot;Tohru Sawada&quot;}, “Interactive segmentation of the cerebral lobes with fuzzy inference in 3T MR images.,” <i>IEEE transactions on systems, man, and cybernetics. Part B, Cybernetics : a publication of the IEEE Systems, Man, and Cybernetics Society</i> vol. 36, no. 1, pp. 74–86 2006.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2005</span><span class="badge">2</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">95.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Kobashi S&quot;} {&quot;name&quot;:&quot;Komosada T&quot;} {&quot;name&quot;:&quot;Shibanuma N&quot;} {&quot;name&quot;:&quot;Yamaguchi M&quot;} {&quot;name&quot;:&quot;Muratsu H&quot;} {&quot;name&quot;:&quot;Kondo K&quot;} {&quot;name&quot;:&quot;Yshiya S&quot;} {&quot;name&quot;:&quot;Hata Y&quot;} {&quot;name&quot;:&quot;Kurosaka M&quot;}, “Fuzzy image matching for pose recognition of occulted knee implants using fluoroscopy images,” <i>J Advanced Computational Intelligence and Intelligent Informatics</i> vol. Vol. 9, No. 2, pp. 181-195, no. 2, pp. 181–195 2005.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">96.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Yutaka Hata&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Katsuya Kondo&quot;} {&quot;name&quot;:&quot;Yuri T Kitamura&quot;} {&quot;name&quot;:&quot;Toshio Yanagida&quot;}, “Transcranial ultrasonography system for visualizing skull and brain surface aided by fuzzy expert system.,” <i>IEEE transactions on systems, man, and cybernetics. Part B, Cybernetics : a publication of the IEEE Systems, Man, and Cybernetics Society</i> vol. 35, no. 6, pp. 1360–73 2005.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2004</span><span class="badge">2</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">97.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Sayaka Imaeda&quot;} {&quot;name&quot;:&quot;Yuri T. Kitamura&quot;} {&quot;name&quot;:&quot;Katsuya Kondo&quot;} {&quot;name&quot;:&quot;Yutaka Hata&quot;} {&quot;name&quot;:&quot;Toshio Yanagida&quot;}, “Regional Specificity of Hemodynamic Response Delay Analyzed by a New Wavelet Based Method: HAW,” <i>NeuroImage</i> 2004.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">98.</span>
+          <div class="cite">{&quot;name&quot;:&quot;S Kobashi&quot;} {&quot;name&quot;:&quot;K Kondo&quot;} {&quot;name&quot;:&quot;Y Hata&quot;}, “Target image enhancement using representative line in MR cholangiography images,” <i>INTERNATIONAL JOURNAL OF IMAGING SYSTEMS AND TECHNOLOGY</i> vol. 14, no. 3, pp. 122–130 2004.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2003</span><span class="badge">1</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">99.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Taro Inazumi&quot;} {&quot;name&quot;:&quot;Yuri T. Kitamura&quot;} {&quot;name&quot;:&quot;Katsuya Kondo&quot;} {&quot;name&quot;:&quot;Yutaka Hata&quot;} {&quot;name&quot;:&quot;Toshio Yanagida&quot;}, “Quantitative Evaluation of the Wavelet Based Analyzing Method in ER-fMRI Study and Comparison with SPM99,” <i>NeuroImage</i> 2003.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2001</span><span class="badge">3</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">100.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Yuri T. Kitamura&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Yutaka Hata&quot;} {&quot;name&quot;:&quot;Mika Otsuki&quot;} {&quot;name&quot;:&quot;Hiroaki Naritomi&quot;} {&quot;name&quot;:&quot;Toshio Yanagida&quot;}, “Dynamic Brain Activation During Improvement in a Sequential Motor Performance: An NIRS/I Study,” <i>NeuroImage</i> 2001.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">101.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Mika Otsuki&quot;} {&quot;name&quot;:&quot;Yuri T. Kitamura&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Hiroaki Naritomi&quot;} {&quot;name&quot;:&quot;Yutaka Hata&quot;} {&quot;name&quot;:&quot;Toshio Yanagida&quot;}, “Functional MRI of Word Retrieval: Differences Depending on the retrieval strategy,” <i>NeuroImage</i> 2001.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">102.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Yuri T. Kitamura&quot;} {&quot;name&quot;:&quot;Mika Otsuki&quot;} {&quot;name&quot;:&quot;Yutaka Hata&quot;} {&quot;name&quot;:&quot;Hiroaki Naritomi&quot;} {&quot;name&quot;:&quot;Toshio Yanagida&quot;}, “Time Series Analysis in Near- Infrared Spetroscopy Aided by Fuzzy C-means and Wavelet Transforms,” <i>NeuroImage</i> 2001.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+
+        <section class="year-section">
+          <div class="year-head"><span class="year">2000</span><span class="badge">3</span></div>
+          <ol class="papers">
+            
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">103.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Yutaka Hata&quot;} {&quot;name&quot;:&quot;Yuri T. Kitamura&quot;} {&quot;name&quot;:&quot;Toshio Yanagida&quot;}, “3-D Visualization of the Structure of Cerebral Blood Vessels Using Fuzzy Image Processing.,” <i>Proceedings of 4th Asian Fuzzy Systems Symposium</i> 2000.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">104.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Yutaka Hata&quot;} {&quot;name&quot;:&quot;Yuri T. Kitamura&quot;} {&quot;name&quot;:&quot;Toshio Yanagida&quot;}, “A fuzzy rule-based region growing method for segmentating 3-D dynamic MRI.,” <i>Biomedical Soft Computing and Human Sciences</i> vol. 6, no. 1, pp. 85–94 2000.</div>
+        </div>
+      </li>
+
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">105.</span>
+          <div class="cite">{&quot;name&quot;:&quot;Yutaka Hata&quot;} {&quot;name&quot;:&quot;Syoji Kobashi&quot;} {&quot;name&quot;:&quot;Yuri Kitamura&quot;} {&quot;name&quot;:&quot;Toshio Yanagida&quot;}, “FIG application for 3D medical imagings,” <i>Medical Imaging Technology</i> 2000.</div>
+        </div>
+      </li>
+          </ol>
+        </section>
+      
+</div>
 </body>
 </html>
