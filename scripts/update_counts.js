@@ -153,32 +153,66 @@ function joinAuthorsIEEE(list) {
 }
 
 function toAuthors(item) {
-  const arr =
-    item?.authors ||
-    item?.author ||
-    item?.creators ||
-    item?.contributors ||
-    item?.["rm:authors"] ||
-    [];
+  // まず「配列」を最優先で拾う（ここが重要）
+  const candidates = [
+    item?.authors,
+    item?.creators,
+    item?.contributors,
+    item?.author,
+    item?.creator,
+    item?.contributor,
+    item?.["rm:authors"],
+  ];
 
-  const names = (Array.isArray(arr) ? arr : [arr])
-    .map((a) =>
-      firstNonEmpty(
-        a?.name,
-        a?.full_name,
-        a?.display_name,
-        a?.["rm:display_name"],
-        a?.family_name && a?.given_name
-          ? `${pickLangText(a.given_name)} ${pickLangText(a.family_name)}`
-          : "",
-        a
+  let arr = null;
+  let fallbackStr = "";
+
+  for (const c of candidates) {
+    if (Array.isArray(c) && c.length) {
+      arr = c;
+      break;
+    }
+    if (!arr && typeof c === "string" && c.trim()) {
+      fallbackStr = c.trim();
+    }
+  }
+
+  // 配列が取れた場合：各著者を正規化して join
+  if (arr) {
+    const names = arr
+      .map((a) =>
+        firstNonEmpty(
+          a?.name,
+          a?.full_name,
+          a?.display_name,
+          a?.["rm:display_name"],
+          // given/family が別の場合（これが一番信頼できる）
+          a?.family_name && a?.given_name
+            ? `${pickLangText(a.given_name)} ${pickLangText(a.family_name)}`
+            : "",
+          a
+        )
       )
-    )
-    .map(formatAuthorName)
-    .filter(Boolean);
+      .map(formatAuthorName)
+      .filter(Boolean);
 
-  return joinAuthorsIEEE(names);
+    return joinAuthorsIEEE(names);
+  }
+
+  // 配列が無く、文字列しかない場合：区切りがあれば分割して IEEE join
+  if (fallbackStr) {
+    const parts = fallbackStr
+      .split(/\s*[,;]\s*|\s+and\s+/i) // comma/semicolon/and で分割
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .map(formatAuthorName);
+
+    return joinAuthorsIEEE(parts);
+  }
+
+  return "";
 }
+
 
 /* =========================
  * Title / Journal
