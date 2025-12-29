@@ -1,6 +1,47 @@
 {
   "permalink": "read0134502",
-  "updatedAt": "2025-12-29T11:14:01.605Z",
-  "unclassified_count": 0,
-  "unclassified": []
+  "updatedAt": "2025-12-29T11:22:17.538Z",
+  "unclassified_count": 4,
+  "unclassified": [
+    {
+      "id": "27129189",
+      "year": "",
+      "title": null,
+      "raw_type_fields": {
+        "published_paper_type": "symposium",
+        "is_international_journal": null,
+        "referee": true
+      }
+    },
+    {
+      "id": "25169983",
+      "year": "",
+      "title": null,
+      "raw_type_fields": {
+        "published_paper_type": null,
+        "is_international_journal": null,
+        "referee": true
+      }
+    },
+    {
+      "id": "27129183",
+      "year": "",
+      "title": null,
+      "raw_type_fields": {
+        "published_paper_type": "research_society",
+        "is_international_journal": null,
+        "referee": false
+      }
+    },
+    {
+      "id": "27129181",
+      "year": "",
+      "title": null,
+      "raw_type_fields": {
+        "published_paper_type": "research_society",
+        "is_international_journal": null,
+        "referee": false
+      }
+    }
+  ]
 }

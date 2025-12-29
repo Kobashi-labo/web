@@ -1,1314 +1,466 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Journal Papers | Kobashi Laboratory</title>
-  <style>
-    body{
-      margin:0;
-      font-family: 'Segoe UI','Noto Sans JP',sans-serif;
-      background:#f5f7fb;
-      color:#111827;
-    }
-    header{
-      background:#1e3a8a;
-      color:#fff;
-      padding:28px 20px;
-    }
-    .wrap{max-width:1100px;margin:0 auto;padding:0 10px;}
-    h1{margin:0;font-size:34px;letter-spacing:0.5px;}
-    .sub{margin-top:8px;opacity:0.9}
-    .topbar{
-      margin-top:14px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .btn{
-      display:inline-block;
-      color:#fff;
-      text-decoration:none;
-      padding:10px 14px;
-      border:1px solid rgba(255,255,255,0.35);
-      border-radius:999px;
-      transition:transform .15s ease;
-      white-space:nowrap;
-    }
-    .btn:hover{transform:translateY(-1px)}
-    .card{
-      margin-top:-18px;
-      background:#fff;
-      border-radius:18px;
-      box-shadow:0 18px 40px rgba(0,0,0,0.08);
-      padding:22px 22px;
-    }
-    .meta{
-      display:flex;gap:22px;flex-wrap:wrap;
-      color:#374151;
-      font-size:14px;
-    }
-    main{padding:22px 0 50px;}
-    .year-block{margin-top:22px;}
-    .year-head{
-      display:flex;align-items:center;gap:12px;
-      margin:18px 0 10px;
-    }
-    .year{
-      font-size:26px;font-weight:800;color:#1e3a8a;
-    }
-    .year-count{
-      width:34px;height:34px;border-radius:999px;
-      background:#1e3a8a;color:#fff;
-      display:flex;align-items:center;justify-content:center;
-      font-weight:700;
-    }
-    .paper-list{
-      margin:0;
-      padding-left:22px;
-    }
-    .paper{
-      margin:14px 0;
-      padding:14px 16px;
-      background:#fff;
-      border-radius:14px;
-      box-shadow:0 8px 22px rgba(0,0,0,0.06);
-      list-style:decimal;
-    }
-    .paper-cite{
-      line-height:1.65;
-      font-size:16px;
-    }
-    .paper-link{margin-top:6px;}
-    .paper-link a{color:#2563eb;text-decoration:none;}
-    .paper-link a:hover{text-decoration:underline;}
-    footer{
-      color:#6b7280;
-      font-size:13px;
-      padding:18px 0;
-      text-align:center;
-    }
-    @media (max-width: 640px){
-      h1{font-size:26px;}
-      .paper{padding:12px 12px}
-      .paper-cite{font-size:15px}
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Journal Papers | Kobashi Laboratory</title>
+<style>
+  body { font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans JP", sans-serif; margin:0; background:#f5f7fb; color:#111; }
+  header { background:#1e3a8a; color:#fff; padding:32px 24px; }
+  header h1 { margin:0; font-size:42px; letter-spacing:0.5px; }
+  header .sub { margin-top:8px; opacity:0.95; }
+  header .topbar { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
+  .back a { color:#fff; text-decoration:none; border:1px solid rgba(255,255,255,0.35); padding:10px 16px; border-radius:999px; display:inline-block; }
+  .back a:hover { background:rgba(255,255,255,0.12); }
+  .meta { max-width:1100px; margin: 18px auto 0; background:#fff; border-radius:18px; padding:16px 18px; box-shadow:0 8px 25px rgba(0,0,0,0.08); }
+  .meta b { margin-right:6px; }
+  .wrap { max-width:1100px; margin: 26px auto 64px; padding:0 16px; }
+  .year-block { margin: 28px 0 36px; }
+  .year-header { display:flex; align-items:center; gap:12px; margin: 0 0 10px; }
+  .year { font-size:40px; font-weight:800; color:#1e3a8a; }
+  .badge { width:40px; height:40px; border-radius:999px; background:#1e3a8a; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; }
+  .list { margin:0; padding-left: 22px; }
+  .item { margin: 10px 0 14px; }
+  .card { background:#fff; border-radius:16px; padding:16px 18px; box-shadow:0 6px 18px rgba(0,0,0,0.07); line-height:1.65; }
+  .card a { color:#1e3a8a; }
+  @media (max-width: 640px) {
+    header h1 { font-size:32px; }
+    .year { font-size:32px; }
+  }
+</style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
+<header>
+  <div class="topbar">
+    <div>
       <h1>Journal Papers</h1>
       <div class="sub">論文誌（Journal papers only）</div>
-      <div class="topbar">
-        <div style="opacity:.9">IEEE style (vol/no/pp shown when available)</div>
-        <a class="btn" href="../index.html#recent-ja">← Publications に戻る</a>
-      </div>
     </div>
-  </header>
-
-  <div class="wrap">
-    <div class="card">
-      <div class="meta">
-        <div><strong>Updated:</strong> 2025-12-29</div>
-        <div><strong>Items:</strong> 105</div>
-        <div><strong>Source:</strong> researchmap API (generated daily via GitHub Actions)</div>
-      </div>
-    </div>
-
-    <main>
-      
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2025</div>
-            <div class="year-count">6</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] vol. 20, no. 12, pp. 2413–2422 2025.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. 28, no. 1 2025.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">3.</span>
-                <span class="cite">[object Object] vol. 15, no. 1, pp. 40952–40952 2025.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">4.</span>
-                <span class="cite">[object Object] vol. abs/2509.13873 2025.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">5.</span>
-                <span class="cite">[object Object] vol. 14, no. 15, pp. e041293 2025.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">6.</span>
-                <span class="cite">[object Object] vol. 29, no. 2, pp. 325–336 2025.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2024</div>
-            <div class="year-count">8</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] vol. 106, no. 23, pp. 2196–2204 2024.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. 11, no. 12, pp. 3103–3114 2024.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">3.</span>
-                <span class="cite">[object Object] 2024.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">4.</span>
-                <span class="cite">[object Object] vol. 19, no. 11, pp. 2143–2152 2024.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">5.</span>
-                <span class="cite">[object Object] 2024.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">6.</span>
-                <span class="cite">[object Object] vol. 14, no. 1, pp. 17270–17270 2024.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">7.</span>
-                <span class="cite">[object Object] vol. 36, no. 2, pp. 610–615 2024.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">8.</span>
-                <span class="cite">[object Object] vol. 14, no. 1, pp. 8004–8004 2024.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2023</div>
-            <div class="year-count">5</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] vol. 13, no. 1, pp. 16542–16542 2023.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. 44, pp. 127–133 2023.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">3.</span>
-                <span class="cite">[object Object] vol. 35, no. 1, pp. 593–597 2023.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">4.</span>
-                <span class="cite">[object Object] vol. 13, no. 2, pp. 264–264 2023.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">5.</span>
-                <span class="cite">[object Object] vol. 27, no. 6, pp. 1079–1085 2023.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2022</div>
-            <div class="year-count">2</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] vol. 26, no. 1, pp. 42–50 2022.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. abs/2203.15151 2022.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2021</div>
-            <div class="year-count">5</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] vol. 26, no. 2, pp. 97–102 2021.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. 139, pp. 104954–104954 2021.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">3.</span>
-                <span class="cite">[object Object] vol. 11, no. 16, pp. 7230–7230 2021.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">4.</span>
-                <span class="cite">[object Object] vol. 11, no. 1, pp. 11716–11716 2021.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">5.</span>
-                <span class="cite">[object Object] vol. 42, pp. 191–197 2021.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2020</div>
-            <div class="year-count">7</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] vol. 10, no. 1, pp. 19261–19261 2020.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. 10, no. 16, pp. 5591–5591 2020.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">3.</span>
-                <span class="cite">[object Object] vol. 25, no. 2, pp. 67–74 2020.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">4.</span>
-                <span class="cite">[object Object] vol. 19, no. 2, pp. 137–143 2020.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">5.</span>
-                <span class="cite">[object Object] vol. 8, no. 12, pp. 2325967120968068–2325967120968068 2020.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">6.</span>
-                <span class="cite">[object Object] vol. 16, no. 5, pp. 499–506 2020.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">7.</span>
-                <span class="cite">[object Object] vol. 16, no. 5, pp. 491–498 2020.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2019</div>
-            <div class="year-count">6</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] vol. 54, no. 9, pp. 877–881 2019.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. 102, no. 6, pp. 42–51 2019.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">3.</span>
-                <span class="cite">[object Object] vol. 29, no. 3, pp. 675–681 2019.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">4.</span>
-                <span class="cite">[object Object] vol. 60, no. 4, pp. 310‐313 2019.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">5.</span>
-                <span class="cite">[object Object] vol. 25, no. 1, pp. 105–116 2019.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">6.</span>
-                <span class="cite">[object Object] vol. 139, no. 2, pp. 29–37 2019.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2018</div>
-            <div class="year-count">8</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] vol. 36, no. 5, pp. 238–242 2018.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. 39, pp. 107–110 2018.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">3.</span>
-                <span class="cite">[object Object] vol. 22, no. 5, pp. 739 2018.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">4.</span>
-                <span class="cite">[object Object] vol. 22, no. 2, pp. 249–255 2018.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">5.</span>
-                <span class="cite">[object Object] vol. 2018, pp. 8458024–8458024 2018.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">6.</span>
-                <span class="cite">[object Object] vol. abs/1806.02031 2018.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">7.</span>
-                <span class="cite">[object Object] vol. 22, no. 1, pp. 113–120 2018.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">8.</span>
-                <span class="cite">[object Object] vol. 22, no. 5, pp. 739–739 2018.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2017</div>
-            <div class="year-count">3</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] vol. 38, pp. 113–118 2017.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. E100D, no. 8, pp. 1625–1633 2017.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">3.</span>
-                <span class="cite">[object Object] vol. 22, no. 1, pp. 19‐28 2017.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2016</div>
-            <div class="year-count">6</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] vol. 52, no. 1-2, pp. 479–486 2016.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. 12, no. 4, pp. 1351–1352 2016.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">3.</span>
-                <span class="cite">[object Object] vol. 12, no. 4, pp. 1385–1396 2016.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">4.</span>
-                <span class="cite">[object Object] vol. 9835, pp. 405–412 2016.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">5.</span>
-                <span class="cite">[object Object] vol. 2016, pp. 7358162–7358162 2016.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">6.</span>
-                <span class="cite">[object Object] vol. 52, no. 1-2, pp. 461–469 2016.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2015</div>
-            <div class="year-count">2</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] vol. 10, no. 5, pp. e0125573 2015.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. 28, no. 4, pp. 155–160 2015.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2014</div>
-            <div class="year-count">5</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] vol. 4, pp. 6997–6997 2014.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. 268, pp. 65–75 2014.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">3.</span>
-                <span class="cite">[object Object] vol. 268, pp. 51–64 2014.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">4.</span>
-                <span class="cite">[object Object] vol. 18, no. 4, pp. 489–498 2014.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">5.</span>
-                <span class="cite">[object Object] vol. 268, pp. 77–84 2014.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2013</div>
-            <div class="year-count">7</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] vol. 16, no. 9, pp. 937–42 2013.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. 2013, pp. 2048–51 2013.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">3.</span>
-                <span class="cite">[object Object] vol. 2013, pp. 7136–9 2013.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">4.</span>
-                <span class="cite">[object Object] vol. 5, no. 1, pp. 67–79 2013.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">5.</span>
-                <span class="cite">[object Object] vol. 5, no. 2, pp. 147–160 2013.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">6.</span>
-                <span class="cite">[object Object] vol. 5, no. 2, pp. 115–124 2013.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">7.</span>
-                <span class="cite">[object Object] 2013.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2012</div>
-            <div class="year-count">1</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] vol. 7, no. 2, pp. 273–80 2012.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2011</div>
-            <div class="year-count">6</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] vol. 26, no. 8, pp. 1556–1561 2011.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. 15, no. 3, pp. 362–369 2011.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">3.</span>
-                <span class="cite">[object Object] vol. 4, no. 2, pp. 89–91 2011.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">4.</span>
-                <span class="cite">[object Object] vol. 32, pp. 497–502 2011.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">5.</span>
-                <span class="cite">[object Object] vol. 18, no. 3 D, pp. 655–662 2011.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">6.</span>
-                <span class="cite">[object Object] vol. 10, no. 1, pp. 133–145 2011.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2010</div>
-            <div class="year-count">7</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] vol. 22, no. 6, pp. 787–788 2010.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. 257, no. 12, pp. 2071–7 2010.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">3.</span>
-                <span class="cite">[object Object] 2010.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">4.</span>
-                <span class="cite">[object Object] vol. 6, no. 3, pp. 829–842 2010.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">5.</span>
-                <span class="cite">[object Object] vol. 14, no. 2, pp. 122–127 2010.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">6.</span>
-                <span class="cite">[object Object] vol. E93-D, no. 3, pp. 542–549 2010.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">7.</span>
-                <span class="cite">[object Object] vol. 28, no. 5, pp. 317–321 2010.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2009</div>
-            <div class="year-count">2</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] vol. 9, no. 3, pp. 1156–1169 2009.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. 3, no. 2, pp. 231–238 2009.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2008</div>
-            <div class="year-count">2</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] 2008.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. 12, no. 1, pp. 32–40 2008.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2006</div>
-            <div class="year-count">6</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] vol. 10, no. 12, pp. 1181–1191 2006.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. 1, no. SUPPL. 7, pp. 237–239 2006.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">3.</span>
-                <span class="cite">[object Object] vol. 36, no. 1, pp. 74–86 2006.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">4.</span>
-                <span class="cite">[object Object] vol. E89-A, no. 1, pp. 340–350 2006.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">5.</span>
-                <span class="cite">[object Object] vol. E89D, no. 1, pp. 340–350 2006.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">6.</span>
-                <span class="cite">[object Object] vol. 1, no. 7, pp. 491 2006.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2005</div>
-            <div class="year-count">2</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] vol. 35, no. 6, pp. 1360–73 2005.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. Vol. 9, No. 2, pp. 181-195, no. 2, pp. 181–195 2005.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2004</div>
-            <div class="year-count">2</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] 2004.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. 14, no. 3, pp. 122–130 2004.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2003</div>
-            <div class="year-count">1</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] 2003.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2001</div>
-            <div class="year-count">3</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] 2001.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] 2001.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">3.</span>
-                <span class="cite">[object Object] 2001.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-
-        <section class="year-block">
-          <div class="year-head">
-            <div class="year">2000</div>
-            <div class="year-count">3</div>
-          </div>
-          <ol class="paper-list">
-            
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">1.</span>
-                <span class="cite">[object Object] 2000.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">2.</span>
-                <span class="cite">[object Object] vol. 6, no. 1, pp. 85–94 2000.</span>
-              </div>
-              
-            </li>
-          
-
-            <li class="paper">
-              <div class="paper-cite">
-                <span class="idx">3.</span>
-                <span class="cite">[object Object] 2000.</span>
-              </div>
-              
-            </li>
-          
-          </ol>
-        </section>
-      
-    </main>
-
-    <footer>
-      &copy; 2025 Kobashi Laboratory, University of Hyogo
-    </footer>
+    <div class="back"><a href="../index.html#recent-ja">← Publications に戻る</a></div>
   </div>
+</header>
+
+<div class="meta">
+  <b>Updated:</b> 2025-12-29 &nbsp;&nbsp;&nbsp;
+  <b>Items:</b> 101 &nbsp;&nbsp;&nbsp;
+  <b>Source:</b> researchmap API (generated daily via GitHub Actions)
+</div>
+
+<div class="wrap">
+  
+      <div class="year-block">
+        <div class="year-header">
+          <div class="year">----</div>
+          <div class="badge">101</div>
+        </div>
+        <ol class="list">
+          
+            <li class="item">
+              <div class="card">Fubuki Sawa, Daisuke Fujita, Kenichi Shimada, Hideo Aihara, Toshiyuki Uehara, Yutaka Koide, Ryota Kawasaki, Kazunari Ishii, Syoji Kobashi, vol. 20, no. 12, pp. 2413-2422,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Md Anas Ali, Ryunosuke Maeda, Daisuke Fujita, Naoyuki Miyahara, Fumihiko Namba, Syoji Kobashi, vol. 28, no. 1,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Yukihiro Imaoka, Katsuhiro Mikami, Ai Fuchita, Satoshi Ikeda, Nice Ren, Shogo Watanabe, Soichiro Abe, Tomohide Yoshie, Satoshi Namitome, Syoji Kobashi, Hirotoshi Imamura, Koji Iihara, vol. 15, no. 1, pp. 40952-40952,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Siam Tahsin Bhuiyan, Rashedur Rahman, Sefatul Wasi, Naomi Yagi, Syoji Kobashi, Ashraful Islam, Saadia Binte Alam, vol. abs/2509.13873,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Yukihiro Imaoka, Nice Ren, Soshiro Ogata, Shogo Watanabe, Tomoya Itatani, Eri Kiyoshige, Hirotoshi Imamura, Kunihiro Nishimura, Syoji Kobashi, Yasuyuki Kaku, Koichi Arimura, Hitoshi Fukuda, Masafumi Ihara, Tsuyoshi Ohta, Yuji Matsumaru, Nobuyuki Sakai, Takanari Kitazono, Shigeru Fujimoto, Kuniaki Ogasawara, Koji Yoshimoto, Akitake Mukasa, Koji Iihara, vol. 14, no. 15, pp. e041293,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Md Anas Ali, Daisuke Fujita, Hiromitsu Kishimoto, Yuna Makihara, Kazuma Noguchi, Syoji Kobashi, vol. 29, no. 2, pp. 325-336,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Kenta Takatsuji, Yoshikazu Kida, Kenta Sasaki, Daisuke Fujita, Yusuke Kobayashi, Tsuyoshi Sukenari, Yoshihiro Kotoura, Masataka Minami, Syoji Kobashi, Kenji Takahashi, vol. 106, no. 23, pp. 2196-2204,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Yukihiro Imaoka, Nice Ren, Soshiro Ogata, Hirotoshi Imamura, Yasuyuki Kaku, Koichi Arimura, Shogo Watanabe, Eri Kiyoshige, Kunihiro Nishimura, Syoji Kobashi, Masafumi Ihara, Kenji Kamiyama, Masafumi Morimoto, Tsuyoshi Ohta, Hidenori Endo, Yuji Matsumaru, Nobuyuki Sakai, Takanari Kitazono, Shigeru Fujimoto, Kuniaki Ogasawara, Koji Iihara, vol. 11, no. 12, pp. 3103-3114,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Shuya Ishida, Kento Morita, Kinta Hatakeyama, Nice Ren, Shogo Watanabe, Syoji Kobashi, Koji Iihara, Tetsushi Wakabayashi,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Kenta Sasaki, Daisuke Fujita, Kenta Takatsuji, Yoshihiro Kotoura, Masataka Minami, Yusuke Kobayashi, Tsuyoshi Sukenari, Yoshikazu Kida, Kenji Takahashi, Syoji Kobashi, vol. 19, no. 11, pp. 2143-2152,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Shogo Watanabe, Nice Ren, Soshiro Ogata, Yuriko Nakaoku, Akihito Hagihara, Syoji Kobashi, Haruhiko Hiramatsu, Tsuyoshi Ohta, Teruo Noguchi, Hiroharu Kataoka, Masahumi Ihara, Kunihiro Nishimura, Koji Iihara,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Takao Sato, Tomoka Nishino, Natsuki Kawaguchi, Hisashi Mori, Hayato Uchida, Kiichiro Murotani, Yuichi Kimura, Isao Mizukura, Syoji Kobashi, Orlando Arrieta, vol. 14, no. 1, pp. 17270-17270,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Daisuke FUJITA, Yuki ADACHI, Syoji KOBASHI, vol. 36, no. 2, pp. 610-615,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Rashedur Rahman, Naomi Yagi, Keigo Hayashi, Akihiro Maruo, Hirotsugu Muratsu, Syoji Kobashi, vol. 14, no. 1, pp. 8004-8004,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Md Anas Ali, Daisuke Fujita, Syoji Kobashi, vol. 13, no. 1, pp. 16542-16542,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">藤田大輔, 山本偉嗣, 諸岡孝俊, 井石琢也, 牛飼武, 吉矢晋一, 小橋昌司, vol. 44, pp. 127-133,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Shinya OKUDA, Daisuke FUJITA, Hiroshi TANAKA, Tomoyuki MUTO, Hiroaki INUI, Syoji KOBASHI, vol. 35, no. 1, pp. 593-597,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Fahmida Haque, Mamun B. I. Reaz, Muhammad E. H. Chowdhury, Mohd Ibrahim bin Shapiai, Rayaz A. Malik, Mohammed Alhatou, Syoji Kobashi, Iffat Ara, Sawal H. M. Ali, Ahmad A. A. Bakar, Mohammad Arif Sobhan Bhuiyan, vol. 13, no. 2, pp. 264-264,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Rashedur Rahman, Naomi Yagi, Keigo Hayashi, Akihiro Maruo, Hirotsugu Muratsu, Syoji Kobashi, vol. 27, no. 6, pp. 1079-1085,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Kohei Nakatsu, Rashedur Rahman, Kento Morita, Daisuke Fujita, Syoji Kobashi, vol. 26, no. 1, pp. 42-50,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Fahmida Haque, Mamun Bin Ibne Reaz, Muhammad Enamul Hoque Chowdhury, Rayaz Malik, Mohammed Alhatou, Syoji Kobashi, Iffat Ara, Sawal Hamid Md. Ali, Ahmad Ashrif A. Bakar, Geetika Srivastava, vol. abs/2203.15151,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Daisuke FUJITA, Shota HARUMOTO, Ryusuke DEGUCHI, Shimpei YAMASHITA, Syoji KOBASHI, vol. 26, no. 2, pp. 97-102,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Fahmida Haque, Mamun Bin Ibne Reaz, Muhammad E.H. Chowdhury, Sawal Hamid Md Ali, Ahmad Ashrif A Bakar, Tawsifur Rahman, Syoji Kobashi, Chitra A. Dhawale, Mohammad Arif Sobhan Bhuiyan, vol. 139, pp. 104954-104954,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Solaiman Ahmed, Tanveer Ahmed Bhuiyan, Taiki Kishi, Manabu Nii, Syoji Kobashi, vol. 11, no. 16, pp. 7230-7230,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Kazutoshi Ukai, Rashedur Rahman, Naomi Yagi, Keigo Hayashi, Akihiro Maruo, Hirotsugu Muratsu, Syoji Kobashi, vol. 11, no. 1, pp. 11716-11716,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">中津康平, 田中洋, 乾浩明, 信原克哉, 小橋昌司, vol. 42, pp. 191-197,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Fahad Parvez Mahdi, Kota Motoki, Syoji Kobashi, vol. 10, no. 1, pp. 19261-19261,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Fahad Parvez Mahdi, Tomoyuki Muto, Hiroshi Tanaka, Hiroaki Inui, Katsuya Nobuhara, Syoji Kobashi, vol. 10, no. 16, pp. 5591-5591,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Fahad Parvez MAHDI, Hiroshi TANAKA, Katsuya NOBUHARA, Syoji KOBASHI, vol. 25, no. 2, pp. 67-74,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Shoichi NISHIO, Belayat HOSSAIN, Manabu NII, Naomi YAGI, Takafumi HIRANAKA, Syoji KOBASHI, vol. 19, no. 2, pp. 137-143,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Hiroshi Tanaka, Toyohiko Hayashi, Hiroaki Inui, Tomoyuki Muto, Kohnan Tsuchiyama, Hiroki Ninomiya, Yasuo Nakamura, Syoji Kobashi, Katsuya Nobuhara, vol. 8, no. 12, pp. 2325967120968068-2325967120968068,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Binte Alam, Manabu Nii, Akinobu Shimizu, Syoji Kobashi, vol. 16, no. 5, pp. 499-506,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Kento Morita, Manabu Nii, Min Sung Koh, Kaori Kashiwa, Hiroshi Nakayama, Shunichiro Kambara, Shinichi Yoshiya, Syoji Kobashi, vol. 16, no. 5, pp. 491-498,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Tomoyuki Muto, Hiroaki Inui, Hiroki Ninomiya, Hiroshi Tanaka, Kazuki Ishiro, Kento Morita, Syoji Kobashi, Katsuya Nobuhara, vol. 54, no. 9, pp. 877-881,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Kazutoshi Ukai, Rashedur Rahman, Syoji Kobashi, vol. 102, no. 6, pp. 42-51,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Takatoshi Morooka, Makiko Okuno, Daisuke Seino, Takuya Iseki, Shigeo Fukunishi, Syoji Kobashi, Shinichi Yoshiya, vol. 29, no. 3, pp. 675-681,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">盛田健人, 小橋昌司, vol. 60, no. 4, pp. 310‐313,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Belayat Hossain, Takatoshi Morooka, Makiko Okuno, Manabu Nii, Shinichi Yoshiya, Syoji Kobashi, vol. 25, no. 1, pp. 105-116,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Kazutoshi Ukai, Rashedur Rahman, Syoji Kobashi, vol. 139, no. 2, pp. 29-37,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">盛田 健人, 田下 徳起, 新居 学, 小橋 昌司, vol. 36, no. 5, pp. 238-242,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">神原 俊一郎, 中山 寛, 小橋 昌司, 吉矢 晋一, vol. 39, pp. 107-110,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Yutaka Hata, Shoji Kobashi, Hiroshi Nakajima, vol. 22, no. 5, pp. 739,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Marin Yasugi, Belayat Hossain, Manabu Nii, Syoji Kobashi, vol. 22, no. 2, pp. 249-255,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Md Atiqur Rahman Ahad, Syoji Kobashi, João Manuel R S Tavares, vol. 2018, pp. 8458024-8458024,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Moazzem Hossain, Soichi Nishio, Takafumi Hiranaka, Syoji Kobashi, vol. abs/1806.02031,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Kento Morita 0001, Manabu Nii, Norikazu Ikoma, Takatoshi Morooka, Shinichi Yoshiya, Syoji Kobashi, vol. 22, no. 1, pp. 113-120,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Yutaka Hata, Shoji Kobashi, Hiroshi Nakajima, vol. 22, no. 5, pp. 739-739,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">井城一輝, 盛田健人, 新居学, 田中洋, 小橋昌司, 信原克哉, vol. 38, pp. 113-118,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Naotake Kamiura, Shoji Kobashi, Manabu Nii, Takayuki Yumoto, Ichiro Yamamoto, vol. E100D, no. 8, pp. 1625-1633,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">NII Manabu, NII Manabu, KASHIWAKI Riku, MORIMOTO Masakazu, KOBASHI Syoji, KAMIURA Naotake, HATA Yutaka, IMAWAKI Seturo, ISHIKAWA Tomomoto, MATSUBAYASHI Hidehiko, vol. 22, no. 1, pp. 19‐28,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Atsushi Yukawa, Atsushi Kono, Tatsuya Nishii, Naotake Kamiura, Syoji Kobashi, Yutaka Hata, vol. 52, no. 1-2, pp. 479-486,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Kobashi, S., Ahad, M.A.R., Kim, N., Tong, Y., Yagi, N., vol. 12, no. 4, pp. 1351-1352,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Alam, S.B., Nakano, R., Kobashi, S., vol. 12, no. 4, pp. 1385-1396,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Hossain, B.M., Nii, M., Morooka, T., Okuno, M., Yoshiya, S., Kobashi, S., vol. 9835, pp. 405-412,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Kobashi, S., Nyúl, L.G., Udupa, J.K., vol. 2016, pp. 7358162-7358162,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Shoichi Furukawa, Shoji Kobashi, Naotake Kamiura, Yutaka Hata, Seturo Imawaki, Tomomoto Ishikawa, vol. 52, no. 1-2, pp. 461-469,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Matsuo, Y., Watanabe, M., Taniike, M., Mohri, I., Kobashi, S., Tachibana, M., Kobayashi, Y., Kitamura, Y.K., vol. 10, no. 5, pp. e0125573,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Tsutsui Ryota, Kamiura Naotake, Isokawa Teijiro, Kobashi Syoji, Tabuchi Hitoshi, Yamauchi Tomofusa, vol. 28, no. 4, pp. 155-160,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Mori, Y., Chen, T., Fujisawa, T., Kobashi, S., Ohno, K., Yoshida, S., Tago, Y., Komai, Y., Hata, Y., Yoshioka, Y., vol. 4, pp. 6997-6997,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Hata, H., Imawaki, S., Kuramoto, K., Kobashi, S., Hata, Y., vol. 268, pp. 65-75,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Fujisawa, T., Egawa, T., Taniguchi, K., Kobashi, S., Hata, Y., vol. 268, pp. 51-64,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Takeda, T., Sakai, Y., Kobashi, S., Kuramoto, K., Hata, Y., vol. 18, no. 4, pp. 489-498,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Kikuchi, S., Kaku, Y., Kuramoto, K., Kobashi, S., Hata, Y., vol. 268, pp. 77-84,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Hayashi, S., Nishiyama, T., Fujishiro, T., Kanzaki, N., Shibanuma, N., Kobashi, S., Kurosaka, M., vol. 16, no. 9, pp. 937-42,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Naomi Yagi, Tomomoto Ishikawa, Kei Kuramoto, Syoji Kobashi, Yutaka Hata, vol. 2013, pp. 2048-51,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Syoji Kobashi, Jayaram K Udupa, vol. 2013, pp. 7136-9,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Yagi, N., Nakamura, M., Kuramoto, K., Kobashi, S., Hata, Y., vol. 5, no. 1, pp. 67-79,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Takeda, T., Kuramoto, K., Kobashi, S., Hata, Y., vol. 5, no. 2, pp. 147-160,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Kobashi, S., Kuramoto, K., Wakata, Y., Ando, K., Ishikura, R., Ishikawa, T., Hirota, S., Hata, Y., vol. 5, no. 2, pp. 115-124,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Takeda, T., Kuramoto, K., Kobashi, S., Hata, Y.,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Hashioka, A., Kobashi, S., Kuramoto, K., Wakata, Y., Ando, K., Ishikura, R., Ishikawa, T., Hirota, S., Hata, Y., vol. 7, no. 2, pp. 273-80,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Yohei Tsumori, Shinichi Yoshiya, Masahiro Kurosaka, Shoji Kobashi, Nao Shibanuma, Motoi Yamaguchi, vol. 26, no. 8, pp. 1556-1561,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Kobashi, S., Yokomichi, D., Wakata, Y., Ando, K., Ishikura, R., Kuramoto, K., Hirota, S., Hata, Y., vol. 15, no. 3, pp. 362-369,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Syoji Kobashi, Noboru Takagi, vol. 4, no. 2, pp. 89-91,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">中島 祐介, 小橋 昌司, 今村 史明, vol. 32, pp. 497-502,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Takeda, J.T., Kuramoto, K., Kobashi, S., Hata, Y., vol. 18, no. 3 D, pp. 655-662,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Hata, Y., Kobashi, S., Kuramoto, K., Nakajima, H., vol. 10, no. 1, pp. 133-145,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">小橋 昌司, 畑 豊, vol. 22, no. 6, pp. 787-788,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Sachiko Tsuji-Akimoto, Shinsuke Hamada, Ichiro Yabe, Itaru Tamura, Mika Otsuki, Syoji Kobashi, Hidenao Sasaki, vol. 257, no. 12, pp. 2071-7,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">山口弘祐, 小橋昌司, 倉本 圭, 喜多村祐里, 毛利育子, 今脇節朗, 谷池雅子, 畑 豊,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Syoji Kobashi, Yutaka Hata, vol. 6, no. 3, pp. 829-842,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Syoji Kobashi, Nao Shibanuma, Yutaka Hata, vol. 14, no. 2, pp. 122-127,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Hayato Yamaguchi, Hiroshi Nakajima, Kazuhiko Taniguchi, Syoji Kobashi, Yutaka Hata, vol. E93-D, no. 3, pp. 542-549,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">KOBASHI Syoji, NAKAJIMA Yusuke, YOSHIYA Shinichi, vol. 28, no. 5, pp. 317-321,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Yutaka Hata, Syoji Kobashi, vol. 9, no. 3, pp. 1156-1169,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Yutaka Hata, Syoji Kobashi, Hiroshi Nakajima, vol. 3, no. 2, pp. 231-238,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Syoji Kobashi, Katsuya Kondo, Yutaka Hata, vol. 10, no. 12, pp. 1181-1191,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">D. Kubo, S. Kobashi, A. Okayama, N. Shibanuma, M. Yagi, K. Kondo, S. Yoshiya, Y. Hata, vol. 1, no. SUPPL. 7, pp. 237-239,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Syoji Kobashi, Yuji Fujiki, Mieko Matsui, Noriko Inoue, Katsuya Kondo, Yutaka Hata, Tohru Sawada, vol. 36, no. 1, pp. 74-86,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Syoji Kobashi, Katsuya Kondo, Yutaka Hata, vol. E89-A, no. 1, pp. 340-350,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">S Kobashi, K Kondo, Y Hata, vol. E89D, no. 1, pp. 340-350,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">S. Kobashi, T. Tomosada, N. Shibanuma, M. Yamaguchi, H. Muratsu, K. Kondo, S. Yoshiya, M. Kurosaka, Y. Hata, vol. 1, no. 7, pp. 491,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Yutaka Hata, Syoji Kobashi, Katsuya Kondo, Yuri T Kitamura, Toshio Yanagida, vol. 35, no. 6, pp. 1360-73,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Kobashi S, Komosada T, Shibanuma N, Yamaguchi M, Muratsu H, Kondo K, Yshiya S, Hata Y, Kurosaka M, vol. Vol. 9, No. 2, pp. 181-195, no. 2, pp. 181-195,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">S Kobashi, K Kondo, Y Hata, vol. 14, no. 3, pp. 122-130,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Mika Otsuki, Yuri T. Kitamura, Syoji Kobashi, Hiroaki Naritomi, Yutaka Hata, Toshio Yanagida,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Syoji Kobashi, Yuri T. Kitamura, Mika Otsuki, Yutaka Hata, Hiroaki Naritomi, Toshio Yanagida,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Yuri T. Kitamura, Syoji Kobashi, Yutaka Hata, Mika Otsuki, Hiroaki Naritomi, Toshio Yanagida,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Yutaka Hata, Syoji Kobashi, Yuri Kitamura, Toshio Yanagida,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Syoji Kobashi, Yutaka Hata, Yuri T. Kitamura, Toshio Yanagida, vol. 6, no. 1, pp. 85-94,</div>
+            </li>
+
+            <li class="item">
+              <div class="card">Syoji Kobashi, Yutaka Hata, Yuri T. Kitamura, Toshio Yanagida,</div>
+            </li>
+        </ol>
+      </div>
+    
+</div>
 </body>
 </html>
