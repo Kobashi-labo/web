@@ -836,14 +836,16 @@
   }
 
   function setUpdatedAt(isoString) {
-    const el = document.getElementById("last-updated");
-    if (!el) return;
-    if (!isoString) { el.textContent = ""; return; }
-
-    const d = new Date(isoString);
-    const text = isNaN(d) ? isoString : d.toLocaleString();
-    el.textContent = `Last updated: ${text}`;
+      const jaEl = document.getElementById("last-updated");
+      const enEl = document.getElementById("last-updated-en");
+    
+      const d = new Date(isoString);
+      const text = isNaN(d) ? String(isoString) : d.toLocaleString();
+    
+      if (jaEl) jaEl.textContent = `最終更新：${text}`;
+      if (enEl) enEl.textContent = `Last updated: ${text}`;
   }
+
 
   async function loadCounts() {
     const res = await fetch("data/counts.json", { cache: "no-cache" });
@@ -924,6 +926,7 @@
 
 </body>
 </html>
+
 
 
 
