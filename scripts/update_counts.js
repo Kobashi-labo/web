@@ -1,310 +1,414 @@
-/**
- * Update researchmap counts + generate pages
- *
- * Env:
- *  - RESEARCHMAP_PERMALINK (e.g., read0134502)
- *  - OUT_PATH (e.g., data/counts.json)
- *
- * Outputs:
- *  - counts.json
- *  - publications/journal-papers.html
- *  - publications/conference-proceeding-papers.html
- *  - publications/book-chapters.html
- *  - data/unclassified_papers.json
- */
+// web/scripts/update_counts.js
+// Generate data/counts.json + publications pages (journal, intl conf, book chapters)
+// + a report of unclassified items.
+// Node 20+ recommended.
 
-import fs from "node:fs";
-import path from "node:path";
+const fs = require("fs");
+const path = require("path");
 
-const PERMALINK = process.env.RESEARCHMAP_PERMALINK;
-const OUT_PATH = process.env.OUT_PATH || "data/counts.json";
+const PERMALINK = process.env.RESEARCHMAP_PERMALINK || "read0134502";
 
-if (!PERMALINK) {
-  console.error("Missing env: RESEARCHMAP_PERMALINK");
-  process.exit(1);
+const OUT_COUNTS = process.env.OUT_COUNTS || "data/counts.json";
+const OUT_REPORT = process.env.OUT_REPORT || "data/unclassified_papers.json";
+
+const OUT_JOURNAL_HTML =
+  process.env.OUT_JOURNAL_HTML || "publications/journal-papers.html";
+const OUT_INTL_CONF_HTML =
+  process.env.OUT_INTL_CONF_HTML ||
+  "publications/conference-proceeding-papers.html";
+const OUT_BOOK_CHAPTERS_HTML =
+  process.env.OUT_BOOK_CHAPTERS_HTML || "publications/book-chapters.html";
+
+const LIMIT = 1000;
+const MAX_PAGES = 80;
+
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms));
 }
 
-const API_BASE = "https://api.researchmap.jp";
-
-// --- helpers ---
-function ensureDir(filePath) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+async function fetchJson(url) {
+  const res = await fetch(url, { headers: { Accept: "application/json" } });
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(
+      `HTTP ${res.status} for ${url}\n${text.slice(0, 500)}`
+    );
+  }
+  return res.json();
 }
 
-function toInt(x, fallback = 0) {
-  const n = Number(x);
-  return Number.isFinite(n) ? n : fallback;
+function normalizeItems(json) {
+  // researchmap: sometimes {items:[], _links:{next:{href:""}}}, sometimes array
+  if (Array.isArray(json)) return { items: json, nextHref: null };
+  const items = Array.isArray(json.items) ? json.items : [];
+  const nextHref = json?._links?.next?.href || null;
+  return { items, nextHref };
 }
 
-function getTitle(obj) {
-  if (!obj) return "";
-  if (typeof obj === "string") return obj;
-  return obj.ja || obj.en || "";
+async function fetchAll(category) {
+  let url = `https://api.researchmap.jp/${PERMALINK}/${category}?format=json&limit=${LIMIT}&start=1`;
+  const all = [];
+  const seen = new Set();
+
+  for (let page = 0; page < MAX_PAGES; page++) {
+    const json = await fetchJson(url);
+    const { items, nextHref } = normalizeItems(json);
+
+    for (const it of items) {
+      const id = it?.["rm:id"] || it?.id || it?.["@id"] || null;
+      if (id) {
+        if (seen.has(id)) continue;
+        seen.add(id);
+      }
+      all.push(it);
+    }
+
+    if (!nextHref) break;
+    url = nextHref.startsWith("http")
+      ? nextHref
+      : `https://api.researchmap.jp${nextHref}`;
+
+    // avoid hammering the API
+    await sleep(120);
+  }
+  return all;
 }
 
-function escapeHtml(s) {
-  return String(s)
+function s(v) {
+  return v == null ? "" : String(v);
+}
+
+function htmlEscape(str) {
+  return String(str)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    .replaceAll("'", "&#39;");
 }
 
-function normalizeYear(rec) {
-  // publication_date: "2025-12" or "2025-11-20"
-  const pd = rec?.publication_date;
-  if (typeof pd === "string" && pd.length >= 4) return pd.slice(0, 4);
-  // fallback: sometimes there is "rm:created" etc.
-  const created = rec?.["rm:created"];
-  if (typeof created === "string" && created.length >= 4) return created.slice(0, 4);
-  return "";
+function pickTitle(p) {
+  // researchmap uses paper_title (object with en/ja) in published_papers
+  const t = p?.paper_title || p?.title || p?.name || "";
+  if (typeof t === "string") return t;
+  if (t?.en) return t.en;
+  if (t?.ja) return t.ja;
+  // fallback: first string value
+  const vals = Object.values(t || {}).filter((x) => typeof x === "string");
+  return vals[0] || "";
 }
 
-function getTypeFields(rec) {
-  // direct fields (newer) + raw fallback (older/partial)
-  const t = rec?.published_paper_type ?? rec?.raw_type_fields?.published_paper_type ?? null;
-  const intl = rec?.is_international_journal ?? rec?.raw_type_fields?.is_international_journal ?? null;
-  const ref = rec?.referee ?? rec?.raw_type_fields?.referee ?? null;
-  return { published_paper_type: t, is_international_journal: intl, referee: ref };
+function pickYear(p) {
+  // prefer publication_date like "2025-12" or "2025-11-20"
+  const d = p?.publication_date || p?.date || p?.year || "";
+  const m = String(d).match(/\b(19|20)\d{2}\b/);
+  return m ? m[0] : "";
+}
+
+function pickAuthors(p) {
+  // authors.en: [{name:""}...]
+  const a = p?.authors || p?.author || "";
+  if (Array.isArray(a)) {
+    return a.map((x) => x?.name || x?.text || x).join(", ");
+  }
+  if (typeof a === "object" && a) {
+    const arr =
+      a.en || a.ja || Object.values(a).find((v) => Array.isArray(v)) || [];
+    if (Array.isArray(arr)) return arr.map((x) => x?.name || x).join(", ");
+  }
+  return String(a || "");
+}
+
+function pickVenue(p) {
+  const v = p?.publication_name || p?.journal || p?.conference || p?.publisher;
+  if (typeof v === "string") return v;
+  if (v?.en) return v.en;
+  if (v?.ja) return v.ja;
+  const vals = Object.values(v || {}).filter((x) => typeof x === "string");
+  return vals[0] || "";
+}
+
+function pickLink(p) {
+  // Prefer DOI if present
+  const doi = p?.identifiers?.doi?.[0];
+  if (doi) return `https://doi.org/${doi}`;
+  // else: see_also[0].@id
+  const sa = Array.isArray(p?.see_also) ? p.see_also : [];
+  const id = sa.find((x) => x?.["@id"])?.["@id"];
+  return id ? String(id) : "";
 }
 
 /**
- * researchmap API sometimes supports pagination.
- * We'll try: ?page=1&per_page=200 then loop until empty.
+ * Strict classification (your rule):
+ * - Journal Papers: journal only
+ * - Conference Proceeding Papers: international conference papers only
+ * - Book Chapters: published_paper_type === "in_book"
+ *
+ * NOTE:
+ * researchmap's `published_paper_type` is the most reliable field.
+ * Some older entries may miss these fields -> unclassified.
  */
-async function fetchAll(endpoint) {
-  const perPage = 200;
-  let page = 1;
-  const all = [];
+function classifyPublishedPaper(p) {
+  const t = p?.published_paper_type ?? null; // e.g., "scientific_journal", "in_book", ...
+  if (t === "scientific_journal") return "journal";
+  if (t === "in_book") return "book_chapter";
 
-  while (true) {
-    const url = `${API_BASE}/${PERMALINK}/${endpoint}?page=${page}&per_page=${perPage}`;
-    const res = await fetch(url, {
-      headers: { Accept: "application/ld+json, application/json" },
-    });
+  // conference (heuristic for typical researchmap values)
+  // Examples in researchmap ecosystems often contain "conference" or "proceedings"
+  if (typeof t === "string") {
+    const low = t.toLowerCase();
+    const looksConf = low.includes("conference") || low.includes("proceeding");
+    if (looksConf) {
+      // "international" judgement:
+      // prefer explicit boolean field if present (sometimes for journals only),
+      // otherwise use `is_international_collaboration` or language/venue hints are too weak.
+      // So: if you classify intl_conf in researchmap itself, it should appear here;
+      // otherwise keep unclassified for safety.
+      const isIntlFlag = p?.is_international_conference ?? null; // if ever exists
+      if (isIntlFlag === true) return "intl_conf";
 
-    if (!res.ok) {
-      const text = await res.text().catch(() => "");
-      throw new Error(`Fetch failed: ${url} -> ${res.status} ${res.statusText}\n${text}`);
+      // fallback: published_paper_type contains "international"
+      if (low.includes("international")) return "intl_conf";
+
+      return "other";
     }
-
-    const data = await res.json();
-
-    // API returns array (JSON-LD list) in practice
-    if (!Array.isArray(data) || data.length === 0) break;
-
-    all.push(...data);
-
-    if (data.length < perPage) break;
-    page += 1;
   }
 
-  return all;
+  // Some records don't have published_paper_type but still have journal flags:
+  // Keep journal strict: require scientific_journal only (per your instruction).
+  return "other";
 }
 
-// --- HTML generation ---
-function renderPublicationPage({ title, items }) {
-  // group by year desc
-  const groups = new Map(); // year -> items
-  for (const it of items) {
-    const y = it.year || "Unknown";
-    if (!groups.has(y)) groups.set(y, []);
-    groups.get(y).push(it);
-  }
+function ensureDir(filePath) {
+  fs.mkdirSync(path.dirname(path.resolve(process.cwd(), filePath)), {
+    recursive: true,
+  });
+}
+function writeJson(filePath, obj) {
+  ensureDir(filePath);
+  fs.writeFileSync(
+    path.resolve(process.cwd(), filePath),
+    JSON.stringify(obj, null, 2) + "\n",
+    "utf8"
+  );
+}
+function writeText(filePath, text) {
+  ensureDir(filePath);
+  fs.writeFileSync(path.resolve(process.cwd(), filePath), text, "utf8");
+}
 
-  const years = Array.from(groups.keys()).sort((a, b) => {
-    // numeric desc, Unknown last
-    if (a === "Unknown") return 1;
-    if (b === "Unknown") return -1;
-    return toInt(b, 0) - toInt(a, 0);
+function renderPage({ title, subtitle, items, updatedAtIso, backHref }) {
+  const updated = new Date(updatedAtIso).toISOString().slice(0, 10);
+
+  const byYear = new Map();
+  for (const it of items) {
+    const y = pickYear(it) || "Unknown";
+    if (!byYear.has(y)) byYear.set(y, []);
+    byYear.get(y).push(it);
+  }
+  const years = Array.from(byYear.keys()).sort((a, b) => {
+    if (a === "Unknown" && b !== "Unknown") return 1;
+    if (b === "Unknown" && a !== "Unknown") return -1;
+    return b.localeCompare(a);
   });
 
-  const body = years
+  const sections = years
     .map((y) => {
-      const lis = groups
+      const lis = byYear
         .get(y)
-        .map((it) => {
-          const t = escapeHtml(it.title);
-          const pub = it.pub ? ` <span class="pub">(${escapeHtml(it.pub)})</span>` : "";
-          const doi = it.doi
-            ? ` <a class="doi" href="${escapeHtml(it.doi)}" target="_blank" rel="noopener">doi</a>`
+        .map((p) => {
+          const t = htmlEscape(pickTitle(p) || "");
+          const au = htmlEscape(pickAuthors(p) || "");
+          const ve = htmlEscape(pickVenue(p) || "");
+          const link = pickLink(p);
+          const linkHtml = link
+            ? ` <a href="${htmlEscape(
+                link
+              )}" target="_blank" rel="noopener noreferrer">[link]</a>`
             : "";
-          return `<li>${t}${pub}${doi}</li>`;
+          return `<li><div class="t">${t}</div><div class="m">${au}${
+            au && ve ? " — " : ""
+          }${ve}</div>${linkHtml}</li>`;
         })
         .join("\n");
-      return `<section class="year-block"><h2>${escapeHtml(y)}</h2><ul>${lis}</ul></section>`;
+      return `<section class="year"><h2>${htmlEscape(
+        y
+      )} <span class="badge">${byYear.get(y).length}</span></h2><ol>${lis}</ol></section>`;
     })
     .join("\n");
 
   return `<!doctype html>
-<html lang="en">
+<html lang="ja">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${escapeHtml(title)} | Kobashi Laboratory</title>
-<style>
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,'Noto Sans JP',sans-serif;line-height:1.7;margin:0;background:#f7fafc;color:#111827}
-  header{background:#1e3a8a;color:#fff;padding:24px 16px}
-  header a{color:#bfdbfe;text-decoration:none}
-  .container{max-width:980px;margin:0 auto;padding:24px 16px}
-  h1{margin:0;font-size:24px}
-  .meta{opacity:.9;margin-top:6px}
-  .year-block{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin:16px 0}
-  .year-block h2{margin:0 0 12px 0;font-size:18px;color:#1e3a8a}
-  ul{margin:0;padding-left:18px}
-  li{margin:8px 0}
-  .pub{color:#6b7280}
-  .doi{margin-left:6px;font-size:12px;color:#2563eb}
-  footer{padding:24px 16px;text-align:center;color:#6b7280}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>${htmlEscape(title)} | Kobashi Laboratory</title>
+  <style>
+    :root{--bg:#f7f7fb;--card:#fff;--ink:#222;--muted:#666;--brand:#1e3a8a;--shadow:0 10px 30px rgba(0,0,0,.10);--r:16px;}
+    body{margin:0;font-family:system-ui,-apple-system,"Segoe UI","Noto Sans JP",sans-serif;line-height:1.75;background:var(--bg);color:var(--ink);}
+    header{background:var(--brand);color:#fff;padding:22px 18px;}
+    header .wrap{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;}
+    h1{margin:0;font-size:22px;}
+    .sub{margin:4px 0 0;font-size:13px;opacity:.9}
+    .nav a{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.35);padding:8px 12px;border-radius:999px;font-size:13px}
+    .nav a:hover{background:rgba(255,255,255,.12)}
+    main{max-width:1100px;margin:0 auto;padding:22px 18px 60px;}
+    .card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:18px 20px;margin:14px 0;}
+    .meta{color:var(--muted);font-size:13px}
+    .year h2{margin:18px 0 10px;font-size:18px;color:var(--brand);display:flex;align-items:center;gap:10px;}
+    .badge{font-size:12px;color:#fff;background:var(--brand);padding:4px 10px;border-radius:999px;opacity:.9}
+    ol{margin:0;padding-left:20px}
+    li{margin:10px 0}
+    .t{font-weight:700}
+    .m{color:var(--muted);font-size:14px;margin-top:2px}
+    a{color:var(--brand)}
+    footer{text-align:center;color:var(--muted);font-size:12px;padding:18px}
+    @media print{header,.nav,footer{display:none} body{background:#fff} .card{box-shadow:none;border:1px solid #ddd}}
+  </style>
 </head>
 <body>
 <header>
-  <div class="container">
-    <h1>${escapeHtml(title)}</h1>
-    <div class="meta"><a href="../index.html">← Back to Home</a></div>
+  <div class="wrap">
+    <div>
+      <h1>${htmlEscape(title)}</h1>
+      <p class="sub">${htmlEscape(subtitle)}</p>
+    </div>
+    <div class="nav">
+      <a href="${htmlEscape(backHref)}">← Publications に戻る</a>
+    </div>
   </div>
 </header>
-<main class="container">
-${body || "<p>No items.</p>"}
+
+<main>
+  <div class="card">
+    <p class="meta">Updated: ${updated} / Items: ${items.length}</p>
+    <p class="meta">Source: researchmap API (generated daily via GitHub Actions)</p>
+  </div>
+
+  ${sections}
 </main>
+
 <footer>© 2025 Kobashi Laboratory, University of Hyogo</footer>
 </body>
 </html>`;
 }
 
-// --- main ---
-(async () => {
-  try {
-    // fetch
-    const papers = await fetchAll("published_papers");
-    const presentations = await fetchAll("presentations");
+async function main() {
+  const [published, presentations] = await Promise.all([
+    fetchAll("published_papers"),
+    fetchAll("presentations"),
+  ]);
 
-    const papers_total = papers.length;
-    const presentations_total = presentations.length;
+  const journalItems = [];
+  const intlConfItems = [];
+  const bookChapterItems = [];
+  const unclassified = [];
 
-    // classify
-    const journalItems = [];
-    const confItems = [];
-    const bookItems = [];
-    const unclassified = [];
+  for (const p of published) {
+    const kind = classifyPublishedPaper(p);
 
-    for (const rec of papers) {
-      const { published_paper_type, referee } = getTypeFields(rec);
-      const year = normalizeYear(rec) || "";
-      const title = getTitle(rec.paper_title);
-      const pub = getTitle(rec.publication_name);
-      const doiRaw = rec?.identifiers?.doi?.[0];
-      const doi = doiRaw ? `https://doi.org/${doiRaw}` : null;
-
-      // 1) Book Chapters: in_book を必ずカウント
-      if (published_paper_type === "in_book") {
-        bookItems.push({ year, title, pub, doi });
-        continue;
-      }
-
-      // 2) Journal papers = 論文誌のみ（scientific_journal）※査読フラグは true のものを採用
-      if (published_paper_type === "scientific_journal" && referee === true) {
-        journalItems.push({ year, title, pub, doi });
-        continue;
-      }
-
-      // 3) International conference papers = 国際会議論文のみ
-      // researchmap 側の表現ゆれに備えて複数候補を許可
-      const confTypes = new Set([
-        "international_conference_paper",
-        "international_conference",
-        "conference_paper",
-        "conference_proceedings",
-      ]);
-
-      if (published_paper_type && confTypes.has(published_paper_type) && referee === true) {
-        confItems.push({ year, title, pub, doi });
-        continue;
-      }
-
-      // 4) 判定不能（null含む）だけ unclassified に残す（修正対象として使う）
-      // type があるが対象外（symposium / research_society 等）は unclassified にしない
-      if (published_paper_type == null || referee == null) {
+    if (kind === "journal") journalItems.push(p);
+    else if (kind === "intl_conf") intlConfItems.push(p);
+    else if (kind === "book_chapter") bookChapterItems.push(p);
+    else {
+      // keep only those that look relevant but missing info (avoid spamming)
+      // (If you want ALL "other", remove this condition)
+      const hasSomeSignal =
+        p?.published_paper_type == null ||
+        p?.is_international_journal == null ||
+        p?.referee == null;
+      if (hasSomeSignal) {
         unclassified.push({
-          id: rec?.["rm:id"] || rec?.id || "",
-          year: year || "",
-          title: rec?.paper_title || {},
-          raw_type_fields: getTypeFields(rec),
+          id: p?.["rm:id"] || "",
+          year: pickYear(p) || "",
+          title: { en: pickTitle(p) || "" },
+          raw_type_fields: {
+            published_paper_type: p?.published_paper_type ?? null,
+            is_international_journal: p?.is_international_journal ?? null,
+            referee: p?.referee ?? null,
+          },
         });
       }
     }
-
-    // sort (newest first within year)
-    const sortByYearDesc = (a, b) => toInt(b.year, 0) - toInt(a.year, 0);
-    journalItems.sort(sortByYearDesc);
-    confItems.sort(sortByYearDesc);
-    bookItems.sort(sortByYearDesc);
-
-    // write counts.json
-    const out = {
-      permalink: PERMALINK,
-      updatedAt: new Date().toISOString(),
-      papers_total,
-      presentations_total,
-      journal: journalItems.length,
-      intl_conf: confItems.length,
-      book_chapters: bookItems.length,
-      note: "Journal = journal papers only (scientific_journal & referee=true). Conference = international conference papers only. Book chapters = in_book. Generated daily by GitHub Actions.",
-    };
-
-    ensureDir(OUT_PATH);
-    fs.writeFileSync(OUT_PATH, JSON.stringify(out, null, 2), "utf-8");
-
-    // write unclassified
-    const unclassifiedPath = "data/unclassified_papers.json";
-    ensureDir(unclassifiedPath);
-    fs.writeFileSync(
-      unclassifiedPath,
-      JSON.stringify(
-        {
-          permalink: PERMALINK,
-          updatedAt: out.updatedAt,
-          unclassified_count: unclassified.length,
-          unclassified,
-        },
-        null,
-        2
-      ),
-      "utf-8"
-    );
-
-    // generate pages
-    const journalHtml = renderPublicationPage({
-      title: "Journal Papers (Refereed journals only)",
-      items: journalItems,
-    });
-    const confHtml = renderPublicationPage({
-      title: "Conference Proceeding Papers (International conferences only)",
-      items: confItems,
-    });
-    const bookHtml = renderPublicationPage({
-      title: "Book Chapters",
-      items: bookItems,
-    });
-
-    const journalPath = "publications/journal-papers.html";
-    const confPath = "publications/conference-proceeding-papers.html";
-    const bookPath = "publications/book-chapters.html";
-
-    ensureDir(journalPath);
-    ensureDir(confPath);
-    ensureDir(bookPath);
-
-    fs.writeFileSync(journalPath, journalHtml, "utf-8");
-    fs.writeFileSync(confPath, confHtml, "utf-8");
-    fs.writeFileSync(bookPath, bookHtml, "utf-8");
-
-    console.log("Done.");
-    console.log(out);
-  } catch (e) {
-    console.error(e);
-    process.exit(1);
   }
-})();
+
+  const updatedAt = new Date().toISOString();
+
+  // counts.json
+  writeJson(OUT_COUNTS, {
+    permalink: PERMALINK,
+    updatedAt,
+    papers_total: published.length,
+    presentations_total: presentations.length,
+    journal: journalItems.length, // journal papers only
+    intl_conf: intlConfItems.length, // international conference papers only
+    book_chapters: bookChapterItems.length, // in_book
+    note:
+      "Journal = journal papers only. Conference = international conference papers only. Book Chapters = in_book. Generated daily by GitHub Actions.",
+  });
+
+  // pages
+  writeText(
+    OUT_JOURNAL_HTML,
+    renderPage({
+      title: "Journal Papers",
+      subtitle: "論文誌（Journal papers only）",
+      items: journalItems,
+      updatedAtIso: updatedAt,
+      backHref: "../index.html#publications",
+    })
+  );
+
+  writeText(
+    OUT_INTL_CONF_HTML,
+    renderPage({
+      title: "Conference Proceeding Papers",
+      subtitle: "国際会議論文（International conference papers only）",
+      items: intlConfItems,
+      updatedAtIso: updatedAt,
+      backHref: "../index.html#publications",
+    })
+  );
+
+  writeText(
+    OUT_BOOK_CHAPTERS_HTML,
+    renderPage({
+      title: "Book Chapters",
+      subtitle: "Book chapters（published_paper_type = in_book）",
+      items: bookChapterItems,
+      updatedAtIso: updatedAt,
+      backHref: "../index.html#publications",
+    })
+  );
+
+  // report
+  writeJson(OUT_REPORT, {
+    permalink: PERMALINK,
+    updatedAt,
+    unclassified_count: unclassified.length,
+    unclassified,
+  });
+
+  console.log(
+    JSON.stringify(
+      {
+        ok: true,
+        permalink: PERMALINK,
+        updatedAt,
+        papers_total: published.length,
+        presentations_total: presentations.length,
+        journal: journalItems.length,
+        intl_conf: intlConfItems.length,
+        book_chapters: bookChapterItems.length,
+        unclassified_count: unclassified.length,
+      },
+      null,
+      2
+    )
+  );
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
