@@ -538,7 +538,7 @@
 
             <div class="section" id="recent">
                 <h2>Publications - 研究業績</h2>
-
+                <p id="last-updated" style="margin: 0 0 1rem; color:#666; font-size:0.95rem;"></p>
                 <!-- ★ここ：固定値を data-rm-count に置き換え -->
                 <p style="margin-bottom: 1.5rem; color: #555;">
                     詳細な業績リストは各リンク先をご覧ください。論文総数：
@@ -556,7 +556,7 @@
 
                     <a href="https://sites.google.com/site/syojikobashi/publications/book-chapters" target="_blank" class="pub-link-card">
                         <h3>📚 Book Chapters</h3>
-                        <p>書籍の章</p>
+                        <p>書籍の章（<span data-rm-count="book_chapters">-</span>章）</p>
                     </a>
 
                     <a href="https://sites.google.com/site/syojikobashi/publications/conference-proceeding-papers" target="_blank" class="pub-link-card">
@@ -687,6 +687,7 @@
 
             <div class="section" id="recent">
                 <h2>Publications</h2>
+                <p id="last-updated" style="margin: 0 0 1rem; color:#666; font-size:0.95rem;"></p>
 
                 <!-- ★英語側も同じ span を置けば自動反映されます -->
                 <p style="margin-bottom: 1.5rem; color: #555;">
@@ -703,7 +704,7 @@
 
                     <a href="https://sites.google.com/site/syojikobashi/publications/book-chapters" target="_blank" class="pub-link-card">
                         <h3>📚 Book Chapters</h3>
-                        <p>Book chapters and contributions</p>
+                        <p>Book chapters (<span data-rm-count="book_chapters">-</span>)</p>
                     </a>
 
                     <a href="https://sites.google.com/site/syojikobashi/publications/conference-proceeding-papers" target="_blank" class="pub-link-card">
@@ -713,7 +714,7 @@
 
                     <a href="https://researchmap.jp/read0134502/presentations" target="_blank" class="pub-link-card">
                         <h3>🗣️ Oral Presentations</h3>
-                        <p>Invited presentations (<span data-rm-count="presentations">-</span> talks)</p>
+                        <p>Oral presentations (<span data-rm-count="presentations">-</span> talks)</p>
                     </a>
 
                     <a href="https://sites.google.com/site/syojikobashi/publications/edited-special-issues" target="_blank" class="pub-link-card">
@@ -803,128 +804,125 @@
     </footer>
 
     <script>
-        function switchLang(lang, ev) {
-            document.querySelectorAll('.lang-content').forEach(content => {
-                content.classList.remove('active');
-            });
+    function switchLang(lang, ev) {
+    document.querySelectorAll('.lang-content').forEach(content => {
+      content.classList.remove('active');
+    });
 
-            document.getElementById('content-' + lang).classList.add('active');
+    document.getElementById('content-' + lang).classList.add('active');
 
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            if (ev && ev.target) ev.target.classList.add('active');
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    if (ev && ev.target) ev.target.classList.add('active');
 
-            if (lang === 'ja') {
-                document.getElementById('main-title').textContent = '小橋研究室 | Kobashi Laboratory';
-            } else {
-                document.getElementById('main-title').textContent = 'Kobashi Laboratory | 小橋研究室';
-            }
+    if (lang === 'ja') {
+      document.getElementById('main-title').textContent = '小橋研究室 | Kobashi Laboratory';
+    } else {
+      document.getElementById('main-title').textContent = 'Kobashi Laboratory | 小橋研究室';
+    }
+  }
+
+  // ============================
+  // counts.json を優先して反映（高速）
+  // 失敗したら researchmap API でフォールバック
+  // ============================
+  const RESEARCHMAP_PERMALINK = "read0134502";
+
+  function setCount(key, value) {
+    document.querySelectorAll(`[data-rm-count="${key}"]`).forEach(el => {
+      el.textContent = String(value);
+    });
+  }
+
+  function setUpdatedAt(isoString) {
+    const el = document.getElementById("last-updated");
+    if (!el) return;
+    if (!isoString) { el.textContent = ""; return; }
+
+    const d = new Date(isoString);
+    const text = isNaN(d) ? isoString : d.toLocaleString();
+    el.textContent = `Last updated: ${text}`;
+  }
+
+  async function loadCounts() {
+    const res = await fetch("data/counts.json", { cache: "no-cache" });
+    if (!res.ok) throw new Error("counts.json not found");
+    const d = await res.json();
+
+    // updatedAt 表示
+    setUpdatedAt(d.updatedAt);
+
+    // counts.json のキーに合わせて表示
+    // ※ update_counts.js 側で book_chapters を作る想定
+    setCount("journal", d.journal ?? d.journal_count ?? 0);
+    setCount("intl_conf", d.intl_conf ?? d.intl_conf_count ?? 0);
+    setCount("book_chapters", d.book_chapters ?? d.book_chapters_count ?? 0);
+
+    setCount("presentations", d.presentations_total ?? d.presentations ?? 0);
+    setCount("papers", d.papers_total ?? d.papers ?? 0);
+  }
+
+  // ---- fallback: researchmap API ----
+  async function fetchJson(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`researchmap API error ${res.status}: ${url}`);
+    return await res.json();
+  }
+
+  function normalizeItems(json) {
+    if (Array.isArray(json)) return { items: json, nextHref: null };
+    const items = Array.isArray(json.items) ? json.items : [];
+    const nextHref = json?._links?.next?.href || null;
+    return { items, nextHref };
+  }
+
+  async function fetchAllCategory(category) {
+    const limit = 1000;
+    let url = `https://api.researchmap.jp/${RESEARCHMAP_PERMALINK}/${category}?format=json&limit=${limit}&start=1`;
+
+    const all = [];
+    const seen = new Set();
+
+    for (let guard = 0; guard < 20; guard++) {
+      const json = await fetchJson(url);
+      const { items, nextHref } = normalizeItems(json);
+
+      for (const it of items) {
+        const id = it?.["rm:id"] || it?.id || null;
+        if (id) {
+          if (seen.has(id)) continue;
+          seen.add(id);
         }
+        all.push(it);
+      }
 
-        // ============================
-        // researchmap 件数の自動反映
-        // ============================
-        const RESEARCHMAP_PERMALINK = "read0134502";
+      if (!nextHref) break;
+      url = nextHref.startsWith("http") ? nextHref : `https://api.researchmap.jp${nextHref}`;
+    }
+    return all;
+  }
 
-        function setCount(key, value) {
-            document.querySelectorAll(`[data-rm-count="${key}"]`).forEach(el => {
-                el.textContent = String(value);
-            });
-        }
+  async function updateResearchmapCountsFallback() {
+    const [papers, presentations] = await Promise.all([
+      fetchAllCategory("published_papers"),
+      fetchAllCategory("presentations"),
+    ]);
 
-        async function fetchJson(url) {
-            const res = await fetch(url);
-            if (!res.ok) throw new Error(`researchmap API error ${res.status}: ${url}`);
-            return await res.json();
-        }
+    setCount("papers", papers.length);
+    setCount("presentations", presentations.length);
+  }
 
-        // researchmap API は「配列で返る場合」と「{items, total_items, _links} の場合」があるため両対応
-        function normalizeItems(json) {
-            if (Array.isArray(json)) return { items: json, nextHref: null };
-            const items = Array.isArray(json.items) ? json.items : [];
-            const nextHref = json?._links?.next?.href || null;
-            return { items, nextHref };
-        }
+  document.addEventListener("DOMContentLoaded", () => {
+    loadCounts().catch(err => {
+      console.error(err);
+      // counts.json が無い/壊れてる場合のみ API フォールバック
+      updateResearchmapCountsFallback().catch(e => console.error(e));
+    });
+  });
+</script>
 
-        async function fetchAllCategory(category) {
-            // まずは最大気味に取る（多い場合は _links.next で追う）
-            const limit = 1000;
-            let url = `https://api.researchmap.jp/${RESEARCHMAP_PERMALINK}/${category}?format=json&limit=${limit}&start=1`;
-
-            const all = [];
-            const seen = new Set();
-
-            for (let guard = 0; guard < 20; guard++) { // 無限ループ防止
-                const json = await fetchJson(url);
-                const { items, nextHref } = normalizeItems(json);
-
-                for (const it of items) {
-                    // rm:id / id があるなら重複排除
-                    const id = it?.["rm:id"] || it?.id || null;
-                    if (id) {
-                        if (seen.has(id)) continue;
-                        seen.add(id);
-                    }
-                    all.push(it);
-                }
-
-                if (!nextHref) break;
-
-                // next が相対の場合もあるので補完
-                if (nextHref.startsWith("http")) url = nextHref;
-                else url = `https://api.researchmap.jp${nextHref}`;
-            }
-
-            return all;
-        }
-
-        async function updateResearchmapCounts() {
-            // ここで必要なカテゴリを増やせます（例: books, conference_papers など）
-            const [papers, presentations] = await Promise.all([
-                fetchAllCategory("published_papers"),
-                fetchAllCategory("presentations")
-            ]);
-
-            setCount("papers", papers.length);
-            setCount("presentations", presentations.length);
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            updateResearchmapCounts().catch(err => {
-                console.error(err);
-                // 失敗時は表示を「-」のままにする（必要なら "取得失敗" などにしてもOK）
-            });
-        });
-    
-        // ============================
-        // counts.json から件数を反映（高速）
-        // ============================
-        function setCount(key, value) {
-            document.querySelectorAll(`[data-rm-count="${key}"]`).forEach(el => {
-                el.textContent = String(value);
-            });
-        }
-
-        async function loadCounts() {
-            const res = await fetch("data/counts.json", { cache: "no-cache" });
-            if (!res.ok) throw new Error("counts.json not found");
-            const d = await res.json();
-
-            // strict splits
-            setCount("journal", d.journal);
-            setCount("intl_conf", d.intl_conf);
-
-            // other existing placeholders
-            setCount("presentations", d.presentations_total);
-            setCount("papers", d.papers_total);
-        }
-
-        document.addEventListener("DOMContentLoaded", () => {
-            loadCounts().catch(err => console.error(err));
-        });
-
-    </script>
 </body>
 </html>
+
 
