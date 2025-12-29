@@ -2,11 +2,8 @@ name: Update researchmap counts and pages
 
 on:
   schedule:
-    - cron: "10 0 * * *"   # daily at 00:10 UTC (≈ 09:10 JST)
+    - cron: "0 19 * * *" # JST 04:00（UTC 19:00）毎日1回
   workflow_dispatch:
-
-permissions:
-  contents: write
 
 jobs:
   update:
@@ -21,29 +18,16 @@ jobs:
         with:
           node-version: "20"
 
-      # （デバッグしたいときだけ）今どこで動いているか確認
-      # - name: Debug paths
-      #   run: |
-      #     pwd
-      #     ls -la
-      #     ls -la scripts || true
-      #     ls -la data || true
-      #     ls -la publications || true
-
       - name: Generate counts and pages
         env:
           RESEARCHMAP_PERMALINK: read0134502
-          OUT_COUNTS: data/counts.json
-          OUT_REPORT: data/unclassified_papers.json
-          OUT_DEBUG_SAMPLE: data/debug_published_papers_sample.json
-          OUT_DEBUG_KEYS: data/debug_published_papers_keys.json
-          OUT_JOURNAL_HTML: publications/journal-papers.html
-          OUT_INTL_CONF_HTML: publications/conference-proceeding-papers.html
+          OUT_PATH: data/counts.json
         run: |
           node scripts/update_counts.js
 
       - name: Commit & push if changed
         run: |
+          git status --porcelain
           if [ -z "$(git status --porcelain)" ]; then
             echo "No changes to commit."
             exit 0
@@ -52,13 +36,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add \
-            data/counts.json \
-            data/unclassified_papers.json \
-            data/debug_published_papers_sample.json \
-            data/debug_published_papers_keys.json \
-            publications/journal-papers.html \
-            publications/conference-proceeding-papers.html
-
+          git add data/counts.json data/unclassified_papers.json publications/*.html
           git commit -m "chore: update researchmap counts/pages (daily)"
           git push
