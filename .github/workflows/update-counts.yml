@@ -2,8 +2,12 @@ name: Update researchmap counts and pages
 
 on:
   schedule:
-    - cron: "0 19 * * *" # JST 04:00（UTC 19:00）毎日1回
-  workflow_dispatch:
+    # 毎日1回（UTC 00:10）※必要なら調整
+    - cron: "10 0 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
 
 jobs:
   update:
@@ -21,7 +25,11 @@ jobs:
       - name: Generate counts and pages
         env:
           RESEARCHMAP_PERMALINK: read0134502
-          OUT_PATH: data/counts.json
+          OUT_COUNTS: data/counts.json
+          OUT_REPORT: data/unclassified_papers.json
+          OUT_JOURNAL_HTML: publications/journal-papers.html
+          OUT_INTL_CONF_HTML: publications/conference-proceeding-papers.html
+          OUT_BOOK_CHAPTERS_HTML: publications/book-chapters.html
         run: |
           node scripts/update_counts.js
 
