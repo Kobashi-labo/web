@@ -510,8 +510,8 @@
                 <p class="subtitle" id="subtitle">Medical Image Processing Group (MIPG) - University of Hyogo</p>
             </div>
             <div class="lang-switch">
-                <button class="lang-btn active" onclick="switchLang('ja')">日本語</button>
-                <button class="lang-btn" onclick="switchLang('en')">English</button>
+                <button class="lang-btn active" onclick="switchLang('ja', event)">日本語</button>
+                <button class="lang-btn" onclick="switchLang('en', event)">English</button>
             </div>
         </div>
     </header>
@@ -550,7 +550,8 @@
                 <div class="publications-links">
                     <a href="https://researchmap.jp/read0134502/published_papers" target="_blank" class="pub-link-card">
                         <h3>📄 Journal Papers</h3>
-                        <p>査読付き学術論文（<span data-rm-count="papers">-</span>編）</p>
+                        <p>論文誌論文（<span data-rm-count="journal">-</span>編）</p>
+                    
                     </a>
 
                     <a href="https://sites.google.com/site/syojikobashi/publications/book-chapters" target="_blank" class="pub-link-card">
@@ -560,7 +561,8 @@
 
                     <a href="https://sites.google.com/site/syojikobashi/publications/conference-proceeding-papers" target="_blank" class="pub-link-card">
                         <h3>🎤 Conference Proceeding Papers</h3>
-                        <p>国際会議論文集</p>
+                        <p>国際会議論文（<span data-rm-count="intl_conf">-</span>編）</p>
+                    
                     </a>
 
                     <a href="https://researchmap.jp/read0134502/presentations" target="_blank" class="pub-link-card">
@@ -696,7 +698,7 @@
                 <div class="publications-links">
                     <a href="https://researchmap.jp/read0134502/published_papers" target="_blank" class="pub-link-card">
                         <h3>📄 Journal Papers</h3>
-                        <p>Peer-reviewed academic papers (<span data-rm-count="papers">-</span> papers)</p>
+                        <p>Journal articles (<span data-rm-count="journal">-</span>)</p>
                     </a>
 
                     <a href="https://sites.google.com/site/syojikobashi/publications/book-chapters" target="_blank" class="pub-link-card">
@@ -801,7 +803,7 @@
     </footer>
 
     <script>
-        function switchLang(lang) {
+        function switchLang(lang, ev) {
             document.querySelectorAll('.lang-content').forEach(content => {
                 content.classList.remove('active');
             });
@@ -811,7 +813,7 @@
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            event.target.classList.add('active');
+            if (ev && ev.target) ev.target.classList.add('active');
 
             if (lang === 'ja') {
                 document.getElementById('main-title').textContent = '小橋研究室 | Kobashi Laboratory';
@@ -894,6 +896,34 @@
                 // 失敗時は表示を「-」のままにする（必要なら "取得失敗" などにしてもOK）
             });
         });
+    
+        // ============================
+        // counts.json から件数を反映（高速）
+        // ============================
+        function setCount(key, value) {
+            document.querySelectorAll(`[data-rm-count="${key}"]`).forEach(el => {
+                el.textContent = String(value);
+            });
+        }
+
+        async function loadCounts() {
+            const res = await fetch("data/counts.json", { cache: "no-cache" });
+            if (!res.ok) throw new Error("counts.json not found");
+            const d = await res.json();
+
+            // strict splits
+            setCount("journal", d.journal);
+            setCount("intl_conf", d.intl_conf);
+
+            // other existing placeholders
+            setCount("presentations", d.presentations_total);
+            setCount("papers", d.papers_total);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadCounts().catch(err => console.error(err));
+        });
+
     </script>
 </body>
 </html>
