@@ -113,7 +113,7 @@ function formatAuthorName(raw) {
   // 日本語名はそのまま
   if (/[ぁ-んァ-ン一-龥]/.test(name)) return name;
 
-  // "Family, Given"
+  // "Family, Given Middle" 形式
   if (name.includes(",")) {
     const [family, given] = name.split(",").map(normalizeSpaces);
     const initials = given
@@ -121,17 +121,24 @@ function formatAuthorName(raw) {
       .filter(Boolean)
       .map((w) => w[0].toUpperCase() + ".")
       .join(" ");
+    // 姓は省略しない
     return normalizeSpaces(`${initials} ${family}`);
   }
 
-  // "Given Middle Family"
+  // "Given Middle Family" 形式（researchmapで多い）
   const tokens = name.split(" ").filter(Boolean);
   if (tokens.length === 1) return tokens[0];
 
-  const family = tokens[tokens.length - 1];
-  const initials = tokens
-    .slice(0, -1)
-    .map((w) => w[0].toUpperCase() + ".")
+  const family = tokens[tokens.length - 1]; // 姓（省略しない）
+  const givenTokens = tokens.slice(0, -1);
+
+  // given/middle は頭文字にする
+  const initials = givenTokens
+    .map((w) => {
+      const c = w[0];
+      return c ? c.toUpperCase() + "." : "";
+    })
+    .filter(Boolean)
     .join(" ");
 
   return normalizeSpaces(`${initials} ${family}`);
