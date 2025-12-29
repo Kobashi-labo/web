@@ -1,20 +1,8 @@
 {
   "permalink": "read0134502",
-  "updatedAt": "2025-12-29T08:12:05.291Z",
-  "unclassified_count": 12,
+  "updatedAt": "2025-12-29T08:21:11.751Z",
+  "unclassified_count": 6,
   "unclassified": [
-    {
-      "id": "41920991",
-      "year": "2023",
-      "title": {
-        "en": "Discrimination of ICH and IVH in Initial CT Images Using Hierarchical Region Extraction Мethod"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": null
-      }
-    },
     {
       "id": "8152954",
       "year": "2018",
@@ -40,32 +28,6 @@
       }
     },
     {
-      "id": "16194038",
-      "year": "2011",
-      "title": {
-        "en": "Automated 3-D kinematis analysis of TKA knee with 2-D digital radiograph video using Monte Carlo method",
-        "ja": "モンテカルロ推定法による人工膝関節動態の動画像自動解析"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": false
-      }
-    },
-    {
-      "id": "17575360",
-      "year": "2010",
-      "title": {
-        "ja": "Automated 3-D Kinematics Analysis of Implanted Knee with 2-D Digital Radiography Video",
-        "en": "Automated 3-D Kinematics Analysis of Implanted Knee with 2-D Digital Radiography Video"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": false
-      }
-    },
-    {
       "id": "27129189",
       "year": "2008",
       "title": {
@@ -73,7 +35,7 @@
         "en": "Using eye-movements as a research tool in children with autistic spectrum disorders."
       },
       "raw_type_fields": {
-        "published_paper_type": "research_society",
+        "published_paper_type": "symposium",
         "is_international_journal": null,
         "referee": true
       }
@@ -115,44 +77,6 @@
         "published_paper_type": "research_society",
         "is_international_journal": null,
         "referee": false
-      }
-    },
-    {
-      "id": "27129179",
-      "year": "2002",
-      "title": {
-        "ja": "Wavelet Based Analysis of the Hemodynamic Response Delay in Event-related Functional MRI",
-        "en": "Wavelet Based Analysis of the Hemodynamic Response Delay in Event-related Functional MRI"
-      },
-      "raw_type_fields": {
-        "published_paper_type": "research_society",
-        "is_international_journal": null,
-        "referee": false
-      }
-    },
-    {
-      "id": "27129177",
-      "year": "2002",
-      "title": {
-        "ja": "Fuzzy Logic Approach to Investigating the Language Dominance Using Near-Ingrared Spctroscopy",
-        "en": "Fuzzy Logic Approach to Investigating the Language Dominance Using Near-Ingrared Spctroscopy"
-      },
-      "raw_type_fields": {
-        "published_paper_type": "research_society",
-        "is_international_journal": null,
-        "referee": false
-      }
-    },
-    {
-      "id": "34136796",
-      "year": "1997",
-      "title": {
-        "ja": "頭部MRIの立体表示と体積測定による変性性痴呆性疾患の診断"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": null
       }
     }
   ]
