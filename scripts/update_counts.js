@@ -229,9 +229,53 @@ function toVolNoPp(item) {
  * Journal-only 判定
  * ========================= */
 function isJournalOnly(item) {
-  const hay = `${toJournalName(item)} ${toTitle(item)}`.toLowerCase();
-  const bad = /(proceedings|conference|symposium|workshop|meeting)/;
-  if (bad.test(hay)) return false;
+  const j = toJournalName(item).toLowerCase();
+  const t = toTitle(item).toLowerCase();
+  const hay = `${j} | ${t}`;
+
+  const badPatterns = [
+    /\bproceedings\b/,
+    /\bproceedings of\b/,
+    /\bannual international conference\b/,
+    /\binternational conference\b/,
+    /\bconference\b/,
+    /\bsymposium\b/,
+    /\bworkshop\b/,
+    /\bmeeting\b/,
+    /\bcongress\b/,
+  ];
+
+  if (badPatterns.some((re) => re.test(hay))) return false;
+
+  // type がある場合の保険（researchmapの揺れ対策）
+  const typeStr = [
+    item?.published_paper_type,
+    item?.paper_type,
+    item?.type,
+    item?.category,
+    item?.raw_type_fields?.published_paper_type,
+  ]
+    .map((v) => pickLangText(v).toLowerCase())
+    .filter(Boolean)
+    .join(" | ");
+
+  if (/(conference|proceeding|proceedings|symposium|workshop)/.test(typeStr)) return false;
+  if (/(book|chapter|in_book)/.test(typeStr)) return false;
+
+  if (typeStr.includes("journal")) return true;
+
+  const journalHint = [
+    item?.is_international_journal,
+    item?.international_journal,
+    item?.raw_type_fields?.is_international_journal,
+    item?.referee,
+    item?.raw_type_fields?.referee,
+  ]
+    .map((v) => pickLangText(v).toLowerCase())
+    .join(" ");
+
+  if (journalHint.includes("true") || journalHint.includes("1")) return true;
+
   return Boolean(toJournalName(item));
 }
 
@@ -284,7 +328,12 @@ function buildJournalHtml({ updatedAt, items }) {
     byYear.get(y).push(it);
   }
 
-  const years = [...byYear.keys()].sort((a, b) => b.localeCompare(a));
+  const years = [...byYear.keys()].sort((a, b) => {
+    if (a === "----") return 1;
+    if (b === "----") return -1;
+    return Number(b) - Number(a);
+  });
+
   let idx = 1;
 
   const blocks = years
