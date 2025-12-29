@@ -31,7 +31,10 @@ jobs:
           OUT_INTL_CONF_HTML: publications/conference-proceeding-papers.html
           OUT_BOOK_CHAPTERS_HTML: publications/book-chapters.html
         run: |
+          pwd
+          ls -la
           node scripts/update_counts.js
+          ls -la publications || true
 
       - name: Commit & push if changed
         run: |
