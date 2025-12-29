@@ -11,8 +11,14 @@ const fs = require("fs");
 const path = require("path");
 
 const RESEARCHMAP_PERMALINK = process.env.RESEARCHMAP_PERMALINK || "read0134502";
-const OUT_COUNTS_JSON = path.join("data", "counts.json");
-const OUT_JOURNAL_HTML = path.join("publications", "journal-papers.html");
+const OUT_COUNTS_JSON = process.env.OUT_COUNTS
+  ? path.resolve(process.env.OUT_COUNTS)
+  : path.join("data", "counts.json");
+
+const OUT_JOURNAL_HTML = process.env.OUT_JOURNAL_HTML
+  ? path.resolve(process.env.OUT_JOURNAL_HTML)
+  : path.join("publications", "journal-papers.html");
+
 
 /* =========================
  * utils
@@ -466,6 +472,9 @@ async function main() {
   const journals = published.filter(isJournalOnly);
 
   const updatedAt = new Date().toISOString();
+  
+  console.log("OUT_COUNTS_JSON =", OUT_COUNTS_JSON);
+  console.log("OUT_JOURNAL_HTML =", OUT_JOURNAL_HTML);
 
   ensureDir(path.dirname(OUT_COUNTS_JSON));
   fs.writeFileSync(
