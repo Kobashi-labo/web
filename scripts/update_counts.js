@@ -1,76 +1,272 @@
 /**
  * scripts/update_counts.js
  * - Fetch researchmap API
- * - Generate:
- *    data/counts.json
- *    publications/journal-papers.html
+ * - Build data/counts.json
+ * - Build publications/journal-papers.html (journal-only, year-grouped, IEEE-ish)
  *
- * Node 18+ (GitHub Actions) assumed.
+ * Node 18+ (fetch available)
  */
 
-import fs from "fs";
-import path from "path";
+const fs = require("fs");
+const path = require("path");
 
-const RESEARCHMAP_PERMALINK = "read0134502";
+const RESEARCHMAP_PERMALINK = process.env.RESEARCHMAP_PERMALINK || "read0134502";
 const OUT_COUNTS_JSON = path.join("data", "counts.json");
 const OUT_JOURNAL_HTML = path.join("publications", "journal-papers.html");
 
-function isoNow() {
-  return new Date().toISOString();
+// ------------------------
+// utils
+// ------------------------
+function ensureDir(p) {
+  fs.mkdirSync(p, { recursive: true });
 }
 
-// -------------------------
-// Robust text normalization
-// -------------------------
-function textify(v) {
+function escHtml(s) {
+  return String(s ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function isObject(v) {
+  return v && typeof v === "object" && !Array.isArray(v);
+}
+
+// researchmap は title: {ja,en} のように来ることがある
+function pickLangText(v) {
   if (v == null) return "";
-  if (typeof v === "string") return v.trim();
-  if (typeof v === "number" || typeof v === "boolean") return String(v);
-  if (Array.isArray(v)) return v.map(textify).filter(Boolean).join(" ").trim();
-
-  if (typeof v === "object") {
-    // common bilingual / value wrappers
-    const candidates = [
-      v.en, v.ja,
-      v.value, v.text, v.name,
-      v.title, v.label,
-      v["@value"], v["rm:value"],
-    ];
-    for (const c of candidates) {
-      const s = textify(c);
-      if (s) return s;
-    }
-
-    // as a last resort: try first string-like property
-    for (const k of Object.keys(v)) {
-      const s = textify(v[k]);
-      if (s) return s;
-    }
-    return "";
+  if (typeof v === "string" || typeof v === "number") return String(v);
+  if (Array.isArray(v)) {
+    // 配列で来るケースは要素を結合
+    return v.map(pickLangText).filter(Boolean).join(" ");
   }
+  if (isObject(v)) {
+    // よくある順で拾う
+    const cand =
+      v.en ?? v.ja ?? v["rm:en"] ?? v["rm:ja"] ?? v.value ?? v.text ?? "";
+    if (cand) return pickLangText(cand);
 
-  // fallback
-  return String(v).trim();
-}
-
-function firstNonEmpty(...vals) {
-  for (const v of vals) {
-    const s = textify(v);
-    if (s) return s;
+    // それでもダメなら、object を stringify して [object Object] 回避
+    try {
+      return JSON.stringify(v);
+    } catch {
+      return "";
+    }
   }
   return "";
 }
 
-// -------------------------
-// researchmap fetch helpers
-// -------------------------
-async function fetchJson(url) {
-  const res = await fetch(url, {
-    headers: { "Accept": "application/json" },
-  });
-  if (!res.ok) {
-    throw new Error(`researchmap API error ${res.status}: ${url}`);
+function firstNonEmpty(...vals) {
+  for (const v of vals) {
+    const t = pickLangText(v).trim();
+    if (t) return t;
   }
+  return "";
+}
+
+function toYear(item) {
+  // いろんな候補から year を抽出
+  const candidates = [
+    item?.year,
+    item?.published_year,
+    item?.publication_year,
+    item?.issued_year,
+    item?.["rm:published_year"],
+    item?.["rm:publication_year"],
+    item?.publication_date,
+    item?.published_date,
+    item?.issued,
+    item?.date,
+    item?.created_at,
+    item?.updated_at,
+  ]
+    .map((v) => pickLangText(v).trim())
+    .filter(Boolean);
+
+  // "2025-12-29" 等から 4桁年を抜く
+  for (const c of candidates) {
+    const m = c.match(/(19|20)\d{2}/);
+    if (m) return m[0];
+  }
+  return "----";
+}
+
+function toUrl(item) {
+  // DOI / URL / researchmap link っぽいものを拾う
+  const doi = firstNonEmpty(
+    item?.doi,
+    item?.DOI,
+    item?.identifier?.doi,
+    item?.["rm:doi"]
+  );
+  if (doi) {
+    const clean = doi.replace(/^https?:\/\/(dx\.)?doi\.org\//i, "").trim();
+    return `https://doi.org/${clean}`;
+  }
+
+  const url = firstNonEmpty(
+    item?.url,
+    item?.URL,
+    item?.link,
+    item?.["rm:url"],
+    item?._links?.self?.href
+  );
+  return url || "";
+}
+
+function toAuthors(item) {
+  // よくある author フィールド候補
+  const arr =
+    item?.authors ||
+    item?.author ||
+    item?.creators ||
+    item?.creator ||
+    item?.member ||
+    item?.contributors ||
+    item?.contributor ||
+    item?.["rm:authors"] ||
+    [];
+
+  if (!Array.isArray(arr)) {
+    // 文字列で来る場合もある
+    const s = pickLangText(arr).trim();
+    return s ? s : "";
+  }
+
+  const names = arr
+    .map((a) =>
+      firstNonEmpty(
+        a?.name,
+        a?.full_name,
+        a?.display_name,
+        a?.["rm:display_name"],
+        a?.family_name && a?.given_name
+          ? `${pickLangText(a.family_name)} ${pickLangText(a.given_name)}`
+          : "",
+        a
+      )
+    )
+    .map((s) => s.replace(/\s+/g, " ").trim())
+    .filter(Boolean);
+
+  return names.join(", ");
+}
+
+function toTitle(item) {
+  return firstNonEmpty(
+    item?.title,
+    item?.paper_title,
+    item?.published_paper_title,
+    item?.["rm:title"],
+    item?.name
+  );
+}
+
+function toJournalName(item) {
+  return firstNonEmpty(
+    item?.journal,
+    item?.journal_name,
+    item?.publication_name,
+    item?.published_paper_name,
+    item?.container_title,
+    item?.["rm:publication_name"],
+    item?.["rm:journal"]
+  );
+}
+
+function toVolNoPp(item) {
+  const vol = firstNonEmpty(item?.volume, item?.vol, item?.journal_volume);
+  const no = firstNonEmpty(
+    item?.number,
+    item?.no,
+    item?.issue,
+    item?.journal_number
+  );
+
+  // pages
+  let pp = "";
+  const sp = firstNonEmpty(
+    item?.starting_page,
+    item?.start_page,
+    item?.page_start
+  );
+  const ep = firstNonEmpty(
+    item?.ending_page,
+    item?.end_page,
+    item?.page_end
+  );
+  const pr = firstNonEmpty(item?.page_range, item?.pages);
+
+  if (sp && ep) pp = `${sp}\u2013${ep}`;
+  else if (pr) pp = pr;
+
+  // IEEE-ish string
+  const parts = [];
+  if (vol) parts.push(`vol. ${vol}`);
+  if (no) parts.push(`no. ${no}`);
+  if (pp) parts.push(`pp. ${pp}`);
+
+  return parts.join(", ");
+}
+
+/**
+ * Journal-only 判定（conference 混入を強めに排除）
+ * researchmap の published_paper_type が実データで揺れるので、
+ * “conference/proceedings” を含むものは除外するルールを入れている。
+ */
+function isJournalOnly(item) {
+  const typeStr = [
+    item?.published_paper_type,
+    item?.paper_type,
+    item?.type,
+    item?.category,
+    item?.raw_type_fields?.published_paper_type,
+  ]
+    .map((v) => pickLangText(v).toLowerCase())
+    .filter(Boolean)
+    .join(" | ");
+
+  const journalHint = [
+    item?.is_international_journal,
+    item?.international_journal,
+    item?.raw_type_fields?.is_international_journal,
+    item?.referee,
+    item?.raw_type_fields?.referee,
+  ]
+    .map((v) => pickLangText(v).toLowerCase())
+    .join(" ");
+
+  // 強制除外（混入対策の主役）
+  if (typeStr.includes("conference")) return false;
+  if (typeStr.includes("proceeding")) return false;
+  if (typeStr.includes("proceedings")) return false;
+
+  // “in_book / book_chapter” っぽいものも除外（念のため）
+  if (typeStr.includes("book")) return false;
+  if (typeStr.includes("chapter")) return false;
+
+  // ここから先は「残った published_papers を journal とみなす」方針
+  // ただし “journal” が含まれるなら明確に true
+  if (typeStr.includes("journal")) return true;
+
+  // referee true っぽければ journal 扱い
+  if (journalHint.includes("true") || journalHint.includes("1")) return true;
+
+  // 最後の保険：ジャーナル名があれば journal 扱い（ただし proceedings 混入は上で切ってる）
+  const jn = toJournalName(item);
+  if (jn) return true;
+
+  return false;
+}
+
+// ------------------------
+// fetch
+// ------------------------
+async function fetchJson(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`researchmap API error ${res.status}: ${url}`);
   return await res.json();
 }
 
@@ -93,10 +289,10 @@ async function fetchAllCategory(category) {
     const { items, nextHref } = normalizeItems(json);
 
     for (const it of items) {
-      const id = it?.["rm:id"] ?? it?.id ?? null;
-      if (id != null) {
-        if (seen.has(String(id))) continue;
-        seen.add(String(id));
+      const id = it?.["rm:id"] || it?.id || null;
+      if (id) {
+        if (seen.has(id)) continue;
+        seen.add(id);
       }
       all.push(it);
     }
@@ -104,316 +300,261 @@ async function fetchAllCategory(category) {
     if (!nextHref) break;
     url = nextHref.startsWith("http") ? nextHref : `https://api.researchmap.jp${nextHref}`;
   }
-
   return all;
 }
 
-// -------------------------
-// Extractors for papers
-// -------------------------
-function extractYear(item) {
-  // year can come in multiple fields; try many
-  const y = firstNonEmpty(
-    item?.year,
-    item?.publication_year,
-    item?.published_year,
-    item?.["rm:year"],
-    item?.date?.year,
-    item?.issued?.year,
-    item?.published_date
-  );
-  // if it's a date string, pick first 4 digits
-  const m = (y || "").match(/\b(19|20)\d{2}\b/);
-  return m ? m[0] : "";
-}
-
-function extractTitle(item) {
-  // IMPORTANT: cover lots of variants
-  return firstNonEmpty(
-    item?.title,
-    item?.paper_title,
-    item?.published_paper_title,
-    item?.published_paper?.title,
-    item?.article_title,
-    item?.name,
-    item?.["rm:title"],
-    item?.["dc:title"],
-    item?.["dcterms:title"]
-  );
-}
-
-function extractJournalName(item) {
-  return firstNonEmpty(
-    item?.journal,
-    item?.journal_name,
-    item?.publication_name,
-    item?.published_paper_name,
-    item?.container_title,
-    item?.source,
-    item?.["rm:journal"],
-    item?.["prism:publicationName"]
-  );
-}
-
-function extractAuthors(item) {
-  // common patterns: authors: [ {name}, {family_name, given_name}, ... ]
-  const arr =
-    item?.authors ??
-    item?.author ??
-    item?.creators ??
-    item?.["dc:creator"] ??
-    [];
-
-  if (!Array.isArray(arr)) {
-    const s = textify(arr);
-    return s ? [s] : [];
-  }
-
-  const names = arr.map(a => {
-    if (typeof a === "string") return a.trim();
-
-    const n = firstNonEmpty(
-      a?.name,
-      a?.full_name,
-      a?.author_name,
-      a?.["rm:name"]
-    );
-    if (n) return n;
-
-    const family = firstNonEmpty(a?.family_name, a?.family, a?.last_name, a?.surname);
-    const given = firstNonEmpty(a?.given_name, a?.given, a?.first_name);
-    const combined = `${given} ${family}`.trim();
-    return combined;
-  }).filter(Boolean);
-
-  // de-dup
-  return [...new Set(names)];
-}
-
-function extractVolNoPages(item) {
-  const vol = firstNonEmpty(item?.volume, item?.vol, item?.["prism:volume"]);
-  const no  = firstNonEmpty(item?.number, item?.issue, item?.no, item?.["prism:number"]);
-  const sp  = firstNonEmpty(item?.start_page, item?.page_start, item?.first_page);
-  const ep  = firstNonEmpty(item?.end_page, item?.page_end, item?.last_page);
-
-  // sometimes pages comes as "2413-2422"
-  const pagesRaw = firstNonEmpty(item?.pages, item?.page, item?.pagination);
-  let pages = "";
-  if (sp || ep) {
-    pages = [sp, ep].filter(Boolean).join("–");
-  } else if (pagesRaw) {
-    pages = pagesRaw.replace(/-/g, "–");
-  }
-
-  return { vol, no, pages };
-}
-
-function extractLink(item) {
-  return firstNonEmpty(
-    item?.url,
-    item?.link,
-    item?.doi ? `https://doi.org/${textify(item.doi).replace(/^doi:/i, "")}` : "",
-    item?.identifier?.doi ? `https://doi.org/${textify(item.identifier.doi)}` : ""
-  );
-}
-
-// -------------------------
-// IEEE-ish formatting (simple)
-// -------------------------
-function formatAuthorsIEEE(authors) {
-  if (!authors.length) return "";
-  // keep as-is (researchmap tends to provide proper order already)
-  return authors.join(", ");
-}
-
-function formatIEEEEntry(item) {
-  const authors = extractAuthors(item);
-  const title = extractTitle(item);              // <-- FIX: always textified
-  const journal = extractJournalName(item);      // <-- FIX: always textified
-  const year = extractYear(item);
-
-  const { vol, no, pages } = extractVolNoPages(item);
-  const link = extractLink(item);
-
-  // Build optional segments only when available
-  const seg = [];
-  if (journal) seg.push(journal);
-  if (vol) seg.push(`vol. ${vol}`);
-  if (no) seg.push(`no. ${no}`);
-  if (pages) seg.push(`pp. ${pages}`);
-  if (year) seg.push(year);
-
-  const parts = [];
-  const a = formatAuthorsIEEE(authors);
-  if (a) parts.push(`${a},`);
-  if (title) parts.push(`“${title},”`);
-  if (seg.length) parts.push(seg.join(", ") + ".");
-  else parts.push(".");
-
-  // link shown as [link] when exists
-  const main = parts.join(" ").replace(/\s+/g, " ").trim();
-  return { main, link };
-}
-
-// -------------------------
-// HTML generator (journal-papers.html)
-// -------------------------
-function escapeHtml(s) {
-  return String(s ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
-
-function groupByYearDesc(items) {
-  const mp = new Map();
+// ------------------------
+// HTML generation
+// ------------------------
+function buildJournalHtml({ updatedAt, items }) {
+  // year-group
+  const byYear = new Map();
   for (const it of items) {
-    const y = extractYear(it) || "----";
-    if (!mp.has(y)) mp.set(y, []);
-    mp.get(y).push(it);
+    const y = toYear(it);
+    if (!byYear.has(y)) byYear.set(y, []);
+    byYear.get(y).push(it);
   }
-  const years = [...mp.keys()].sort((a, b) => {
-    // "----" should go last
+
+  // year sort desc, "----" last
+  const years = Array.from(byYear.keys()).sort((a, b) => {
     if (a === "----") return 1;
     if (b === "----") return -1;
     return Number(b) - Number(a);
   });
-  return { years, mp };
-}
 
-function buildJournalHtml({ updatedDate, items }) {
-  const { years, mp } = groupByYearDesc(items);
+  // within year: try keep stable by title
+  for (const y of years) {
+    byYear.get(y).sort((a, b) => {
+      const ta = toTitle(a).toLowerCase();
+      const tb = toTitle(b).toLowerCase();
+      return ta.localeCompare(tb);
+    });
+  }
+
   const total = items.length;
 
-  const blocks = years.map(y => {
-    const list = mp.get(y);
-    const rendered = list.map((it, idx) => {
-      const { main, link } = formatIEEEEntry(it);
+  function renderEntry(idx, it) {
+    const authors = toAuthors(it);
+    const title = toTitle(it);
+    const journal = toJournalName(it);
+    const year = toYear(it);
+    const vnp = toVolNoPp(it);
+    const url = toUrl(it);
 
-      const linkHtml = link
-        ? `<div class="plink"><a href="${escapeHtml(link)}" target="_blank" rel="noopener">[link]</a></div>`
-        : "";
+    // IEEE-ish:
+    // Authors, “Title,” Journal, vol. x, no. y, pp. a–b, Year.
+    const parts = [];
 
-      return `
-        <li class="item">
-          <div class="card">
-            <div class="ref">${escapeHtml(main)}</div>
-            ${linkHtml}
-          </div>
-        </li>
-      `.trim();
-    }).join("\n");
+    if (authors) parts.push(`${escHtml(authors)},`);
+    if (title) parts.push(`“${escHtml(title)},”`);
+    if (journal) parts.push(`<i>${escHtml(journal)}</i>`);
+    if (vnp) parts.push(`${escHtml(vnp)}`);
+    if (year !== "----") parts.push(`${escHtml(year)}.`);
+    else parts.push(`.`);
+
+    const main = parts.join(" ");
+
+    const linkHtml = url
+      ? ` <a class="plink" href="${escHtml(url)}" target="_blank" rel="noopener">[link]</a>`
+      : "";
 
     return `
-      <section class="year-block">
-        <div class="year-head">
-          <div class="year">${escapeHtml(y)}</div>
-          <div class="badge">${list.length}</div>
+      <li class="paper">
+        <div class="paper-box">
+          <span class="num">${idx}.</span>
+          <div class="cite">${main}${linkHtml}</div>
         </div>
-        <ol class="olist">
-          ${rendered}
-        </ol>
-      </section>
-    `.trim();
-  }).join("\n\n");
+      </li>`;
+  }
 
-  // NOTE: "IEEE style ..." line is NOT included (user requested removal)
+  let runningIndex = 1;
+  const yearBlocks = years
+    .map((y) => {
+      const list = byYear.get(y) || [];
+      const badge = `<span class="badge">${escHtml(String(list.length))}</span>`;
+      const head = `<div class="year-head"><span class="year">${escHtml(y)}</span>${badge}</div>`;
+      const itemsHtml = list.map((it) => renderEntry(runningIndex++, it)).join("\n");
+      return `
+        <section class="year-section">
+          ${head}
+          <ol class="papers">
+            ${itemsHtml}
+          </ol>
+        </section>
+      `;
+    })
+    .join("\n");
+
   return `<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Journal Papers | Kobashi Laboratory</title>
-  <style>
-    body{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans JP",sans-serif;margin:0;background:#eef2f7;color:#111827}
-    header{background:#1f3b84;color:#fff;padding:36px 28px}
-    header h1{margin:0;font-size:54px;letter-spacing:.5px}
-    header .sub{margin-top:10px;opacity:.95;font-size:18px}
-    .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-    .back a{display:inline-block;color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.35);
-      padding:12px 18px;border-radius:999px}
-    .wrap{max-width:1100px;margin:0 auto;padding:24px 18px 60px}
-    .meta{background:#fff;border-radius:20px;padding:18px 20px;box-shadow:0 16px 40px rgba(15,23,42,.08);
-      margin-top:-26px}
-    .meta b{margin-right:18px}
-    .year-block{margin-top:26px}
-    .year-head{display:flex;align-items:center;gap:14px;margin:14px 0}
-    .year{font-size:38px;font-weight:800;color:#1f3b84}
-    .badge{width:42px;height:42px;border-radius:999px;background:#1f3b84;color:#fff;
-      display:flex;align-items:center;justify-content:center;font-weight:800}
-    .olist{margin:0;padding-left:24px}
-    .item{margin:14px 0}
-    .card{background:#fff;border-radius:18px;padding:18px 18px;box-shadow:0 14px 36px rgba(15,23,42,.07)}
-    .ref{font-size:18px;line-height:1.65}
-    .plink{margin-top:8px}
-    .plink a{color:#1f3b84;text-decoration:underline}
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Journal Papers | Kobashi Laboratory</title>
+<style>
+  :root {
+    --blue: #1e3a8a;
+    --bg: #f3f6fb;
+    --card: #ffffff;
+    --muted: #6b7280;
+    --shadow: 0 10px 30px rgba(0,0,0,0.08);
+    --radius: 18px;
+  }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", "Noto Sans JP", sans-serif;
+    background: var(--bg);
+    color: #111827;
+  }
+  header {
+    background: var(--blue);
+    color: white;
+    padding: 48px 32px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header h1 { margin: 0; font-size: 56px; letter-spacing: .5px; }
+  header p { margin: 8px 0 0; opacity: .9; font-size: 18px; }
+  .back {
+    position: absolute;
+    right: 28px;
+    top: 28px;
+    color: white;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,.35);
+    padding: 10px 16px;
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 28px 18px 60px; }
+  .meta {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 22px;
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: -24px;
+  }
+  .meta b { color: #111827; }
+  .meta span { color: var(--muted); }
+  .year-section { margin-top: 28px; }
+  .year-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 22px 0 10px;
+  }
+  .year {
+    font-size: 44px;
+    font-weight: 800;
+    color: var(--blue);
+    letter-spacing: .5px;
+  }
+  .badge {
+    background: var(--blue);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-weight: 700;
+  }
+  ol.papers { margin: 0; padding-left: 0; list-style: none; }
+  .paper { margin: 14px 0; }
+  .paper-box {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 20px;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+  .num {
+    font-weight: 800;
+    color: var(--blue);
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  .cite {
+    font-size: 18px;
+    line-height: 1.75;
+  }
+  .plink { margin-left: 6px; }
+  .plink:visited { color: #374151; }
+  @media (max-width: 768px) {
+    header h1 { font-size: 38px; }
+    .year { font-size: 32px; }
+    .paper-box { grid-template-columns: 32px 1fr; }
+    .cite { font-size: 16px; }
+  }
+</style>
 </head>
 <body>
-  <header>
-    <div class="topbar">
-      <div>
-        <h1>Journal Papers</h1>
-        <div class="sub">論文誌（Journal papers only）</div>
-      </div>
-      <div class="back"><a href="../index.html#recent-ja">← Publications に戻る</a></div>
-    </div>
-  </header>
+<header>
+  <a class="back" href="../index.html#recent-ja">← Publications に戻る</a>
+  <h1>Journal Papers</h1>
+  <p>論文誌（Journal papers only）</p>
+</header>
 
-  <div class="wrap">
-    <div class="meta">
-      <b>Updated:</b> ${escapeHtml(updatedDate)}　
-      <b>Items:</b> ${total}　
-      <b>Source:</b> researchmap API (generated daily via GitHub Actions)
-    </div>
-
-    ${blocks}
+<div class="wrap">
+  <div class="meta">
+    <div><b>Updated:</b> <span>${escHtml(updatedAt)}</span></div>
+    <div><b>Items:</b> <span>${escHtml(String(total))}</span></div>
+    <div><b>Source:</b> <span>researchmap API (generated daily via GitHub Actions)</span></div>
   </div>
+
+  ${yearBlocks}
+</div>
 </body>
 </html>`;
 }
 
-// -------------------------
-// Main
-// -------------------------
+// ------------------------
+// main
+// ------------------------
 async function main() {
-  // Fetch categories (you can extend as needed)
+  console.log(`Fetching researchmap: ${RESEARCHMAP_PERMALINK}`);
+
   const [publishedPapers, presentations] = await Promise.all([
     fetchAllCategory("published_papers"),
     fetchAllCategory("presentations"),
   ]);
 
-  // counts (minimum set; adapt to your existing keys)
-  // NOTE: journal/int_conf/book_chapters は既存ロジックに合わせて別カテゴリ等で算出しているならここに追記してください
+  // journal-only filter（conference 混入をここで排除）
+  const journals = publishedPapers.filter(isJournalOnly);
+
+  // counts
+  const updatedAt = new Date().toISOString();
   const counts = {
     permalink: RESEARCHMAP_PERMALINK,
-    updatedAt: isoNow(),
+    updatedAt,
+    // “papers_total” は published_papers 全体（必要なら journal-only に変えてもOK）
     papers_total: publishedPapers.length,
+    // journal-only count
+    journal: journals.length,
+    journal_count: journals.length,
     presentations_total: presentations.length,
   };
 
-  // Ensure directories
-  fs.mkdirSync(path.dirname(OUT_COUNTS_JSON), { recursive: true });
-  fs.mkdirSync(path.dirname(OUT_JOURNAL_HTML), { recursive: true });
-
-  // Write counts.json
+  ensureDir(path.dirname(OUT_COUNTS_JSON));
   fs.writeFileSync(OUT_COUNTS_JSON, JSON.stringify(counts, null, 2), "utf-8");
+  console.log(`Wrote ${OUT_COUNTS_JSON}`);
 
-  // Build journal-papers.html (use published_papers as journal list here)
-  // If you already filter "journal only" in your pipeline, replace `publishedPapers` with that filtered array.
-  const updatedDate = counts.updatedAt.slice(0, 10);
-  const html = buildJournalHtml({ updatedDate, items: publishedPapers });
+  // journal html
+  ensureDir(path.dirname(OUT_JOURNAL_HTML));
+  const html = buildJournalHtml({
+    updatedAt: updatedAt.slice(0, 10),
+    items: journals,
+  });
   fs.writeFileSync(OUT_JOURNAL_HTML, html, "utf-8");
-
-  console.log("Generated:");
-  console.log(" -", OUT_COUNTS_JSON);
-  console.log(" -", OUT_JOURNAL_HTML);
-  console.log(`papers_total=${counts.papers_total} presentations_total=${counts.presentations_total}`);
+  console.log(`Wrote ${OUT_JOURNAL_HTML}`);
 }
 
-main().catch(err => {
-  console.error(err);
+main().catch((e) => {
+  console.error(e);
   process.exit(1);
 });
