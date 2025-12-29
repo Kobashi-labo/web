@@ -30,9 +30,7 @@ async function fetchJson(url) {
   const res = await fetch(url, { headers: { Accept: "application/json" } });
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    throw new Error(
-      `HTTP ${res.status} for ${url}\n${text.slice(0, 500)}`
-    );
+    throw new Error(`HTTP ${res.status} for ${url}\n${text.slice(0, 500)}`);
   }
   return res.json();
 }
@@ -355,7 +353,7 @@ async function main() {
       subtitle: "論文誌（Journal papers only）",
       items: journalItems,
       updatedAtIso: updatedAt,
-      backHref: "../index.html#publications",
+      backHref: "../index.html#recent", // ← 修正
     })
   );
 
@@ -366,7 +364,7 @@ async function main() {
       subtitle: "国際会議論文（International conference papers only）",
       items: intlConfItems,
       updatedAtIso: updatedAt,
-      backHref: "../index.html#publications",
+      backHref: "../index.html#recent", // ← 修正
     })
   );
 
@@ -377,7 +375,7 @@ async function main() {
       subtitle: "Book chapters（published_paper_type = in_book）",
       items: bookChapterItems,
       updatedAtIso: updatedAt,
-      backHref: "../index.html#publications",
+      backHref: "../index.html#recent", // ← 修正
     })
   );
 
