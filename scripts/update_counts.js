@@ -153,66 +153,83 @@ function joinAuthorsIEEE(list) {
 }
 
 function toAuthors(item) {
-  // まず「配列」を最優先で拾う（ここが重要）
-  const candidates = [
+  // あり得るキーを全部拾う（researchmapの揺れ対策）
+  const pools = [
     item?.authors,
-    item?.creators,
-    item?.contributors,
     item?.author,
+    item?.creators,
     item?.creator,
+    item?.contributors,
     item?.contributor,
+    item?.members,
+    item?.member,
     item?.["rm:authors"],
-  ];
+    item?.["rm:author"],
+  ].filter((v) => v != null);
 
-  let arr = null;
-  let fallbackStr = "";
+  // 1) 配列があれば最優先
+  const arr = pools.find((v) => Array.isArray(v) && v.length);
 
-  for (const c of candidates) {
-    if (Array.isArray(c) && c.length) {
-      arr = c;
-      break;
-    }
-    if (!arr && typeof c === "string" && c.trim()) {
-      fallbackStr = c.trim();
-    }
-  }
-
-  // 配列が取れた場合：各著者を正規化して join
   if (arr) {
     const names = arr
-      .map((a) =>
-        firstNonEmpty(
-          a?.name,
-          a?.full_name,
-          a?.display_name,
-          a?.["rm:display_name"],
-          // given/family が別の場合（これが一番信頼できる）
-          a?.family_name && a?.given_name
-            ? `${pickLangText(a.given_name)} ${pickLangText(a.family_name)}`
-            : "",
-          a
-        )
-      )
-      .map(formatAuthorName)
-      .filter(Boolean);
+  .flatMap((a) => {
+    const s = firstNonEmpty(
+      a?.full_name,
+      a?.display_name,
+      a?.name,
+      a?.["rm:display_name"],
+      a?.family_name && a?.given_name
+        ? `${pickLangText(a.given_name)} ${pickLangText(a.family_name)}`
+        : "",
+      a?.family && a?.given
+        ? `${pickLangText(a.given)} ${pickLangText(a.family)}`
+        : "",
+      a
+    );
+
+    // 1要素に複数著者が入っている場合の救済（区切りがある時だけ分割）
+    if (typeof s === "string" && /;|\s+and\s+/i.test(s)) {
+      return s
+        .split(/\s*;\s*|\s+and\s+/i)
+        .map((x) => x.trim())
+        .filter(Boolean);
+    }
+    return [s];
+  })
+  .map(formatAuthorName)
+  .filter(Boolean);
+
 
     return joinAuthorsIEEE(names);
   }
 
-  // 配列が無く、文字列しかない場合：区切りがあれば分割して IEEE join
-  if (fallbackStr) {
-    const parts = fallbackStr
-      .split(/\s*[,;]\s*|\s+and\s+/i) // comma/semicolon/and で分割
+  // 2) 文字列（author が "A;B;C" などで来るパターン）を拾う
+  const str = pools
+    .map((v) => (typeof v === "string" ? v : ""))
+    .find((s) => s && s.trim());
+
+  if (str) {
+    const parts = str
+      .split(/\s*[,;]\s*|\s+and\s+/i)
       .map((s) => s.trim())
       .filter(Boolean)
-      .map(formatAuthorName);
+      .map(formatAuthorName)
+      .filter(Boolean);
 
-    return joinAuthorsIEEE(parts);
+    return joinAuthorsIEEE(parts.length ? parts : [formatAuthorName(str)]);
   }
+
+  // 3) それでも無理なら、著者っぽいフィールドを最後に探す（超保険）
+  const alt = firstNonEmpty(
+    item?.author_name,
+    item?.authors_name,
+    item?.creator_name,
+    item?.contributor_name
+  );
+  if (alt) return joinAuthorsIEEE([formatAuthorName(alt)]);
 
   return "";
 }
-
 
 /* =========================
  * Title / Journal
