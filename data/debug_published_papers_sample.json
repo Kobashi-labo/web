@@ -1,0 +1,292 @@
+{
+  "permalink": "read0134502",
+  "updatedAt": "2025-12-29T04:45:18.840Z",
+  "sample": [
+    {
+      "@id": "https://api.researchmap.jp/read0134502/published_papers/51725474",
+      "@type": "published_papers",
+      "@reverse": "https://api.researchmap.jp/read0134502/published_papers",
+      "rm:id": "51725474",
+      "rm:user_id": "6000003807",
+      "display": "disclosed",
+      "major_achievement": false,
+      "rm:creator_id": "6000003807",
+      "rm:creator_type": "myself",
+      "rm:created": "2025-11-24T00:59:24Z",
+      "rm:modifier_id": "6000003807",
+      "rm:modifier_type": "myself",
+      "rm:modified": "2025-12-28T00:10:24Z",
+      "paper_title": {
+        "en": "Dynamic multi-scale deep learning with mixture of experts for differentiating iNPH and PSP using MRI."
+      },
+      "authors": {
+        "en": [
+          {
+            "name": "Fubuki Sawa"
+          },
+          {
+            "name": "Daisuke Fujita"
+          },
+          {
+            "name": "Kenichi Shimada"
+          },
+          {
+            "name": "Hideo Aihara"
+          },
+          {
+            "name": "Toshiyuki Uehara"
+          },
+          {
+            "name": "Yutaka Koide"
+          },
+          {
+            "name": "Ryota Kawasaki"
+          },
+          {
+            "name": "Kazunari Ishii"
+          },
+          {
+            "name": "Syoji Kobashi"
+          }
+        ]
+      },
+      "published_paper_owner_roles": [
+        "last",
+        "corresponding"
+      ],
+      "description": {
+        "en": "PURPOSE: Distinguishing idiopathic normal pressure hydrocephalus (iNPH) from progressive supranuclear palsy (PSP) presents a clinical challenge due to overlapping clinical symptoms such as gait disturbances and cognitive decline. This study presents a novel multi-scale deep learning framework that integrates global and local magnetic resonance imaging (MRI) features using a mixture of experts (MoE) mechanism, enhancing diagnostic accuracy and minimizing interobserver variability. METHODS: The proposed framework combines a 3D convolutional neural network (CNN) for capturing global volumetric features with a 2.5D recurrent CNN focusing on disease-specific regions of interest (ROIs), including the lateral ventricles, high convexity sulci, midbrain, and Sylvian fissures. The MoE mechanism dynamically weights global and local features, optimizing the classification process. Model performance was assessed using stratified fivefold cross-validation on T1-weighted MRI from 118 patients (53 iNPH, 65 PSP) to ensure balanced class distributions across training folds. RESULTS: The MoE model using ResNet-34 achieved an accuracy of 0.983 (95% CI 0.875-1.000), a recall of 0.985 (95% CI 0.750-1.000), a precision of 0.986 (95% CI 0.769-1.000), and an area under the curve (AUC) of 1.000 (95% CI 1.000-1.000), outperforming traditional morphological markers and single-branch deep learning models. The MoE mechanism allowed adaptive weighting of global and local features, contributing to both improved robustness and interpretability. Grad-CAM visualizations highlighted disease-specific regions, demonstrating that the model focused on relevant features in both successful and failure modes of the 3D CNN expert for iNPH and PSP. CONCLUSION: The dynamic integration of global and local MRI features through the MoE framework offers a powerful, robust, and interpretable tool for differentiating iNPH from PSP. This approach reduces reliance on subjective visual assessments and has the potential for broader clinical application through dataset expansion and multicenter validation."
+      },
+      "publication_date": "2025-12",
+      "publication_name": {
+        "en": "International journal of computer assisted radiology and surgery"
+      },
+      "volume": "20",
+      "number": "12",
+      "starting_page": "2413",
+      "ending_page": "2422",
+      "languages": [
+        "eng"
+      ],
+      "referee": true,
+      "invited": false,
+      "published_paper_type": "scientific_journal",
+      "is_international_journal": true,
+      "is_international_collaboration": false,
+      "rm:is_open_access": true,
+      "identifiers": {
+        "doi": [
+          "10.1007/s11548-025-03537-4"
+        ],
+        "pm_id": [
+          "41254343"
+        ]
+      },
+      "see_also": [
+        {
+          "label": "doi",
+          "@id": "https://doi.org/10.1007/s11548-025-03537-4",
+          "is_downloadable": true
+        },
+        {
+          "label": "pubmed",
+          "@id": "https://www.ncbi.nlm.nih.gov/pubmed/41254343",
+          "is_downloadable": false
+        }
+      ]
+    },
+    {
+      "@id": "https://api.researchmap.jp/read0134502/published_papers/49675991",
+      "@type": "published_papers",
+      "@reverse": "https://api.researchmap.jp/read0134502/published_papers",
+      "rm:id": "49675991",
+      "rm:user_id": "6000003807",
+      "display": "disclosed",
+      "major_achievement": false,
+      "rm:creator_id": "6000003807",
+      "rm:creator_type": "myself",
+      "rm:created": "2025-04-03T05:06:28Z",
+      "rm:modifier_id": "6000003807",
+      "rm:modifier_type": "myself",
+      "rm:modified": "2025-12-28T00:07:03Z",
+      "paper_title": {
+        "en": "Early prediction of bronchopulmonary dysplasia in preterm infants using chest X-rays through a comparative analysis of 13 CNN models across different post-birth days"
+      },
+      "authors": {
+        "en": [
+          {
+            "name": "Md Anas Ali"
+          },
+          {
+            "name": "Ryunosuke Maeda"
+          },
+          {
+            "name": "Daisuke Fujita"
+          },
+          {
+            "name": "Naoyuki Miyahara"
+          },
+          {
+            "name": "Fumihiko Namba"
+          },
+          {
+            "name": "Syoji Kobashi"
+          }
+        ]
+      },
+      "published_paper_owner_roles": [
+        "last",
+        "corresponding"
+      ],
+      "publication_date": "2025-12",
+      "publication_name": {
+        "en": "Discover Computing"
+      },
+      "volume": "28",
+      "number": "1",
+      "languages": [
+        "eng"
+      ],
+      "referee": true,
+      "invited": false,
+      "published_paper_type": "scientific_journal",
+      "is_international_journal": true,
+      "is_international_collaboration": true,
+      "rm:is_open_access": true,
+      "identifiers": {
+        "doi": [
+          "10.1007/s10791-025-09519-z"
+        ],
+        "e_issn": [
+          "2948-2992"
+        ],
+        "scopus_id": [
+          "105000912520"
+        ]
+      },
+      "see_also": [
+        {
+          "label": "doi",
+          "@id": "https://doi.org/10.1007/s10791-025-09519-z",
+          "is_downloadable": true
+        },
+        {
+          "is_downloadable": true,
+          "label": "scopus",
+          "@id": "https://www.scopus.com/inward/record.uri?partnerID=HzOxMe3b&scp=105000912520&origin=inward"
+        },
+        {
+          "is_downloadable": false,
+          "label": "scopus_citedby",
+          "@id": "https://www.scopus.com/inward/citedby.uri?partnerID=HzOxMe3b&scp=105000912520&origin=inward"
+        }
+      ]
+    },
+    {
+      "@id": "https://api.researchmap.jp/read0134502/published_papers/51725473",
+      "@type": "published_papers",
+      "@reverse": "https://api.researchmap.jp/read0134502/published_papers",
+      "rm:id": "51725473",
+      "rm:user_id": "6000003807",
+      "display": "disclosed",
+      "major_achievement": false,
+      "rm:creator_id": "6000003807",
+      "rm:creator_type": "myself",
+      "rm:created": "2025-11-24T00:59:24Z",
+      "rm:modifier_id": "6000003807",
+      "rm:modifier_type": "myself",
+      "rm:modified": "2025-12-28T00:10:59Z",
+      "paper_title": {
+        "en": "Comparative safety of stent retriever designs for intracranial atherosclerotic disease related large vessel occlusion using agarose models."
+      },
+      "authors": {
+        "en": [
+          {
+            "name": "Yukihiro Imaoka"
+          },
+          {
+            "name": "Katsuhiro Mikami"
+          },
+          {
+            "name": "Ai Fuchita"
+          },
+          {
+            "name": "Satoshi Ikeda"
+          },
+          {
+            "name": "Nice Ren"
+          },
+          {
+            "name": "Shogo Watanabe"
+          },
+          {
+            "name": "Soichiro Abe"
+          },
+          {
+            "name": "Tomohide Yoshie"
+          },
+          {
+            "name": "Satoshi Namitome"
+          },
+          {
+            "name": "Syoji Kobashi"
+          },
+          {
+            "name": "Hirotoshi Imamura"
+          },
+          {
+            "name": "Koji Iihara"
+          }
+        ]
+      },
+      "description": {
+        "en": "Establishing an optimal first-line approach for suspected intracranial atherosclerotic disease (ICAD)-related acute large vessel occlusion (LVO) remains challenging. We developed an ICAD model using an agarose phantom to investigate the specific features of the stent retriever (SR) design for ICAD-LVO for safety use. An ICAD model that reproduced the mechanical features of plaque was developed to quantify the pull-out resistance and intraluminal injury caused by SRs. The impacts of vessel factors (ICAD existence and plaque stiffness) and SR design (non-segmented, segmented, and manually-controllable-diameter) were evaluated using this model. In the 6% agarose (as soft plaque) ICAD model, SR caused significantly higher pull-out resistance and severe intraluminal injury compared with the non-ICAD model or the 10% agarose (as hard plaque) ICAD model with almost all SRs. In the 6% ICAD model, non-segmented, rather than segmented, SRs seemed to reduce pull-out resistance and intraluminal injury. Longer SRs strengthened the benefit of non-segmented design. SRs with manually controllable diameter, when fully relaxed before retrieval, seemed to provide the safest option among all SR designs, while those with usual handling such as slight relaxation before retrieval seemed to be the most harmful due to specific deformation. Using SRs for ICAD-LVO may increase pull-out resistance and intraluminal injury, particularly in ICAD involving soft plaques. SR use safety for ICAD seems to depend largely on SR design and handling procedures of manually controllable diameter SRs."
+      },
+      "publication_date": "2025-11-20",
+      "publication_name": {
+        "en": "Scientific reports"
+      },
+      "volume": "15",
+      "number": "1",
+      "starting_page": "40952",
+      "ending_page": "40952",
+      "languages": [
+        "eng"
+      ],
+      "referee": true,
+      "invited": false,
+      "published_paper_type": "scientific_journal",
+      "is_international_journal": true,
+      "is_international_collaboration": false,
+      "rm:is_open_access": true,
+      "identifiers": {
+        "doi": [
+          "10.1038/s41598-025-24696-z"
+        ],
+        "pm_id": [
+          "41266483"
+        ],
+        "pmc_id": [
+          "PMC12635251"
+        ]
+      },
+      "see_also": [
+        {
+          "label": "doi",
+          "@id": "https://doi.org/10.1038/s41598-025-24696-z",
+          "is_downloadable": true
+        },
+        {
+          "label": "pubmed",
+          "@id": "https://www.ncbi.nlm.nih.gov/pubmed/41266483",
+          "is_downloadable": false
+        },
+        {
+          "label": "pmc",
+          "@id": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12635251",
+          "is_downloadable": false
+        }
+      ]
+    }
+  ]
+}
