@@ -34,21 +34,27 @@ function isObject(v) {
   return v && typeof v === "object" && !Array.isArray(v);
 }
 
-// researchmap は title: {ja,en} のように来ることがある
+/**
+ * researchmap の "title: {ja,en}" や 著者 "{"name": "..."}" を
+ * 必ず「文字列」に正規化して返す（[object Object] 根絶）
+ */
 function pickLangText(v) {
   if (v == null) return "";
   if (typeof v === "string" || typeof v === "number") return String(v);
-  if (Array.isArray(v)) {
-    // 配列で来るケースは要素を結合
-    return v.map(pickLangText).filter(Boolean).join(" ");
-  }
+  if (Array.isArray(v)) return v.map(pickLangText).filter(Boolean).join(" ");
+
   if (isObject(v)) {
-    // よくある順で拾う
+    // ★ 最重要：著者オブジェクト {"name": "..."} を最優先で拾う
+    if (v.name) return pickLangText(v.name);
+    if (v.full_name) return pickLangText(v.full_name);
+    if (v.display_name) return pickLangText(v.display_name);
+
+    // よくある多言語パターン
     const cand =
       v.en ?? v.ja ?? v["rm:en"] ?? v["rm:ja"] ?? v.value ?? v.text ?? "";
     if (cand) return pickLangText(cand);
 
-    // それでもダメなら、object を stringify して [object Object] 回避
+    // 最後の保険：object を stringify（ただし基本ここには来ないようにする）
     try {
       return JSON.stringify(v);
     } catch {
@@ -67,7 +73,6 @@ function firstNonEmpty(...vals) {
 }
 
 function toYear(item) {
-  // いろんな候補から year を抽出
   const candidates = [
     item?.year,
     item?.published_year,
@@ -85,7 +90,6 @@ function toYear(item) {
     .map((v) => pickLangText(v).trim())
     .filter(Boolean);
 
-  // "2025-12-29" 等から 4桁年を抜く
   for (const c of candidates) {
     const m = c.match(/(19|20)\d{2}/);
     if (m) return m[0];
@@ -94,7 +98,6 @@ function toYear(item) {
 }
 
 function toUrl(item) {
-  // DOI / URL / researchmap link っぽいものを拾う
   const doi = firstNonEmpty(
     item?.doi,
     item?.DOI,
@@ -117,7 +120,6 @@ function toUrl(item) {
 }
 
 function toAuthors(item) {
-  // よくある author フィールド候補
   const arr =
     item?.authors ||
     item?.author ||
@@ -129,8 +131,8 @@ function toAuthors(item) {
     item?.["rm:authors"] ||
     [];
 
+  // 文字列で来る場合
   if (!Array.isArray(arr)) {
-    // 文字列で来る場合もある
     const s = pickLangText(arr).trim();
     return s ? s : "";
   }
@@ -145,6 +147,7 @@ function toAuthors(item) {
         a?.family_name && a?.given_name
           ? `${pickLangText(a.family_name)} ${pickLangText(a.given_name)}`
           : "",
+        // ★ ここで a 自体が {"name": "..."} でも pickLangText が name を拾う
         a
       )
     )
@@ -178,31 +181,16 @@ function toJournalName(item) {
 
 function toVolNoPp(item) {
   const vol = firstNonEmpty(item?.volume, item?.vol, item?.journal_volume);
-  const no = firstNonEmpty(
-    item?.number,
-    item?.no,
-    item?.issue,
-    item?.journal_number
-  );
+  const no = firstNonEmpty(item?.number, item?.no, item?.issue, item?.journal_number);
 
-  // pages
   let pp = "";
-  const sp = firstNonEmpty(
-    item?.starting_page,
-    item?.start_page,
-    item?.page_start
-  );
-  const ep = firstNonEmpty(
-    item?.ending_page,
-    item?.end_page,
-    item?.page_end
-  );
+  const sp = firstNonEmpty(item?.starting_page, item?.start_page, item?.page_start);
+  const ep = firstNonEmpty(item?.ending_page, item?.end_page, item?.page_end);
   const pr = firstNonEmpty(item?.page_range, item?.pages);
 
   if (sp && ep) pp = `${sp}\u2013${ep}`;
   else if (pr) pp = pr;
 
-  // IEEE-ish string
   const parts = [];
   if (vol) parts.push(`vol. ${vol}`);
   if (no) parts.push(`no. ${no}`);
@@ -212,11 +200,44 @@ function toVolNoPp(item) {
 }
 
 /**
- * Journal-only 判定（conference 混入を強めに排除）
- * researchmap の published_paper_type が実データで揺れるので、
- * “conference/proceedings” を含むものは除外するルールを入れている。
+ * type が空でも journal 名に Proceedings / Conference 等が含まれる場合があるため、
+ * journal/container/title からも conference 判定を行う。
+ *
+ * ※ "IEEE Transactions ..." は journal なので除外しないように、
+ *   "transactions" 単体では除外しない。
+ */
+function looksLikeConferenceProceedings(item) {
+  const j = toJournalName(item).toLowerCase();
+  const t = toTitle(item).toLowerCase();
+
+  const hay = `${j} | ${t}`;
+
+  // 強めの conference/proceedings キーワード
+  const badPatterns = [
+    /\bproceedings\b/,
+    /\bproceedings of\b/,
+    /\bannual international conference\b/,
+    /\binternational conference\b/,
+    /\bconference\b/,
+    /\bsymposium\b/,
+    /\bworkshop\b/,
+    /\bmeeting\b/,
+    /\bcongress\b/,
+  ];
+
+  // ただし "transactions" は journal のことが多いので単独では弾かない
+  //（上の badPatterns に入れていない）
+
+  return badPatterns.some((re) => re.test(hay));
+}
+
+/**
+ * Journal-only 判定（conference 混入を強力に排除）
  */
 function isJournalOnly(item) {
+  // まず journal/container/title から conference 判定（type 無し混入の主対策）
+  if (looksLikeConferenceProceedings(item)) return false;
+
   const typeStr = [
     item?.published_paper_type,
     item?.paper_type,
@@ -228,6 +249,22 @@ function isJournalOnly(item) {
     .filter(Boolean)
     .join(" | ");
 
+  // 強制除外（type がある場合）
+  if (typeStr.includes("conference")) return false;
+  if (typeStr.includes("proceeding")) return false;
+  if (typeStr.includes("proceedings")) return false;
+  if (typeStr.includes("symposium")) return false;
+  if (typeStr.includes("workshop")) return false;
+
+  // book/chapter も除外（念のため）
+  if (typeStr.includes("book")) return false;
+  if (typeStr.includes("chapter")) return false;
+  if (typeStr.includes("in_book")) return false;
+
+  // journal と明示されていれば true
+  if (typeStr.includes("journal")) return true;
+
+  // referee が true っぽいなら journal 扱い
   const journalHint = [
     item?.is_international_journal,
     item?.international_journal,
@@ -238,23 +275,9 @@ function isJournalOnly(item) {
     .map((v) => pickLangText(v).toLowerCase())
     .join(" ");
 
-  // 強制除外（混入対策の主役）
-  if (typeStr.includes("conference")) return false;
-  if (typeStr.includes("proceeding")) return false;
-  if (typeStr.includes("proceedings")) return false;
-
-  // “in_book / book_chapter” っぽいものも除外（念のため）
-  if (typeStr.includes("book")) return false;
-  if (typeStr.includes("chapter")) return false;
-
-  // ここから先は「残った published_papers を journal とみなす」方針
-  // ただし “journal” が含まれるなら明確に true
-  if (typeStr.includes("journal")) return true;
-
-  // referee true っぽければ journal 扱い
   if (journalHint.includes("true") || journalHint.includes("1")) return true;
 
-  // 最後の保険：ジャーナル名があれば journal 扱い（ただし proceedings 混入は上で切ってる）
+  // 最後の保険：journal 名があれば journal 扱い（ただし proceedings は上で除外済み）
   const jn = toJournalName(item);
   if (jn) return true;
 
@@ -307,7 +330,6 @@ async function fetchAllCategory(category) {
 // HTML generation
 // ------------------------
 function buildJournalHtml({ updatedAt, items }) {
-  // year-group
   const byYear = new Map();
   for (const it of items) {
     const y = toYear(it);
@@ -315,14 +337,13 @@ function buildJournalHtml({ updatedAt, items }) {
     byYear.get(y).push(it);
   }
 
-  // year sort desc, "----" last
   const years = Array.from(byYear.keys()).sort((a, b) => {
     if (a === "----") return 1;
     if (b === "----") return -1;
     return Number(b) - Number(a);
   });
 
-  // within year: try keep stable by title
+  // 同一年内は “年が新しい順” の情報が無いこともあるので、安定用に title で並べる
   for (const y of years) {
     byYear.get(y).sort((a, b) => {
       const ta = toTitle(a).toLowerCase();
@@ -352,7 +373,7 @@ function buildJournalHtml({ updatedAt, items }) {
     if (year !== "----") parts.push(`${escHtml(year)}.`);
     else parts.push(`.`);
 
-    const main = parts.join(" ");
+    const main = parts.join(" ").replace(/\s+/g, " ").trim();
 
     const linkHtml = url
       ? ` <a class="plink" href="${escHtml(url)}" target="_blank" rel="noopener">[link]</a>`
@@ -400,89 +421,33 @@ function buildJournalHtml({ updatedAt, items }) {
     --shadow: 0 10px 30px rgba(0,0,0,0.08);
     --radius: 18px;
   }
-  body {
-    margin: 0;
-    font-family: "Segoe UI", "Noto Sans JP", sans-serif;
-    background: var(--bg);
-    color: #111827;
-  }
-  header {
-    background: var(--blue);
-    color: white;
-    padding: 48px 32px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
+  body { margin: 0; font-family: "Segoe UI", "Noto Sans JP", sans-serif; background: var(--bg); color: #111827; }
+  header { background: var(--blue); color: white; padding: 48px 32px; position: sticky; top: 0; z-index: 10; }
   header h1 { margin: 0; font-size: 56px; letter-spacing: .5px; }
   header p { margin: 8px 0 0; opacity: .9; font-size: 18px; }
   .back {
-    position: absolute;
-    right: 28px;
-    top: 28px;
-    color: white;
-    text-decoration: none;
-    border: 1px solid rgba(255,255,255,.35);
-    padding: 10px 16px;
-    border-radius: 999px;
-    backdrop-filter: blur(6px);
+    position: absolute; right: 28px; top: 28px; color: white; text-decoration: none;
+    border: 1px solid rgba(255,255,255,.35); padding: 10px 16px; border-radius: 999px; backdrop-filter: blur(6px);
   }
   .wrap { max-width: 1200px; margin: 0 auto; padding: 28px 18px 60px; }
   .meta {
-    background: var(--card);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 18px 22px;
-    display: flex;
-    gap: 22px;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-top: -24px;
+    background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 18px 22px; display: flex; gap: 22px; flex-wrap: wrap; align-items: center; margin-top: -24px;
   }
   .meta b { color: #111827; }
   .meta span { color: var(--muted); }
   .year-section { margin-top: 28px; }
-  .year-head {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin: 22px 0 10px;
-  }
-  .year {
-    font-size: 44px;
-    font-weight: 800;
-    color: var(--blue);
-    letter-spacing: .5px;
-  }
-  .badge {
-    background: var(--blue);
-    color: white;
-    padding: 8px 14px;
-    border-radius: 999px;
-    font-weight: 700;
-  }
+  .year-head { display: flex; align-items: center; gap: 14px; margin: 22px 0 10px; }
+  .year { font-size: 44px; font-weight: 800; color: var(--blue); letter-spacing: .5px; }
+  .badge { background: var(--blue); color: white; padding: 8px 14px; border-radius: 999px; font-weight: 700; }
   ol.papers { margin: 0; padding-left: 0; list-style: none; }
   .paper { margin: 14px 0; }
   .paper-box {
-    background: var(--card);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 18px 20px;
-    display: grid;
-    grid-template-columns: 40px 1fr;
-    gap: 14px;
-    align-items: start;
+    background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 18px 20px; display: grid; grid-template-columns: 40px 1fr; gap: 14px; align-items: start;
   }
-  .num {
-    font-weight: 800;
-    color: var(--blue);
-    font-size: 18px;
-    line-height: 1.6;
-  }
-  .cite {
-    font-size: 18px;
-    line-height: 1.75;
-  }
+  .num { font-weight: 800; color: var(--blue); font-size: 18px; line-height: 1.6; }
+  .cite { font-size: 18px; line-height: 1.75; }
   .plink { margin-left: 6px; }
   .plink:visited { color: #374151; }
   @media (max-width: 768px) {
@@ -524,17 +489,14 @@ async function main() {
     fetchAllCategory("presentations"),
   ]);
 
-  // journal-only filter（conference 混入をここで排除）
+  // journal-only filter（conference/proceedings 混入を排除）
   const journals = publishedPapers.filter(isJournalOnly);
 
-  // counts
   const updatedAt = new Date().toISOString();
   const counts = {
     permalink: RESEARCHMAP_PERMALINK,
     updatedAt,
-    // “papers_total” は published_papers 全体（必要なら journal-only に変えてもOK）
     papers_total: publishedPapers.length,
-    // journal-only count
     journal: journals.length,
     journal_count: journals.length,
     presentations_total: presentations.length,
@@ -544,7 +506,6 @@ async function main() {
   fs.writeFileSync(OUT_COUNTS_JSON, JSON.stringify(counts, null, 2), "utf-8");
   console.log(`Wrote ${OUT_COUNTS_JSON}`);
 
-  // journal html
   ensureDir(path.dirname(OUT_JOURNAL_HTML));
   const html = buildJournalHtml({
     updatedAt: updatedAt.slice(0, 10),
