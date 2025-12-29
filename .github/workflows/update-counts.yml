@@ -2,7 +2,7 @@ name: Update researchmap counts and pages
 
 on:
   schedule:
-    - cron: "10 0 * * *"   # 毎日 09:10 JST
+    - cron: "10 0 * * *"   # daily at 00:10 UTC (≈ 09:10 JST)
   workflow_dispatch:
 
 permissions:
@@ -26,6 +26,8 @@ jobs:
           RESEARCHMAP_PERMALINK: read0134502
           OUT_COUNTS: data/counts.json
           OUT_REPORT: data/unclassified_papers.json
+          OUT_DEBUG_SAMPLE: data/debug_published_papers_sample.json
+          OUT_DEBUG_KEYS: data/debug_published_papers_keys.json
           OUT_JOURNAL_HTML: publications/journal-papers.html
           OUT_INTL_CONF_HTML: publications/conference-proceeding-papers.html
         run: |
@@ -44,6 +46,8 @@ jobs:
           git add \
             data/counts.json \
             data/unclassified_papers.json \
+            data/debug_published_papers_sample.json \
+            data/debug_published_papers_keys.json \
             publications/journal-papers.html \
             publications/conference-proceeding-papers.html
 
