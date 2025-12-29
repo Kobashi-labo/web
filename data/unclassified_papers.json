@@ -1,55 +1,6 @@
 {
   "permalink": "read0134502",
-  "updatedAt": "2025-12-29T08:39:05.029Z",
-  "unclassified_count": 4,
-  "unclassified": [
-    {
-      "id": "27129189",
-      "year": "2008",
-      "title": {
-        "en": "Using eye-movements as a research tool in children with autistic spectrum disorders."
-      },
-      "raw_type_fields": {
-        "published_paper_type": "symposium",
-        "is_international_journal": null,
-        "referee": true
-      }
-    },
-    {
-      "id": "25169983",
-      "year": "2008",
-      "title": {
-        "en": "Eye Position Estimation During Sleep Using Infrared Video in Functional MRI."
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": true
-      }
-    },
-    {
-      "id": "27129183",
-      "year": "2004",
-      "title": {
-        "en": "Regional Specificity of Hemodynamic Response Delay Analyzed by a New Wavelet Based Method: HAW"
-      },
-      "raw_type_fields": {
-        "published_paper_type": "research_society",
-        "is_international_journal": null,
-        "referee": false
-      }
-    },
-    {
-      "id": "27129181",
-      "year": "2003",
-      "title": {
-        "en": "Quantitative Evaluation of the Wavelet Based Analyzing Method in ER-fMRI Study and Comparison with SPM99"
-      },
-      "raw_type_fields": {
-        "published_paper_type": "research_society",
-        "is_international_journal": null,
-        "referee": false
-      }
-    }
-  ]
+  "updatedAt": "2025-12-29T11:14:01.605Z",
+  "unclassified_count": 0,
+  "unclassified": []
 }

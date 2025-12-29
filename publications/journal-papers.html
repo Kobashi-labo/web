@@ -1,154 +1,1314 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Journal Papers | Kobashi Laboratory</title>
   <style>
-    :root{--bg:#f7f7fb;--card:#fff;--ink:#222;--muted:#666;--brand:#1e3a8a;--shadow:0 10px 30px rgba(0,0,0,.10);--r:16px;}
-    body{margin:0;font-family:system-ui,-apple-system,"Segoe UI","Noto Sans JP",sans-serif;line-height:1.75;background:var(--bg);color:var(--ink);}
-    header{background:var(--brand);color:#fff;padding:22px 18px;}
-    header .wrap{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;}
-    h1{margin:0;font-size:22px;}
-    .sub{margin:4px 0 0;font-size:13px;opacity:.9}
-    .nav a{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.35);padding:8px 12px;border-radius:999px;font-size:13px}
-    .nav a:hover{background:rgba(255,255,255,.12)}
-    main{max-width:1100px;margin:0 auto;padding:22px 18px 60px;}
-    .card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:18px 20px;margin:14px 0;}
-    .meta{color:var(--muted);font-size:13px}
-    .year h2{margin:18px 0 10px;font-size:18px;color:var(--brand);display:flex;align-items:center;gap:10px;}
-    .badge{font-size:12px;color:#fff;background:var(--brand);padding:4px 10px;border-radius:999px;opacity:.9}
-    ol{margin:0;padding-left:20px}
-    li{margin:10px 0}
-    .t{font-weight:700}
-    .m{color:var(--muted);font-size:14px;margin-top:2px}
-    a{color:var(--brand)}
-    footer{text-align:center;color:var(--muted);font-size:12px;padding:18px}
-    @media print{header,.nav,footer{display:none} body{background:#fff} .card{box-shadow:none;border:1px solid #ddd}}
+    body{
+      margin:0;
+      font-family: 'Segoe UI','Noto Sans JP',sans-serif;
+      background:#f5f7fb;
+      color:#111827;
+    }
+    header{
+      background:#1e3a8a;
+      color:#fff;
+      padding:28px 20px;
+    }
+    .wrap{max-width:1100px;margin:0 auto;padding:0 10px;}
+    h1{margin:0;font-size:34px;letter-spacing:0.5px;}
+    .sub{margin-top:8px;opacity:0.9}
+    .topbar{
+      margin-top:14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      display:inline-block;
+      color:#fff;
+      text-decoration:none;
+      padding:10px 14px;
+      border:1px solid rgba(255,255,255,0.35);
+      border-radius:999px;
+      transition:transform .15s ease;
+      white-space:nowrap;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .card{
+      margin-top:-18px;
+      background:#fff;
+      border-radius:18px;
+      box-shadow:0 18px 40px rgba(0,0,0,0.08);
+      padding:22px 22px;
+    }
+    .meta{
+      display:flex;gap:22px;flex-wrap:wrap;
+      color:#374151;
+      font-size:14px;
+    }
+    main{padding:22px 0 50px;}
+    .year-block{margin-top:22px;}
+    .year-head{
+      display:flex;align-items:center;gap:12px;
+      margin:18px 0 10px;
+    }
+    .year{
+      font-size:26px;font-weight:800;color:#1e3a8a;
+    }
+    .year-count{
+      width:34px;height:34px;border-radius:999px;
+      background:#1e3a8a;color:#fff;
+      display:flex;align-items:center;justify-content:center;
+      font-weight:700;
+    }
+    .paper-list{
+      margin:0;
+      padding-left:22px;
+    }
+    .paper{
+      margin:14px 0;
+      padding:14px 16px;
+      background:#fff;
+      border-radius:14px;
+      box-shadow:0 8px 22px rgba(0,0,0,0.06);
+      list-style:decimal;
+    }
+    .paper-cite{
+      line-height:1.65;
+      font-size:16px;
+    }
+    .paper-link{margin-top:6px;}
+    .paper-link a{color:#2563eb;text-decoration:none;}
+    .paper-link a:hover{text-decoration:underline;}
+    footer{
+      color:#6b7280;
+      font-size:13px;
+      padding:18px 0;
+      text-align:center;
+    }
+    @media (max-width: 640px){
+      h1{font-size:26px;}
+      .paper{padding:12px 12px}
+      .paper-cite{font-size:15px}
+    }
   </style>
 </head>
 <body>
-<header>
-  <div class="wrap">
-    <div>
+  <header>
+    <div class="wrap">
       <h1>Journal Papers</h1>
-      <p class="sub">論文誌（Journal papers only）</p>
+      <div class="sub">論文誌（Journal papers only）</div>
+      <div class="topbar">
+        <div style="opacity:.9">IEEE style (vol/no/pp shown when available)</div>
+        <a class="btn" href="../index.html#recent-ja">← Publications に戻る</a>
+      </div>
     </div>
-    <div class="nav">
-      <a href="../index.html#publications">← Publications に戻る</a>
+  </header>
+
+  <div class="wrap">
+    <div class="card">
+      <div class="meta">
+        <div><strong>Updated:</strong> 2025-12-29</div>
+        <div><strong>Items:</strong> 105</div>
+        <div><strong>Source:</strong> researchmap API (generated daily via GitHub Actions)</div>
+      </div>
     </div>
+
+    <main>
+      
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2025</div>
+            <div class="year-count">6</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] vol. 20, no. 12, pp. 2413–2422 2025.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. 28, no. 1 2025.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">3.</span>
+                <span class="cite">[object Object] vol. 15, no. 1, pp. 40952–40952 2025.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">4.</span>
+                <span class="cite">[object Object] vol. abs/2509.13873 2025.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">5.</span>
+                <span class="cite">[object Object] vol. 14, no. 15, pp. e041293 2025.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">6.</span>
+                <span class="cite">[object Object] vol. 29, no. 2, pp. 325–336 2025.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2024</div>
+            <div class="year-count">8</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] vol. 106, no. 23, pp. 2196–2204 2024.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. 11, no. 12, pp. 3103–3114 2024.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">3.</span>
+                <span class="cite">[object Object] 2024.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">4.</span>
+                <span class="cite">[object Object] vol. 19, no. 11, pp. 2143–2152 2024.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">5.</span>
+                <span class="cite">[object Object] 2024.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">6.</span>
+                <span class="cite">[object Object] vol. 14, no. 1, pp. 17270–17270 2024.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">7.</span>
+                <span class="cite">[object Object] vol. 36, no. 2, pp. 610–615 2024.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">8.</span>
+                <span class="cite">[object Object] vol. 14, no. 1, pp. 8004–8004 2024.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2023</div>
+            <div class="year-count">5</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] vol. 13, no. 1, pp. 16542–16542 2023.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. 44, pp. 127–133 2023.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">3.</span>
+                <span class="cite">[object Object] vol. 35, no. 1, pp. 593–597 2023.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">4.</span>
+                <span class="cite">[object Object] vol. 13, no. 2, pp. 264–264 2023.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">5.</span>
+                <span class="cite">[object Object] vol. 27, no. 6, pp. 1079–1085 2023.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2022</div>
+            <div class="year-count">2</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] vol. 26, no. 1, pp. 42–50 2022.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. abs/2203.15151 2022.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2021</div>
+            <div class="year-count">5</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] vol. 26, no. 2, pp. 97–102 2021.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. 139, pp. 104954–104954 2021.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">3.</span>
+                <span class="cite">[object Object] vol. 11, no. 16, pp. 7230–7230 2021.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">4.</span>
+                <span class="cite">[object Object] vol. 11, no. 1, pp. 11716–11716 2021.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">5.</span>
+                <span class="cite">[object Object] vol. 42, pp. 191–197 2021.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2020</div>
+            <div class="year-count">7</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] vol. 10, no. 1, pp. 19261–19261 2020.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. 10, no. 16, pp. 5591–5591 2020.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">3.</span>
+                <span class="cite">[object Object] vol. 25, no. 2, pp. 67–74 2020.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">4.</span>
+                <span class="cite">[object Object] vol. 19, no. 2, pp. 137–143 2020.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">5.</span>
+                <span class="cite">[object Object] vol. 8, no. 12, pp. 2325967120968068–2325967120968068 2020.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">6.</span>
+                <span class="cite">[object Object] vol. 16, no. 5, pp. 499–506 2020.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">7.</span>
+                <span class="cite">[object Object] vol. 16, no. 5, pp. 491–498 2020.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2019</div>
+            <div class="year-count">6</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] vol. 54, no. 9, pp. 877–881 2019.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. 102, no. 6, pp. 42–51 2019.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">3.</span>
+                <span class="cite">[object Object] vol. 29, no. 3, pp. 675–681 2019.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">4.</span>
+                <span class="cite">[object Object] vol. 60, no. 4, pp. 310‐313 2019.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">5.</span>
+                <span class="cite">[object Object] vol. 25, no. 1, pp. 105–116 2019.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">6.</span>
+                <span class="cite">[object Object] vol. 139, no. 2, pp. 29–37 2019.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2018</div>
+            <div class="year-count">8</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] vol. 36, no. 5, pp. 238–242 2018.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. 39, pp. 107–110 2018.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">3.</span>
+                <span class="cite">[object Object] vol. 22, no. 5, pp. 739 2018.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">4.</span>
+                <span class="cite">[object Object] vol. 22, no. 2, pp. 249–255 2018.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">5.</span>
+                <span class="cite">[object Object] vol. 2018, pp. 8458024–8458024 2018.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">6.</span>
+                <span class="cite">[object Object] vol. abs/1806.02031 2018.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">7.</span>
+                <span class="cite">[object Object] vol. 22, no. 1, pp. 113–120 2018.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">8.</span>
+                <span class="cite">[object Object] vol. 22, no. 5, pp. 739–739 2018.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2017</div>
+            <div class="year-count">3</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] vol. 38, pp. 113–118 2017.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. E100D, no. 8, pp. 1625–1633 2017.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">3.</span>
+                <span class="cite">[object Object] vol. 22, no. 1, pp. 19‐28 2017.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2016</div>
+            <div class="year-count">6</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] vol. 52, no. 1-2, pp. 479–486 2016.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. 12, no. 4, pp. 1351–1352 2016.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">3.</span>
+                <span class="cite">[object Object] vol. 12, no. 4, pp. 1385–1396 2016.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">4.</span>
+                <span class="cite">[object Object] vol. 9835, pp. 405–412 2016.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">5.</span>
+                <span class="cite">[object Object] vol. 2016, pp. 7358162–7358162 2016.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">6.</span>
+                <span class="cite">[object Object] vol. 52, no. 1-2, pp. 461–469 2016.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2015</div>
+            <div class="year-count">2</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] vol. 10, no. 5, pp. e0125573 2015.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. 28, no. 4, pp. 155–160 2015.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2014</div>
+            <div class="year-count">5</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] vol. 4, pp. 6997–6997 2014.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. 268, pp. 65–75 2014.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">3.</span>
+                <span class="cite">[object Object] vol. 268, pp. 51–64 2014.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">4.</span>
+                <span class="cite">[object Object] vol. 18, no. 4, pp. 489–498 2014.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">5.</span>
+                <span class="cite">[object Object] vol. 268, pp. 77–84 2014.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2013</div>
+            <div class="year-count">7</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] vol. 16, no. 9, pp. 937–42 2013.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. 2013, pp. 2048–51 2013.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">3.</span>
+                <span class="cite">[object Object] vol. 2013, pp. 7136–9 2013.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">4.</span>
+                <span class="cite">[object Object] vol. 5, no. 1, pp. 67–79 2013.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">5.</span>
+                <span class="cite">[object Object] vol. 5, no. 2, pp. 147–160 2013.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">6.</span>
+                <span class="cite">[object Object] vol. 5, no. 2, pp. 115–124 2013.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">7.</span>
+                <span class="cite">[object Object] 2013.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2012</div>
+            <div class="year-count">1</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] vol. 7, no. 2, pp. 273–80 2012.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2011</div>
+            <div class="year-count">6</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] vol. 26, no. 8, pp. 1556–1561 2011.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. 15, no. 3, pp. 362–369 2011.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">3.</span>
+                <span class="cite">[object Object] vol. 4, no. 2, pp. 89–91 2011.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">4.</span>
+                <span class="cite">[object Object] vol. 32, pp. 497–502 2011.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">5.</span>
+                <span class="cite">[object Object] vol. 18, no. 3 D, pp. 655–662 2011.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">6.</span>
+                <span class="cite">[object Object] vol. 10, no. 1, pp. 133–145 2011.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2010</div>
+            <div class="year-count">7</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] vol. 22, no. 6, pp. 787–788 2010.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. 257, no. 12, pp. 2071–7 2010.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">3.</span>
+                <span class="cite">[object Object] 2010.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">4.</span>
+                <span class="cite">[object Object] vol. 6, no. 3, pp. 829–842 2010.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">5.</span>
+                <span class="cite">[object Object] vol. 14, no. 2, pp. 122–127 2010.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">6.</span>
+                <span class="cite">[object Object] vol. E93-D, no. 3, pp. 542–549 2010.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">7.</span>
+                <span class="cite">[object Object] vol. 28, no. 5, pp. 317–321 2010.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2009</div>
+            <div class="year-count">2</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] vol. 9, no. 3, pp. 1156–1169 2009.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. 3, no. 2, pp. 231–238 2009.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2008</div>
+            <div class="year-count">2</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] 2008.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. 12, no. 1, pp. 32–40 2008.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2006</div>
+            <div class="year-count">6</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] vol. 10, no. 12, pp. 1181–1191 2006.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. 1, no. SUPPL. 7, pp. 237–239 2006.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">3.</span>
+                <span class="cite">[object Object] vol. 36, no. 1, pp. 74–86 2006.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">4.</span>
+                <span class="cite">[object Object] vol. E89-A, no. 1, pp. 340–350 2006.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">5.</span>
+                <span class="cite">[object Object] vol. E89D, no. 1, pp. 340–350 2006.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">6.</span>
+                <span class="cite">[object Object] vol. 1, no. 7, pp. 491 2006.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2005</div>
+            <div class="year-count">2</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] vol. 35, no. 6, pp. 1360–73 2005.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. Vol. 9, No. 2, pp. 181-195, no. 2, pp. 181–195 2005.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2004</div>
+            <div class="year-count">2</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] 2004.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. 14, no. 3, pp. 122–130 2004.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2003</div>
+            <div class="year-count">1</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] 2003.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2001</div>
+            <div class="year-count">3</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] 2001.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] 2001.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">3.</span>
+                <span class="cite">[object Object] 2001.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+
+        <section class="year-block">
+          <div class="year-head">
+            <div class="year">2000</div>
+            <div class="year-count">3</div>
+          </div>
+          <ol class="paper-list">
+            
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">1.</span>
+                <span class="cite">[object Object] 2000.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">2.</span>
+                <span class="cite">[object Object] vol. 6, no. 1, pp. 85–94 2000.</span>
+              </div>
+              
+            </li>
+          
+
+            <li class="paper">
+              <div class="paper-cite">
+                <span class="idx">3.</span>
+                <span class="cite">[object Object] 2000.</span>
+              </div>
+              
+            </li>
+          
+          </ol>
+        </section>
+      
+    </main>
+
+    <footer>
+      &copy; 2025 Kobashi Laboratory, University of Hyogo
+    </footer>
   </div>
-</header>
-
-<main>
-  <div class="card">
-    <p class="meta">Updated: 2025-12-29 / Items: 101</p>
-    <p class="meta">Source: researchmap API (generated daily via GitHub Actions)</p>
-  </div>
-
-  <section class="year"><h2>2025 <span class="badge">6</span></h2><ol><li><div class="t">Dynamic multi-scale deep learning with mixture of experts for differentiating iNPH and PSP using MRI.</div><div class="m">Fubuki Sawa, Daisuke Fujita, Kenichi Shimada, Hideo Aihara, Toshiyuki Uehara, Yutaka Koide, Ryota Kawasaki, Kazunari Ishii, Syoji Kobashi — International journal of computer assisted radiology and surgery</div> <a href="https://doi.org/10.1007/s11548-025-03537-4" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Early prediction of bronchopulmonary dysplasia in preterm infants using chest X-rays through a comparative analysis of 13 CNN models across different post-birth days</div><div class="m">Md Anas Ali, Ryunosuke Maeda, Daisuke Fujita, Naoyuki Miyahara, Fumihiko Namba, Syoji Kobashi — Discover Computing</div> <a href="https://doi.org/10.1007/s10791-025-09519-z" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Comparative safety of stent retriever designs for intracranial atherosclerotic disease related large vessel occlusion using agarose models.</div><div class="m">Yukihiro Imaoka, Katsuhiro Mikami, Ai Fuchita, Satoshi Ikeda, Nice Ren, Shogo Watanabe, Soichiro Abe, Tomohide Yoshie, Satoshi Namitome, Syoji Kobashi, Hirotoshi Imamura, Koji Iihara — Scientific reports</div> <a href="https://doi.org/10.1038/s41598-025-24696-z" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Invisible Yet Detected: PelFANet with Attention-Guided Anatomical Fusion for Pelvic Fracture Diagnosis.</div><div class="m">Siam Tahsin Bhuiyan, Rashedur Rahman, Sefatul Wasi, Naomi Yagi, Syoji Kobashi, Ashraful Islam, Saadia Binte Alam — CoRR</div> <a href="https://doi.org/10.48550/arXiv.2509.13873" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Community-Level Compact City Design, Health Care Provision, and Outcomes of Patients With Stroke.</div><div class="m">Yukihiro Imaoka, Nice Ren, Soshiro Ogata, Shogo Watanabe, Tomoya Itatani, Eri Kiyoshige, Hirotoshi Imamura, Kunihiro Nishimura, Syoji Kobashi, Yasuyuki Kaku, Koichi Arimura, Hitoshi Fukuda, Masafumi Ihara, Tsuyoshi Ohta, Yuji Matsumaru, Nobuyuki Sakai, Takanari Kitazono, Shigeru Fujimoto, Kuniaki Ogasawara, Koji Yoshimoto, Akitake Mukasa, Koji Iihara — Journal of the American Heart Association</div> <a href="https://doi.org/10.1161/JAHA.125.041293" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Automated Impaction Angulation Measurement of Mandibular Third Molars for Winter’s Classification Using Deep Learning</div><div class="m">Md Anas Ali, Daisuke Fujita, Hiromitsu Kishimoto, Yuna Makihara, Kazuma Noguchi, Syoji Kobashi — Journal of Advanced Computational Intelligence and Intelligent Informatics</div> <a href="https://doi.org/10.20965/jaciii.2025.p0325" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2024 <span class="badge">8</span></h2><ol><li><div class="t">Deep Learning-Based Computer-Aided Diagnosis of Osteochondritis Dissecans of the Humeral Capitellum Using Ultrasound Images.</div><div class="m">Kenta Takatsuji, Yoshikazu Kida, Kenta Sasaki, Daisuke Fujita, Yusuke Kobayashi, Tsuyoshi Sukenari, Yoshihiro Kotoura, Masataka Minami, Syoji Kobashi, Kenji Takahashi — The Journal of bone and joint surgery. American volume</div> <a href="https://doi.org/10.2106/JBJS.23.01164" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">CHA2DS2-VASc score and prior oral anticoagulant use on endovascular treatment for acute ischemic stroke.</div><div class="m">Yukihiro Imaoka, Nice Ren, Soshiro Ogata, Hirotoshi Imamura, Yasuyuki Kaku, Koichi Arimura, Shogo Watanabe, Eri Kiyoshige, Kunihiro Nishimura, Syoji Kobashi, Masafumi Ihara, Kenji Kamiyama, Masafumi Morimoto, Tsuyoshi Ohta, Hidenori Endo, Yuji Matsumaru, Nobuyuki Sakai, Takanari Kitazono, Shigeru Fujimoto, Kuniaki Ogasawara, Koji Iihara — Annals of clinical and translational neurology</div> <a href="https://doi.org/10.1002/acn3.52217" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Prediction of cardiovascular events after carotid endarterectomy using pathological images and clinical data.</div><div class="m">Shuya Ishida, Kento Morita, Kinta Hatakeyama, Nice Ren, Shogo Watanabe, Syoji Kobashi, Koji Iihara, Tetsushi Wakabayashi — International journal of computer assisted radiology and surgery</div> <a href="https://doi.org/10.1007/s11548-024-03286-w" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Deep learning-based osteochondritis dissecans detection in ultrasound images with humeral capitellum localization.</div><div class="m">Kenta Sasaki, Daisuke Fujita, Kenta Takatsuji, Yoshihiro Kotoura, Masataka Minami, Yusuke Kobayashi, Tsuyoshi Sukenari, Yoshikazu Kida, Kenji Takahashi, Syoji Kobashi — International journal of computer assisted radiology and surgery</div> <a href="https://doi.org/10.1007/s11548-023-03040-8" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Recurrent prediction within 1, 3, and 5 years after acute ischemic stroke based on machine learning using 10 years J-ASPECT study</div><div class="m">Shogo Watanabe, Nice Ren, Soshiro Ogata, Yuriko Nakaoku, Akihito Hagihara, Syoji Kobashi, Haruhiko Hiramatsu, Tsuyoshi Ohta, Teruo Noguchi, Hiroharu Kataoka, Masahumi Ihara, Kunihiro Nishimura, Koji Iihara — Japanese Journal of Stroke</div> <a href="https://doi.org/10.3995/jstroke.11264" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Personalized heart rate management through data-driven dynamic exercise control.</div><div class="m">Takao Sato, Tomoka Nishino, Natsuki Kawaguchi, Hisashi Mori, Hayato Uchida, Kiichiro Murotani, Yuichi Kimura, Isao Mizukura, Syoji Kobashi, Orlando Arrieta — Scientific reports</div> <a href="https://doi.org/10.1038/s41598-024-67680-9" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">根管治療痕を考慮したパノラマX線画像における歯牙自動認識法</div><div class="m">Daisuke FUJITA, Yuki ADACHI, Syoji KOBASHI — Journal of Japan Society for Fuzzy Theory and Intelligent Informatics</div> <a href="https://doi.org/10.3156/jsoft.36.2_610" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Enhancing fracture diagnosis in pelvic X-rays by deep convolutional neural network with synthesized images from 3D-CT.</div><div class="m">Rashedur Rahman, Naomi Yagi, Keigo Hayashi, Akihiro Maruo, Hirotsugu Muratsu, Syoji Kobashi — Scientific reports</div> <a href="https://doi.org/10.1038/s41598-024-58810-4" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2023 <span class="badge">5</span></h2><ol><li><div class="t">Teeth and prostheses detection in dental panoramic X-rays using CNN-based object detector and a priori knowledge-based algorithm</div><div class="m">Md Anas Ali, Daisuke Fujita, Syoji Kobashi — Scientific Reports</div> <a href="https://doi.org/10.1038/s41598-023-43591-z" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Development of TKA treatment strategy by factor extraction method for patient satisfaction</div><div class="m">藤田大輔, 山本偉嗣, 諸岡孝俊, 井石琢也, 牛飼武, 吉矢晋一, 小橋昌司 — Japanese Journal of Clinical Biomechanics (Web)</div> <a href="https://jglobal.jst.go.jp/detail?JGLOBAL_ID=202302280180177202" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Detection of Shoulder Rotator Cuff Tears from X-Ray Image by Using Convolutional Neural Network</div><div class="m">Shinya OKUDA, Daisuke FUJITA, Hiroshi TANAKA, Tomoyuki MUTO, Hiroaki INUI, Syoji KOBASHI — Journal of Japan Society for Fuzzy Theory and Intelligent Informatics</div> <a href="https://doi.org/10.3156/jsoft.35.1_593" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">A Machine Learning-Based Severity Prediction Tool for the Michigan Neuropathy Screening Instrument</div><div class="m">Fahmida Haque, Mamun B. I. Reaz, Muhammad E. H. Chowdhury, Mohd Ibrahim bin Shapiai, Rayaz A. Malik, Mohammed Alhatou, Syoji Kobashi, Iffat Ara, Sawal H. M. Ali, Ahmad A. A. Bakar, Mohammad Arif Sobhan Bhuiyan — Diagnostics</div> <a href="https://doi.org/10.3390/diagnostics13020264" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Fragility Fracture of Pelvis Prediction from Computed Tomography Using Boring Survey and Convolutional Neural Network</div><div class="m">Rashedur Rahman, Naomi Yagi, Keigo Hayashi, Akihiro Maruo, Hirotsugu Muratsu, Syoji Kobashi — Journal of Advanced Computational Intelligence and Intelligent Informatics</div> <a href="https://doi.org/10.20965/JACIII.2023.P1079" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2022 <span class="badge">2</span></h2><ol><li><div class="t">Automatic Carpal Site Detection Method for Evaluation of Rheumatoid Arthritis Using Deep Learning</div><div class="m">Kohei Nakatsu, Rashedur Rahman, Kento Morita, Daisuke Fujita, Syoji Kobashi — Journal of Advanced Computational Intelligence and Intelligent Informatics</div> <a href="https://doi.org/10.20965/jaciii.2022.p0042" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">A machine learning-based severity prediction tool for diabetic sensorimotor polyneuropathy using Michigan neuropathy screening instrumentations.</div><div class="m">Fahmida Haque, Mamun Bin Ibne Reaz, Muhammad Enamul Hoque Chowdhury, Rayaz Malik, Mohammed Alhatou, Syoji Kobashi, Iffat Ara, Sawal Hamid Md. Ali, Ahmad Ashrif A. Bakar, Geetika Srivastava — CoRR</div> <a href="https://doi.org/10.48550/arXiv.2203.15151" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2021 <span class="badge">5</span></h2><ol><li><div class="t">Prediction of Ureter ESWL Outcome by Machine Learning and Model Interpretation Approach Using SHAP</div><div class="m">Daisuke FUJITA, Shota HARUMOTO, Ryusuke DEGUCHI, Shimpei YAMASHITA, Syoji KOBASHI — International Journal of Biomedical Soft Computing and Human Sciences</div> <a href="https://doi.org/10.24466/ijbschs.26.2_97" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">A nomogram-based diabetic sensorimotor polyneuropathy severity prediction using Michigan neuropathy screening instrumentations</div><div class="m">Fahmida Haque, Mamun Bin Ibne Reaz, Muhammad E.H. Chowdhury, Sawal Hamid Md Ali, Ahmad Ashrif A Bakar, Tawsifur Rahman, Syoji Kobashi, Chitra A. Dhawale, Mohammad Arif Sobhan Bhuiyan — Computers in Biology and Medicine</div> <a href="https://doi.org/10.1016/j.compbiomed.2021.104954" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Human Activity Classification Based on Angle Variance Analysis Utilizing the Poincare Plot</div><div class="m">Solaiman Ahmed, Tanveer Ahmed Bhuiyan, Taiki Kishi, Manabu Nii, Syoji Kobashi — Applied Sciences</div> <a href="https://doi.org/10.3390/app11167230" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Detecting pelvic fracture on 3D-CT using deep convolutional neural networks with multi-orientated slab images.</div><div class="m">Kazutoshi Ukai, Rashedur Rahman, Naomi Yagi, Keigo Hayashi, Akihiro Maruo, Hirotsugu Muratsu, Syoji Kobashi — Scientific reports</div> <a href="https://doi.org/10.1038/s41598-021-91144-z" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Machine learning based player level estimation with 3-D kinematic analysis of throwing motion capture.</div><div class="m">中津康平, 田中洋, 乾浩明, 信原克哉, 小橋昌司 — 臨床バイオメカニクス</div> <a href="https://jglobal.jst.go.jp/detail?JGLOBAL_ID=202102234548949093" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2020 <span class="badge">7</span></h2><ol><li><div class="t">Optimization technique combined with deep learning method for teeth recognition in dental panoramic radiographs</div><div class="m">Fahad Parvez Mahdi, Kota Motoki, Syoji Kobashi — Scientific Reports</div> <a href="https://doi.org/10.1038/s41598-020-75887-9" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Construction of 3-D humeral head statistical shape model in CT images</div><div class="m">Fahad Parvez Mahdi, Tomoyuki Muto, Hiroshi Tanaka, Hiroaki Inui, Katsuya Nobuhara, Syoji Kobashi — Applied Sciences (Switzerland)</div> <a href="https://doi.org/10.3390/app10165591" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Automatic segmentation of the humerus region in 3-D shoulder CT images using U-Net</div><div class="m">Fahad Parvez MAHDI, Hiroshi TANAKA, Katsuya NOBUHARA, Syoji KOBASHI — International Journal of Biomedical Soft Computing and Human Sciences: the official journal of the Biomedical Fuzzy Systems Association</div> <a href="https://doi.org/10.24466/ijbschs.25.2_67" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Surgical Phase Recognition with Wearable Video Camera for Computer-aided Orthopaedic Surgery-AI Navigation System</div><div class="m">Shoichi NISHIO, Belayat HOSSAIN, Manabu NII, Naomi YAGI, Takafumi HIRANAKA, Syoji KOBASHI — International Journal of Affective Engineering</div> <a href="https://doi.org/10.5057/ijae.ijae-d-19-00018" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Stride-Phase Kinematic Parameters That Predict Peak Elbow Varus Torque</div><div class="m">Hiroshi Tanaka, Toyohiko Hayashi, Hiroaki Inui, Tomoyuki Muto, Kohnan Tsuchiyama, Hiroki Ninomiya, Yasuo Nakamura, Syoji Kobashi, Katsuya Nobuhara — Orthopaedic Journal of Sports Medicine</div> <a href="https://doi.org/10.1177/2325967120968068" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Spatiotemporal statistical shape model for temporal shape change analysis of adult brain</div><div class="m">Binte Alam, Manabu Nii, Akinobu Shimizu, Syoji Kobashi — Current Medical Imaging Reviews</div> <a href="https://doi.org/10.2174/1573405615666181120141147" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Bone tunnel placement determination method for 3-D images and its evaluation for anterior cruciate ligament reconstruction</div><div class="m">Kento Morita, Manabu Nii, Min Sung Koh, Kaori Kashiwa, Hiroshi Nakayama, Shunichiro Kambara, Shinichi Yoshiya, Syoji Kobashi — Current Medical Imaging Reviews</div> <a href="https://doi.org/10.2174/1573405614666181030125846" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2019 <span class="badge">6</span></h2><ol><li><div class="t">MRIによる腱板断裂の画像診断 MRI画像を用いた3次元形状腱板断裂モデルの構築</div><div class="m">Tomoyuki Muto, Hiroaki Inui, Hiroki Ninomiya, Hiroshi Tanaka, Kazuki Ishiro, Kento Morita, Syoji Kobashi, Katsuya Nobuhara — Clinical Orthopaedic Surgery</div> <a href="https://search.jamas.or.jp/index.php?module=Default&amp;action=Link&amp;pub_year=2019&amp;ichushi_jid=J01554&amp;link_issn=&amp;doc_id=20190902050005&amp;doc_link_id=40022013565&amp;url=http%3A%2F%2Fci.nii.ac.jp%2Fnaid%2F40022013565&amp;type=CiNii&amp;icon=https%3A%2F%2Fjk04.jamas.or.jp%2Ficon%2F00003_1.gif" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Facial skin blood perfusion change based liveness detection using video images</div><div class="m">Kazutoshi Ukai, Rashedur Rahman, Syoji Kobashi — Electronics and Communications in Japan</div> <a href="https://doi.org/10.1002/ecj.12171" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Intraoperative kinematic analysis of posterior stabilized total knee arthroplasty with asymmetric helical post-cam design</div><div class="m">Takatoshi Morooka, Makiko Okuno, Daisuke Seino, Takuya Iseki, Shigeo Fukunishi, Syoji Kobashi, Shinichi Yoshiya — European Journal of Orthopaedic Surgery and Traumatology</div> <a href="https://doi.org/10.1007/s00590-018-2318-4" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">医療と情報 第1部 ヘルスケア・インフォマティクスの先端技術 2)医用画像診断の未来</div><div class="m">盛田健人, 小橋昌司 — 情報処理</div> <a href="https://jglobal.jst.go.jp/detail?JGLOBAL_ID=201902246096715451" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Surgical outcome prediction in total knee arthroplasty using machine learning</div><div class="m">Belayat Hossain, Takatoshi Morooka, Makiko Okuno, Manabu Nii, Shinichi Yoshiya, Syoji Kobashi — Intelligent Automation and Soft Computing</div> <a href="https://doi.org/10.31209/2018.100000034" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Facial skin blood perfusion change based liveness detection using video images</div><div class="m">Kazutoshi Ukai, Rashedur Rahman, Syoji Kobashi — IEEJ Transactions on Sensors and Micromachines</div> <a href="https://doi.org/10.1541/ieejsmas.139.29" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2018 <span class="badge">8</span></h2><ol><li><div class="t">SVRを用いた手関節X線画像におけるリウマチmTSスコアの推定</div><div class="m">盛田 健人, 田下 徳起, 新居 学, 小橋 昌司 — MEDICAL IMAGING TECHNOLOGY</div> <a href="https://search.jamas.or.jp/index.php?module=Default&amp;action=Link&amp;pub_year=2018&amp;ichushi_jid=J02087&amp;link_issn=&amp;doc_id=20190122140005&amp;doc_link_id=130007534774&amp;url=http%3A%2F%2Fci.nii.ac.jp%2Fnaid%2F130007534774&amp;type=CiNii&amp;icon=https%3A%2F%2Fjk04.jamas.or.jp%2Ficon%2F00003_1.gif" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">内反変形膝に対するDouble Level Osteotomyの術後回旋アライメントの変化 3次元CTを用いた解析</div><div class="m">神原 俊一郎, 中山 寛, 小橋 昌司, 吉矢 晋一 — 臨床バイオメカニクス</div> <a href="https://search.jamas.or.jp/default/link?pub_year=2018&amp;ichushi_jid=J05471&amp;link_issn=&amp;doc_id=20181011070017&amp;doc_link_id=1520290884999718400&amp;url=https%3A%2F%2Fcir.nii.ac.jp%2Fcrid%2F1520290884999718400&amp;type=CiNii&amp;icon=https%3A%2F%2Fjk04.jamas.or.jp%2Ficon%2F00003_1.gif" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Special issue on the power of fuzzy-dedicated to the father of fuzzy logic</div><div class="m">Yutaka Hata, Shoji Kobashi, Hiroshi Nakajima — Journal of Advanced Computational Intelligence and Intelligent Informatics</div> <a href="https://doi.org/10.20965/jaciii.2018.p0739" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Relationship Between Cerebral Aneurysm Development and Cerebral Artery Shape</div><div class="m">Marin Yasugi, Belayat Hossain, Manabu Nii, Syoji Kobashi — JOURNAL OF ADVANCED COMPUTATIONAL INTELLIGENCE AND INTELLIGENT INFORMATICS</div> <a href="https://doi.org/10.20965/jaciii.2018.p0249" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Advancements of Image Processing and Vision in Healthcare.</div><div class="m">Md Atiqur Rahman Ahad, Syoji Kobashi, João Manuel R S Tavares — Journal of healthcare engineering</div> <a href="https://doi.org/10.1155/2018/8458024" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Real-time Surgical Tools Recognition in Total Knee Arthroplasty Using Deep Neural Networks.</div><div class="m">Moazzem Hossain, Soichi Nishio, Takafumi Hiranaka, Syoji Kobashi — CoRR</div> <a href="https://dblp.uni-trier.de/rec/journals/corr/abs-1806-02031" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Implanted Knee Joint Kinematics Recognition in Digital Radiograph Images Using Particle Filter.</div><div class="m">Kento Morita 0001, Manabu Nii, Norikazu Ikoma, Takatoshi Morooka, Shinichi Yoshiya, Syoji Kobashi — J. Adv. Comput. Intell. Intell. Informatics</div> <a href="https://doi.org/10.20965/jaciii.2018.p0113" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Editorial: the Power of Fuzzy - Dedicated to the Father of Fuzzy Logic.</div><div class="m">Yutaka Hata, Shoji Kobashi, Hiroshi Nakajima — JACIII</div> <a href="https://doi.org/10.20965/jaciii.2018.p0739" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2017 <span class="badge">3</span></h2><ol><li><div class="t">Reconstruction of 3-D torn rotator cuff model in open MRI for computer-aided diagnosis.</div><div class="m">井城一輝, 盛田健人, 新居学, 田中洋, 小橋昌司, 信原克哉 — 臨床バイオメカニクス</div> <a href="https://jglobal.jst.go.jp/detail?JGLOBAL_ID=201702230973906121" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">On Map-Based Analysis of Item Relationships in Specific Health Examination Data for Subjects Possibly Having Diabetes</div><div class="m">Naotake Kamiura, Shoji Kobashi, Manabu Nii, Takayuki Yumoto, Ichiro Yamamoto — IEICE TRANSACTIONS ON INFORMATION AND SYSTEMS</div> <a href="https://doi.org/10.1587/transinf.2016LOP0003" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Ovarian Follicle Classification without Direct Deformation Information from Ultrasonic Images</div><div class="m">NII Manabu, NII Manabu, KASHIWAKI Riku, MORIMOTO Masakazu, KOBASHI Syoji, KAMIURA Naotake, HATA Yutaka, IMAWAKI Seturo, ISHIKAWA Tomomoto, MATSUBAYASHI Hidehiko — International Journal of Biomedical Soft Computing and Human Sciences</div> <a href="https://doi.org/10.24466/ijbschs.22.1_19" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2016 <span class="badge">6</span></h2><ol><li><div class="t">Pulmonary artery domain region extraction from MDCT image</div><div class="m">Atsushi Yukawa, Atsushi Kono, Tatsuya Nishii, Naotake Kamiura, Syoji Kobashi, Yutaka Hata — INTERNATIONAL JOURNAL OF APPLIED ELECTROMAGNETICS AND MECHANICS</div> <a href="https://doi.org/10.3233/JAE-162184" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Special issue on soft computing in medical informatics</div><div class="m">Kobashi, S., Ahad, M.A.R., Kim, N., Tong, Y., Yagi, N. — International Journal of Innovative Computing, Information and Control</div> <a href="http://www.scopus.com/inward/record.url?eid=2-s2.0-84982924049&amp;partnerID=MN8TOARS" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Brain age estimation using multiple regression analysis in brain mr images</div><div class="m">Alam, S.B., Nakano, R., Kobashi, S. — International Journal of Innovative Computing, Information and Control</div> <a href="http://www.scopus.com/inward/record.url?eid=2-s2.0-84982969214&amp;partnerID=MN8TOARS" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Post-operative implanted knee kinematics prediction in total knee arthroscopy using clinical big data</div><div class="m">Hossain, B.M., Nii, M., Morooka, T., Okuno, M., Yoshiya, S., Kobashi, S. — Lecture Notes in Computer Science (including subseries Lecture Notes in Artificial Intelligence and Lecture Notes in Bioinformatics)</div> <a href="https://doi.org/10.1007/978-3-319-43518-3_39" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Soft Computing in Medical Image Processing</div><div class="m">Kobashi, S., Nyúl, L.G., Udupa, J.K. — Computational and Mathematical Methods in Medicine</div> <a href="https://doi.org/10.1155/2016/7358162" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Continuous-wavelet-transform-based visualization for seminiferous tubule using broadband ultrasonic imaging</div><div class="m">Shoichi Furukawa, Shoji Kobashi, Naotake Kamiura, Yutaka Hata, Seturo Imawaki, Tomomoto Ishikawa — INTERNATIONAL JOURNAL OF APPLIED ELECTROMAGNETICS AND MECHANICS</div> <a href="https://doi.org/10.3233/JAE-162034" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2015 <span class="badge">2</span></h2><ol><li><div class="t">Gap effect abnormalities during a visually guided Pro-Saccade task in children with attention deficit hyperactivity disorder</div><div class="m">Matsuo, Y., Watanabe, M., Taniike, M., Mohri, I., Kobashi, S., Tachibana, M., Kobayashi, Y., Kitamura, Y.K. — PLoS ONE</div> <a href="https://doi.org/10.1371/journal.pone.0125573" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">On Personal Identication for Ophthalmological Patients Based on Clinical Data Measured by Optical Coherence Tomography</div><div class="m">Tsutsui Ryota, Kamiura Naotake, Isokawa Teijiro, Kobashi Syoji, Tabuchi Hitoshi, Yamauchi Tomofusa — Transactions of the Institute of Systems, Control and Information Engineers</div> <a href="https://doi.org/10.5687/iscie.28.155" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2014 <span class="badge">5</span></h2><ol><li><div class="t">From cartoon to real time MRI: In vivo monitoring of phagocyte migration in mouse brain</div><div class="m">Mori, Y., Chen, T., Fujisawa, T., Kobashi, S., Ohno, K., Yoshida, S., Tago, Y., Komai, Y., Hata, Y., Yoshioka, Y. — Scientific Reports</div> <a href="https://doi.org/10.1038/srep06997" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Ultrasonic muscular thickness measurement in temperature variation</div><div class="m">Hata, H., Imawaki, S., Kuramoto, K., Kobashi, S., Hata, Y. — Advances in Intelligent Systems and Computing</div> <a href="https://doi.org/10.1007/978-3-319-05500-8_7" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">An energy visualization by camera monitoring</div><div class="m">Fujisawa, T., Egawa, T., Taniguchi, K., Kobashi, S., Hata, Y. — Advances in Intelligent Systems and Computing</div> <a href="https://doi.org/10.1007/978-3-319-05500-8_6" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Foot age estimation system from walking dynamics based on fuzzy logic</div><div class="m">Takeda, T., Sakai, Y., Kobashi, S., Kuramoto, K., Hata, Y. — Journal of Advanced Computational Intelligence and Intelligent Informatics</div> <a href="https://doi.org/10.20965/jaciii.2014.p0489" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Regional analysis and predictive modeling for asthmatic attacks in Himeji City</div><div class="m">Kikuchi, S., Kaku, Y., Kuramoto, K., Kobashi, S., Hata, Y. — Advances in Intelligent Systems and Computing</div> <a href="https://doi.org/10.1007/978-3-319-05500-8_8" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2013 <span class="badge">7</span></h2><ol><li><div class="t">Automated pelvic anatomical coordinate system is reproducible for determination of anterior pelvic plane</div><div class="m">Hayashi, S., Nishiyama, T., Fujishiro, T., Kanzaki, N., Shibanuma, N., Kobashi, S., Kurosaka, M. — Computer Methods in Biomechanics and Biomedical Engineering</div> <a href="https://doi.org/10.1080/10255842.2011.644541" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Noninvasive cellular quantity measurement in Bone Marrow Stromal Cells/ Beta-tricalcium phosphate.</div><div class="m">Naomi Yagi, Tomomoto Ishikawa, Kei Kuramoto, Syoji Kobashi, Yutaka Hata — Annual International Conference of the IEEE Engineering in Medicine and Biology Society. IEEE Engineering in Medicine and Biology Society. Annual International Conference</div> <a href="https://doi.org/10.1109/EMBC.2013.6609934" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Fuzzy connectedness image segmentation for newborn brain extraction in MR images.</div><div class="m">Syoji Kobashi, Jayaram K Udupa — Annual International Conference of the IEEE Engineering in Medicine and Biology Society. IEEE Engineering in Medicine and Biology Society. Annual International Conference</div> <a href="https://doi.org/10.1109/EMBC.2013.6611203" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Noninvasive Diagnosis of Blood Flow for Transcranial Doppler Ultrasonography</div><div class="m">Yagi, N., Nakamura, M., Kuramoto, K., Kobashi, S., Hata, Y. — International Journal of Intelligent Computing in Medical Sciences and Image Processing</div> <a href="https://doi.org/10.1080/1931308X.2013.794618" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">A Fuzzy Moving Object Estimation Using Infrared TOF Camera</div><div class="m">Takeda, T., Kuramoto, K., Kobashi, S., Hata, Y. — International Journal of Intelligent Computing in Medical Sciences and Image Processing</div> <a href="https://doi.org/10.1080/1931308X.2013.838068" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Newborn Brain MR Image Segmentation Using Deformable Surface Model Based on Fuzzy Knowledge Models</div><div class="m">Kobashi, S., Kuramoto, K., Wakata, Y., Ando, K., Ishikura, R., Ishikawa, T., Hirota, S., Hata, Y. — International Journal of Intelligent Computing in Medical Sciences and Image Processing</div> <a href="https://doi.org/10.1080/1931308X.2013.847618" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">On optimal operator for combining left and right sole pressure data in biometrics security</div><div class="m">Takeda, T., Kuramoto, K., Kobashi, S., Hata, Y. — Advances in Fuzzy Systems</div> <a href="https://doi.org/10.1155/2013/620312" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2012 <span class="badge">1</span></h2><ol><li><div class="t">A neonatal brain MR image template of 1 week newborn</div><div class="m">Hashioka, A., Kobashi, S., Kuramoto, K., Wakata, Y., Ando, K., Ishikura, R., Ishikawa, T., Hirota, S., Hata, Y. — International Journal of Computer Assisted Radiology and Surgery</div> <a href="https://doi.org/10.1007/s11548-011-0646-5" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2011 <span class="badge">6</span></h2><ol><li><div class="t">Analysis of Weight-Bearing Kinematics of Posterior-Stabilized Total Knee Arthroplasty With Novel Helical Post-Cam Design</div><div class="m">Yohei Tsumori, Shinichi Yoshiya, Masahiro Kurosaka, Shoji Kobashi, Nao Shibanuma, Motoi Yamaguchi — JOURNAL OF ARTHROPLASTY</div> <a href="https://doi.org/10.1016/j.arth.2011.02.007" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Cerebral contour extraction with particle method in neonatal MR images</div><div class="m">Kobashi, S., Yokomichi, D., Wakata, Y., Ando, K., Ishikura, R., Kuramoto, K., Hirota, S., Hata, Y. — Journal of Advanced Computational Intelligence and Intelligent Informatics</div> <a href="https://doi.org/10.20965/jaciii.2011.p0362" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Special issue on computer automation</div><div class="m">Syoji Kobashi, Noboru Takagi — International Journal of Intelligent Computing in Medical Sciences and Image Processing</div> <a href="https://doi.org/10.1080/1931308X.2008.10644185" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Automated 3-D kinematis analysis of TKA knee with 2-D digital radiograph video using Monte Carlo method</div><div class="m">中島 祐介, 小橋 昌司, 今村 史明 — Japanese journal of clinical biomechanics</div> <a href="http://ci.nii.ac.jp/naid/40019053729" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Fuzzy-logic is precise-Its application to biometric system</div><div class="m">Takeda, J.T., Kuramoto, K., Kobashi, S., Hata, Y. — Scientia Iranica</div> <a href="https://doi.org/10.1016/j.scient.2011.05.003" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">A fuzzy biosignal detection algorithm and its application to health monitoring</div><div class="m">Hata, Y., Kobashi, S., Kuramoto, K., Nakajima, H. — Applied and Computational Mathematics</div> <a href="https://gateway.webofknowledge.com/gateway/Gateway.cgi?GWVersion=2&amp;SrcAuth=JSTA_CEL&amp;SrcApp=J_Gate_JST&amp;DestLinkType=FullRecord&amp;KeyUT=WOS:000287616100011&amp;DestApp=WOS_CPL" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2010 <span class="badge">7</span></h2><ol><li><div class="t">World Automation Congress (WAC) 2010開催報告</div><div class="m">小橋 昌司, 畑 豊 — 知能と情報 : 日本知能情報ファジィ学会誌 : journal of Japan Society for Fuzzy Theory and Intelligent Informatics</div> <a href="http://ci.nii.ac.jp/naid/10027130107" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Writing errors as a result of frontal dysfunction in Japanese patients with amyotrophic lateral sclerosis.</div><div class="m">Sachiko Tsuji-Akimoto, Shinsuke Hamada, Ichiro Yabe, Itaru Tamura, Mika Otsuki, Syoji Kobashi, Hidenao Sasaki — Journal of neurology</div> <a href="https://doi.org/10.1007/s00415-010-5662-9" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">&quot;脳形状相同モデル化による脳形状定量化の評価,&quot; メディカルイメージング連合フォーラム</div><div class="m">山口弘祐, 小橋昌司, 倉本 圭, 喜多村祐里, 毛利育子, 今脇節朗, 谷池雅子, 畑 豊 — 信学技報</div></li>
-<li><div class="t">Lung lobar segmentation using tubular tissue density from multidetector-row CT images</div><div class="m">Syoji Kobashi, Yutaka Hata — International Journal of Innovative Computing, Information and Control</div></li>
-<li><div class="t">Fuzzy visual hull algorithm for three-dimensional shape reconstruction of TKA implants from X-ray cone-beam images</div><div class="m">Syoji Kobashi, Nao Shibanuma, Yutaka Hata — Journal of Advanced Computational Intelligence and Intelligent Informatics</div> <a href="https://doi.org/10.20965/jaciii.2010.p0122" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">An ultrasonic and air pressure sensing system for detection of behavior before getting out of bed aided by fuzzy theory</div><div class="m">Hayato Yamaguchi, Hiroshi Nakajima, Kazuhiko Taniguchi, Syoji Kobashi, Yutaka Hata — IEICE Transactions on Information and Systems</div> <a href="https://doi.org/10.1587/transinf.E93.D.542" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Automated 3-D Kinematics Analysis of Implanted Knee with 2-D Digital Radiography Video</div><div class="m">KOBASHI Syoji, NAKAJIMA Yusuke, YOSHIYA Shinichi — Medical Imaging Technology</div> <a href="https://doi.org/10.11409/mit.28.317" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2009 <span class="badge">2</span></h2><ol><li><div class="t">Fuzzy segmentation of endorrhachis in magnetic resonance images and its fuzzy maximum intensity projection</div><div class="m">Yutaka Hata, Syoji Kobashi — APPLIED SOFT COMPUTING</div> <a href="https://doi.org/10.1016/j.asoc.2009.03.001" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Human Health Care System of Systems</div><div class="m">Yutaka Hata, Syoji Kobashi, Hiroshi Nakajima — IEEE SYSTEMS JOURNAL</div> <a href="https://doi.org/10.1109/JSYST.2009.2017389" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2006 <span class="badge">6</span></h2><ol><li><div class="t">Fully automated segmentation of cerebral ventricles from 3-D SPGR MR images using fuzzy representative line</div><div class="m">Syoji Kobashi, Katsuya Kondo, Yutaka Hata — SOFT COMPUTING</div> <a href="https://doi.org/10.1007/s00500-005-0040-8" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Fully automated measurement of 3D knee kinematics after anterior cruciate ligament reconstruction using multidetector-row CT and X- Ray fluoroscopic images</div><div class="m">D. Kubo, S. Kobashi, A. Okayama, N. Shibanuma, M. Yagi, K. Kondo, S. Yoshiya, Y. Hata — International Journal of Computer Assisted Radiology and Surgery</div> <a href="https://doi.org/10.1007/s11548-006-0016-x" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Interactive segmentation of the cerebral lobes with fuzzy inference in 3T MR images.</div><div class="m">Syoji Kobashi, Yuji Fujiki, Mieko Matsui, Noriko Inoue, Katsuya Kondo, Yutaka Hata, Tohru Sawada — IEEE transactions on systems, man, and cybernetics. Part B, Cybernetics : a publication of the IEEE Systems, Man, and Cybernetics Society</div> <a href="https://doi.org/10.1109/TSMCB.2005.852981" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Computer-aided diagnosis of intracranial aneurysms in MRA images with case-based reasoning</div><div class="m">Syoji Kobashi, Katsuya Kondo, Yutaka Hata — IEICE Transactions on Fundamentals of Electronics, Communications and Computer Sciences</div> <a href="https://doi.org/10.1093/ietisy/e89-d.1.340" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Computer-aided diagnosis of intracranial aneurysms in MRA images with case-based reasoning</div><div class="m">S Kobashi, K Kondo, Y Hata — IEICE TRANSACTIONS ON INFORMATION AND SYSTEMS</div> <a href="https://doi.org/10.1093/ietisy/e89-d.1.340" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Automated quantification of 3D knee kinematics using 2D X-ray fluoroscopy video sequence images</div><div class="m">S. Kobashi, T. Tomosada, N. Shibanuma, M. Yamaguchi, H. Muratsu, K. Kondo, S. Yoshiya, M. Kurosaka, Y. Hata — International Journal of Computer Assisted Radiology and Surgery</div> <a href="https://doi.org/10.1007/s11548-006-0034-8" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2005 <span class="badge">2</span></h2><ol><li><div class="t">Transcranial ultrasonography system for visualizing skull and brain surface aided by fuzzy expert system.</div><div class="m">Yutaka Hata, Syoji Kobashi, Katsuya Kondo, Yuri T Kitamura, Toshio Yanagida — IEEE transactions on systems, man, and cybernetics. Part B, Cybernetics : a publication of the IEEE Systems, Man, and Cybernetics Society</div> <a href="https://doi.org/10.1109/TSMCB.2005.855593" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">Fuzzy image matching for pose recognition of occulted knee implants using fluoroscopy images</div><div class="m">Kobashi S, Komosada T, Shibanuma N, Yamaguchi M, Muratsu H, Kondo K, Yshiya S, Hata Y, Kurosaka M — J Advanced Computational Intelligence and Intelligent Informatics</div> <a href="http://ci.nii.ac.jp/naid/10029626593" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2004 <span class="badge">1</span></h2><ol><li><div class="t">Target image enhancement using representative line in MR cholangiography images</div><div class="m">S Kobashi, K Kondo, Y Hata — INTERNATIONAL JOURNAL OF IMAGING SYSTEMS AND TECHNOLOGY</div> <a href="https://doi.org/10.1002/ima.20015" target="_blank" rel="noopener noreferrer">[link]</a></li></ol></section>
-<section class="year"><h2>2001 <span class="badge">3</span></h2><ol><li><div class="t">Functional MRI of Word Retrieval: Differences Depending on the retrieval strategy</div><div class="m">Mika Otsuki, Yuri T. Kitamura, Syoji Kobashi, Hiroaki Naritomi, Yutaka Hata, Toshio Yanagida — NeuroImage</div></li>
-<li><div class="t">Time Series Analysis in Near- Infrared Spetroscopy Aided by Fuzzy C-means and Wavelet Transforms</div><div class="m">Syoji Kobashi, Yuri T. Kitamura, Mika Otsuki, Yutaka Hata, Hiroaki Naritomi, Toshio Yanagida — NeuroImage</div></li>
-<li><div class="t">Dynamic Brain Activation During Improvement in a Sequential Motor Performance: An NIRS/I Study</div><div class="m">Yuri T. Kitamura, Syoji Kobashi, Yutaka Hata, Mika Otsuki, Hiroaki Naritomi, Toshio Yanagida — NeuroImage</div></li></ol></section>
-<section class="year"><h2>2000 <span class="badge">3</span></h2><ol><li><div class="t">FIG application for 3D medical imagings</div><div class="m">Yutaka Hata, Syoji Kobashi, Yuri Kitamura, Toshio Yanagida — Medical Imaging Technology</div> <a href="https://doi.org/10.11409/mit.18.681" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">A fuzzy rule-based region growing method for segmentating 3-D dynamic MRI.</div><div class="m">Syoji Kobashi, Yutaka Hata, Yuri T. Kitamura, Toshio Yanagida — Biomedical Soft Computing and Human Sciences</div> <a href="https://doi.org/10.24466/ijbschs.6.1_85" target="_blank" rel="noopener noreferrer">[link]</a></li>
-<li><div class="t">3-D Visualization of the Structure of Cerebral Blood Vessels Using Fuzzy Image Processing.</div><div class="m">Syoji Kobashi, Yutaka Hata, Yuri T. Kitamura, Toshio Yanagida — Proceedings of 4th Asian Fuzzy Systems Symposium</div></li></ol></section>
-</main>
-
-<footer>© 2025 Kobashi Laboratory, University of Hyogo</footer>
 </body>
 </html>

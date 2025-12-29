@@ -1,10 +1,10 @@
 {
   "permalink": "read0134502",
-  "updatedAt": "2025-12-29T08:39:05.029Z",
+  "updatedAt": "2025-12-29T11:14:01.605Z",
   "papers_total": 317,
-  "presentations_total": 293,
-  "journal": 101,
+  "journal": 105,
   "intl_conf": 210,
   "book_chapters": 2,
-  "note": "Journal = journal papers only. Conference = international conference papers only. Book Chapters = in_book. Generated daily by GitHub Actions."
+  "presentations_total": 293,
+  "unclassified_count": 0
 }
