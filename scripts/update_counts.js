@@ -11,14 +11,10 @@ const fs = require("fs");
 const path = require("path");
 
 const RESEARCHMAP_PERMALINK = process.env.RESEARCHMAP_PERMALINK || "read0134502";
-const OUT_COUNTS_JSON = process.env.OUT_COUNTS
-  ? path.resolve(process.env.OUT_COUNTS)
-  : path.join("data", "counts.json");
 
-const OUT_JOURNAL_HTML = process.env.OUT_JOURNAL_HTML
-  ? path.resolve(process.env.OUT_JOURNAL_HTML)
-  : path.join("publications", "journal-papers.html");
-
+// ★ env で上書きできるように（B案）
+const OUT_COUNTS_JSON = process.env.OUT_COUNTS_JSON || path.join("data", "counts.json");
+const OUT_JOURNAL_HTML = process.env.OUT_JOURNAL_HTML || path.join("publications", "journal-papers.html");
 
 /* =========================
  * utils
@@ -56,8 +52,7 @@ function pickLangText(v) {
     if (v.full_name) return pickLangText(v.full_name);
     if (v.display_name) return pickLangText(v.display_name);
 
-    const cand =
-      v.en ?? v.ja ?? v["rm:en"] ?? v["rm:ja"] ?? v.value ?? v.text ?? "";
+    const cand = v.en ?? v.ja ?? v["rm:en"] ?? v["rm:ja"] ?? v.value ?? v.text ?? "";
     if (cand) return pickLangText(cand);
 
     return "";
@@ -104,7 +99,6 @@ function toUrl(item) {
     const clean = doi.replace(/^https?:\/\/(dx\.)?doi\.org\//i, "");
     return `https://doi.org/${clean}`;
   }
-
   return firstNonEmpty(item?.url, item?.URL, item?._links?.self?.href);
 }
 
@@ -125,25 +119,21 @@ function formatAuthorName(raw) {
     const initials = given
       .split(" ")
       .filter(Boolean)
-      .map((w) => w[0].toUpperCase() + ".")
+      .map((w) => (w[0] ? w[0].toUpperCase() + "." : ""))
+      .filter(Boolean)
       .join(" ");
-    // 姓は省略しない
     return normalizeSpaces(`${initials} ${family}`);
   }
 
-  // "Given Middle Family" 形式（researchmapで多い）
+  // "Given Middle Family" 形式
   const tokens = name.split(" ").filter(Boolean);
   if (tokens.length === 1) return tokens[0];
 
-  const family = tokens[tokens.length - 1]; // 姓（省略しない）
+  const family = tokens[tokens.length - 1]; // 姓は省略しない
   const givenTokens = tokens.slice(0, -1);
 
-  // given/middle は頭文字にする
   const initials = givenTokens
-    .map((w) => {
-      const c = w[0];
-      return c ? c.toUpperCase() + "." : "";
-    })
+    .map((w) => (w[0] ? w[0].toUpperCase() + "." : ""))
     .filter(Boolean)
     .join(" ");
 
@@ -178,38 +168,40 @@ function toAuthors(item) {
 
   if (arr) {
     const names = arr
-  .flatMap((a) => {
-    const s = firstNonEmpty(
-      a?.full_name,
-      a?.display_name,
-      a?.name,
-      a?.["rm:display_name"],
-      a?.family_name && a?.given_name
-        ? `${pickLangText(a.given_name)} ${pickLangText(a.family_name)}`
-        : "",
-      a?.family && a?.given
-        ? `${pickLangText(a.given)} ${pickLangText(a.family)}`
-        : "",
-      a
-    );
+      .flatMap((a) => {
+        const s = firstNonEmpty(
+          a?.full_name,
+          a?.display_name,
+          a?.name,
+          a?.["rm:display_name"],
+          a?.family_name && a?.given_name
+            ? `${pickLangText(a.given_name)} ${pickLangText(a.family_name)}`
+            : "",
+          a?.family && a?.given
+            ? `${pickLangText(a.given)} ${pickLangText(a.family)}`
+            : "",
+          a
+        );
 
-    // 1要素に複数著者が入っている場合の救済（区切りがある時だけ分割）
-    if (typeof s === "string" && /;|\s+and\s+/i.test(s)) {
-      return s
-        .split(/\s*;\s*|\s+and\s+/i)
-        .map((x) => x.trim())
-        .filter(Boolean);
+        // 1要素に複数著者が入っている場合の救済（; や and の時だけ分割）
+        if (typeof s === "string" && /;|\s+and\s+/i.test(s)) {
+          return s
+            .split(/\s*;\s*|\s+and\s+/i)
+            .map((x) => x.trim())
+            .filter(Boolean);
+        }
+        return s ? [s] : [];
+      })
+      .map(formatAuthorName)
+      .filter(Boolean);
+
+    // ★重要：配列から1人も取れなければ「文字列fallback」へ落とす
+    if (names.length > 0) {
+      return joinAuthorsIEEE(names);
     }
-    return [s];
-  })
-  .map(formatAuthorName)
-  .filter(Boolean);
-
-
-    return joinAuthorsIEEE(names);
   }
 
-  // 2) 文字列（author が "A;B;C" などで来るパターン）を拾う
+  // 2) 文字列（author が "A;B;C" 等）を拾う
   const str = pools
     .map((v) => (typeof v === "string" ? v : ""))
     .find((s) => s && s.trim());
@@ -222,10 +214,10 @@ function toAuthors(item) {
       .map(formatAuthorName)
       .filter(Boolean);
 
-    return joinAuthorsIEEE(parts.length ? parts : [formatAuthorName(str)]);
+    return joinAuthorsIEEE(parts);
   }
 
-  // 3) それでも無理なら、著者っぽいフィールドを最後に探す（超保険）
+  // 3) 最後の保険
   const alt = firstNonEmpty(
     item?.author_name,
     item?.authors_name,
@@ -301,10 +293,9 @@ function isJournalOnly(item) {
     /\bmeeting\b/,
     /\bcongress\b/,
   ];
-
   if (badPatterns.some((re) => re.test(hay))) return false;
 
-  // type がある場合の保険（researchmapの揺れ対策）
+  // type がある場合の保険
   const typeStr = [
     item?.published_paper_type,
     item?.paper_type,
@@ -420,8 +411,8 @@ function buildJournalHtml({ updatedAt, items }) {
             <div class="box">
               <span class="num">${idx++}.</span>
               <div class="cite">${cite}${
-            url ? ` <a href="${escHtml(url)}" target="_blank">[link]</a>` : ""
-          }</div>
+                url ? ` <a href="${escHtml(url)}" target="_blank">[link]</a>` : ""
+              }</div>
             </div>
           </li>`;
         })
@@ -472,9 +463,6 @@ async function main() {
   const journals = published.filter(isJournalOnly);
 
   const updatedAt = new Date().toISOString();
-  
-  console.log("OUT_COUNTS_JSON =", OUT_COUNTS_JSON);
-  console.log("OUT_JOURNAL_HTML =", OUT_JOURNAL_HTML);
 
   ensureDir(path.dirname(OUT_COUNTS_JSON));
   fs.writeFileSync(
@@ -497,6 +485,8 @@ async function main() {
     buildJournalHtml({ updatedAt: updatedAt.slice(0, 10), items: journals })
   );
 
+  console.log("OUT_COUNTS_JSON =", path.resolve(OUT_COUNTS_JSON));
+  console.log("OUT_JOURNAL_HTML =", path.resolve(OUT_JOURNAL_HTML));
   console.log("Done.");
 }
 
