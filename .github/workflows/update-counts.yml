@@ -21,8 +21,16 @@ jobs:
         with:
           node-version: "20"
 
+      # （デバッグしたいときだけ）今どこで動いているか確認
+      # - name: Debug paths
+      #   run: |
+      #     pwd
+      #     ls -la
+      #     ls -la scripts || true
+      #     ls -la data || true
+      #     ls -la publications || true
+
       - name: Generate counts and pages
-        working-directory: web   # ★ ここが重要
         env:
           RESEARCHMAP_PERMALINK: read0134502
           OUT_COUNTS: data/counts.json
@@ -35,7 +43,6 @@ jobs:
           node scripts/update_counts.js
 
       - name: Commit & push if changed
-        working-directory: web   # ★ ここも
         run: |
           if [ -z "$(git status --porcelain)" ]; then
             echo "No changes to commit."
