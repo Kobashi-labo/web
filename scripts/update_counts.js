@@ -37,14 +37,21 @@ function isObject(v) {
 /**
  * researchmap の "title: {ja,en}" や 著者 "{"name": "..."}" を
  * 必ず「文字列」に正規化して返す（[object Object] 根絶）
+ *
+ * ★重要：author が {"name":"..."} の形で残る事故を防ぐため
+ * - name/full_name/display_name を最優先
+ * - 多言語(ja/en)を次点
+ * - objectの stringify は最終手段（基本ここへ来ない設計）
  */
 function pickLangText(v) {
   if (v == null) return "";
   if (typeof v === "string" || typeof v === "number") return String(v);
-  if (Array.isArray(v)) return v.map(pickLangText).filter(Boolean).join(" ");
+
+  if (Array.isArray(v)) {
+    return v.map(pickLangText).filter(Boolean).join(" ");
+  }
 
   if (isObject(v)) {
-    // ★ 最重要：著者オブジェクト {"name": "..."} を最優先で拾う
     if (v.name) return pickLangText(v.name);
     if (v.full_name) return pickLangText(v.full_name);
     if (v.display_name) return pickLangText(v.display_name);
@@ -54,13 +61,14 @@ function pickLangText(v) {
       v.en ?? v.ja ?? v["rm:en"] ?? v["rm:ja"] ?? v.value ?? v.text ?? "";
     if (cand) return pickLangText(cand);
 
-    // 最後の保険：object を stringify（ただし基本ここには来ないようにする）
+    // ここに落ちるのは例外。{"name":"X"} などは上で拾う想定。
     try {
       return JSON.stringify(v);
     } catch {
       return "";
     }
   }
+
   return "";
 }
 
@@ -72,6 +80,11 @@ function firstNonEmpty(...vals) {
   return "";
 }
 
+/**
+ * 年（yyyy）を確実に抽出
+ * - ISO文字列 "2025-12-29" なども拾う
+ * - "2000." のようなケースも拾う
+ */
 function toYear(item) {
   const candidates = [
     item?.year,
@@ -147,13 +160,13 @@ function toAuthors(item) {
         a?.family_name && a?.given_name
           ? `${pickLangText(a.family_name)} ${pickLangText(a.given_name)}`
           : "",
-        // ★ ここで a 自体が {"name": "..."} でも pickLangText が name を拾う
         a
       )
     )
     .map((s) => s.replace(/\s+/g, " ").trim())
     .filter(Boolean);
 
+  // ★著者のカンマ区切りを必ず保証
   return names.join(", ");
 }
 
@@ -179,7 +192,10 @@ function toJournalName(item) {
   );
 }
 
-function toVolNoPp(item) {
+/**
+ * vol/no/pp の生値を返す（renderEntry側で句読点管理する）
+ */
+function toVolNoPpRaw(item) {
   const vol = firstNonEmpty(item?.volume, item?.vol, item?.journal_volume);
   const no = firstNonEmpty(item?.number, item?.no, item?.issue, item?.journal_number);
 
@@ -191,25 +207,18 @@ function toVolNoPp(item) {
   if (sp && ep) pp = `${sp}\u2013${ep}`;
   else if (pr) pp = pr;
 
-  const parts = [];
-  if (vol) parts.push(`vol. ${vol}`);
-  if (no) parts.push(`no. ${no}`);
-  if (pp) parts.push(`pp. ${pp}`);
-
-  return parts.join(", ");
+  return { vol, no, pp };
 }
 
 /**
  * type が空でも journal 名に Proceedings / Conference 等が含まれる場合があるため、
  * journal/container/title からも conference 判定を行う。
  *
- * ※ "IEEE Transactions ..." は journal なので除外しないように、
- *   "transactions" 単体では除外しない。
+ * ※ "IEEE Transactions ..." は journal なので除外しない（transactions単体では弾かない）
  */
 function looksLikeConferenceProceedings(item) {
   const j = toJournalName(item).toLowerCase();
   const t = toTitle(item).toLowerCase();
-
   const hay = `${j} | ${t}`;
 
   // 強めの conference/proceedings キーワード
@@ -224,9 +233,6 @@ function looksLikeConferenceProceedings(item) {
     /\bmeeting\b/,
     /\bcongress\b/,
   ];
-
-  // ただし "transactions" は journal のことが多いので単独では弾かない
-  //（上の badPatterns に入れていない）
 
   return badPatterns.some((re) => re.test(hay));
 }
@@ -264,7 +270,7 @@ function isJournalOnly(item) {
   // journal と明示されていれば true
   if (typeStr.includes("journal")) return true;
 
-  // referee が true っぽいなら journal 扱い
+  // referee/is_international_journal が true っぽいなら journal 扱い
   const journalHint = [
     item?.is_international_journal,
     item?.international_journal,
@@ -343,7 +349,7 @@ function buildJournalHtml({ updatedAt, items }) {
     return Number(b) - Number(a);
   });
 
-  // 同一年内は “年が新しい順” の情報が無いこともあるので、安定用に title で並べる
+  // 同一年内は安定ソート：title
   for (const y of years) {
     byYear.get(y).sort((a, b) => {
       const ta = toTitle(a).toLowerCase();
@@ -359,17 +365,33 @@ function buildJournalHtml({ updatedAt, items }) {
     const title = toTitle(it);
     const journal = toJournalName(it);
     const year = toYear(it);
-    const vnp = toVolNoPp(it);
+    const { vol, no, pp } = toVolNoPpRaw(it);
     const url = toUrl(it);
 
     // IEEE-ish:
     // Authors, “Title,” Journal, vol. x, no. y, pp. a–b, Year.
     const parts = [];
 
+    // 著者（末尾カンマ固定）
     if (authors) parts.push(`${escHtml(authors)},`);
+
+    // タイトル（末尾カンマ固定）
     if (title) parts.push(`“${escHtml(title)},”`);
-    if (journal) parts.push(`<i>${escHtml(journal)}</i>`);
-    if (vnp) parts.push(`${escHtml(vnp)}`);
+
+    // ★論文誌名の後ろに必ずカンマ
+    if (journal) parts.push(`<i>${escHtml(journal)}</i>,`);
+
+    // vol/no/pp（pp の後ろにカンマ → Year の前）
+    const vnpParts = [];
+    if (vol) vnpParts.push(`vol. ${escHtml(vol)}`);
+    if (no) vnpParts.push(`no. ${escHtml(no)}`);
+    if (pp) vnpParts.push(`pp. ${escHtml(pp)}`);
+
+    if (vnpParts.length) {
+      parts.push(vnpParts.join(", ") + ",");
+    }
+
+    // 年（最後はピリオド）
     if (year !== "----") parts.push(`${escHtml(year)}.`);
     else parts.push(`.`);
 
