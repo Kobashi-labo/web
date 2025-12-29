@@ -1,7 +1,7 @@
 {
   "permalink": "read0134502",
-  "updatedAt": "2025-12-29T04:58:16.870Z",
-  "unclassified_count": 34,
+  "updatedAt": "2025-12-29T08:12:05.291Z",
+  "unclassified_count": 12,
   "unclassified": [
     {
       "id": "41920991",
@@ -16,121 +16,6 @@
       }
     },
     {
-      "id": "36902835",
-      "year": "2021",
-      "title": {
-        "ja": "機械学習を用いた投球動作の運動学的パラメータからの競技レベル推定",
-        "en": "Machine learning based player level estimation with 3-D kinematic analysis of throwing motion capture."
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": null
-      }
-    },
-    {
-      "id": "36407702",
-      "year": "2021",
-      "title": {
-        "en": "A Deep Learning Technique for Automatic Teeth Recognition in Dental Panoramic X-Ray Images Using Modified Palmer Notation System"
-      },
-      "raw_type_fields": {
-        "published_paper_type": "in_book",
-        "is_international_journal": null,
-        "referee": null
-      }
-    },
-    {
-      "id": "16193994",
-      "year": "2019",
-      "title": {
-        "ja": "医療と情報 第1部 ヘルスケア・インフォマティクスの先端技術 2)医用画像診断の未来",
-        "en": "医療と情報 第1部 ヘルスケア・インフォマティクスの先端技術 2)医用画像診断の未来"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": false
-      }
-    },
-    {
-      "id": "16194006",
-      "year": "2019",
-      "title": {
-        "ja": "Real-Time Orthopedic Surgery Procedure Recognition Method with Video Images from Smart Glasses Using Convolutional Neural Network",
-        "en": "Real-Time Orthopedic Surgery Procedure Recognition Method with Video Images from Smart Glasses Using Convolutional Neural Network"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": false
-      }
-    },
-    {
-      "id": "16194003",
-      "year": "2019",
-      "title": {
-        "ja": "Finger Joint Detection Method for the Automatic Estimation of Rheumatoid Arthritis Progression Using Machine Learning",
-        "en": "Finger Joint Detection Method for the Automatic Estimation of Rheumatoid Arthritis Progression Using Machine Learning"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": false
-      }
-    },
-    {
-      "id": "16194002",
-      "year": "2019",
-      "title": {
-        "ja": "Disorder Development Onset Prediction Based on Spatiotemporal Statistical Shape Model",
-        "en": "Disorder Development Onset Prediction Based on Spatiotemporal Statistical Shape Model"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": false
-      }
-    },
-    {
-      "id": "46756643",
-      "year": "2018",
-      "title": {
-        "ja": "内反変形膝に対するDouble Level Osteotomyの術後回旋アライメントの変化 3次元CTを用いた解析"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": null
-      }
-    },
-    {
-      "id": "16194005",
-      "year": "2018",
-      "title": {
-        "ja": "内反変形膝に対するDouble Level Osteotomyの術後回旋アライメントの変化―3次元CTを用いた解析―",
-        "en": "内反変形膝に対するDouble Level Osteotomyの術後回旋アライメントの変化―3次元CTを用いた解析―"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": false
-      }
-    },
-    {
-      "id": "8152949",
-      "year": "2018",
-      "title": {
-        "ja": "Automated estimation of mTS score in hand joint X-ray image using machine learning",
-        "en": "Automated estimation of mTS score in hand joint X-ray image using machine learning"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": false
-      }
-    },
-    {
       "id": "8152954",
       "year": "2018",
       "title": {
@@ -138,32 +23,6 @@
       },
       "raw_type_fields": {
         "published_paper_type": "in_book",
-        "is_international_journal": null,
-        "referee": false
-      }
-    },
-    {
-      "id": "8152955",
-      "year": "2017",
-      "title": {
-        "ja": "オープンMRIを用いた肩腱板断裂形態診断のための肩腱板3次元形状再構築",
-        "en": "Reconstruction of 3-D torn rotator cuff model in open MRI for computer-aided diagnosis."
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": false
-      }
-    },
-    {
-      "id": "26655968",
-      "year": "2017",
-      "title": {
-        "ja": "Ovarian Follicle Classification without Direct Deformation Information from Ultrasonic Images",
-        "en": "Ovarian Follicle Classification without Direct Deformation Information from Ultrasonic Images"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
         "is_international_journal": null,
         "referee": false
       }
@@ -181,152 +40,11 @@
       }
     },
     {
-      "id": "34457850",
-      "year": "2017",
-      "title": {
-        "ja": "表面筋電データによる舌の動きに着目した咀嚼嚥下動作解析",
-        "en": "Analysis of tongue movement related to chewing and swallowing using surface EMG"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": null
-      }
-    },
-    {
-      "id": "49329168",
-      "year": "2016",
-      "title": {
-        "en": "ACL再建術のための膝MR画像正側面方向推定法(Lateral Direction Estimation Method in Knee MRI for Anterior Cruciate Ligament Reconstruction)"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": null
-      }
-    },
-    {
-      "id": "8152405",
-      "year": "2016",
-      "title": {
-        "ja": "Machine learning approaches for brain morphology analysis in MR images",
-        "en": "Machine learning approaches for brain morphology analysis in MR images"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": true
-      }
-    },
-    {
-      "id": "37379887",
-      "year": "2016",
-      "title": {
-        "ja": "機械学習を用いた臨床ビッグデータに基づく人工関節置換膝動態予測",
-        "en": "Postoperative implanted knee kinematics prediction using a machine learning approach to clinical big data"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": null
-      }
-    },
-    {
-      "id": "37402478",
-      "year": "2015",
-      "title": {
-        "ja": "前眼部OCTによる眼科患者個人認証に関する一考察",
-        "en": "On Personal Identication for Ophthalmological Patients Based on Clinical Data Measured by Optical Coherence Tomography"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": null
-      }
-    },
-    {
-      "id": "37392139",
-      "year": "2015",
-      "title": {
-        "ja": "ACL再建術におけるMR画像を用いた術前計画法",
-        "en": "Computer-aided Surgical Planning of Anterior Cruciate Ligament Reconstruction Based on MR Image Analysis"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": null
-      }
-    },
-    {
-      "id": "41417995",
-      "year": "2014",
-      "title": {
-        "ja": "人間と機械が融和するネオファジィの世界",
-        "en": "A Neo-Fuzzy World for Facilitating Symbiosis of Humans and Machines"
-      },
-      "raw_type_fields": {
-        "published_paper_type": "symposium",
-        "is_international_journal": null,
-        "referee": false
-      }
-    },
-    {
-      "id": "37395026",
-      "year": "2014",
-      "title": {
-        "ja": "バネモデルを用いたFlattening法に基づく新生児脳MRIの解剖学的標準化",
-        "en": "Neonatal Brain Normalization Based on Flattening Using Spring Model"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": null
-      }
-    },
-    {
-      "id": "17575381",
-      "year": "2013",
-      "title": {
-        "ja": "Preface: RVSP 2013",
-        "en": "Preface: RVSP 2013"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": false
-      }
-    },
-    {
-      "id": "16194032",
-      "year": "2011",
-      "title": {
-        "en": "Estimation Method of Cortical Dysplasia Degree Using Fractal Dimension in Pediatric Brain MR Images",
-        "ja": "フラクタル次元を用いた小児頭部MR画像からの皮質形成異常度推定法"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": false
-      }
-    },
-    {
       "id": "16194038",
       "year": "2011",
       "title": {
         "en": "Automated 3-D kinematis analysis of TKA knee with 2-D digital radiograph video using Monte Carlo method",
         "ja": "モンテカルロ推定法による人工膝関節動態の動画像自動解析"
-      },
-      "raw_type_fields": {
-        "published_paper_type": null,
-        "is_international_journal": null,
-        "referee": false
-      }
-    },
-    {
-      "id": "16194039",
-      "year": "2010",
-      "title": {
-        "ja": "World Automation Congress (WAC) 2010開催報告"
       },
       "raw_type_fields": {
         "published_paper_type": null,
