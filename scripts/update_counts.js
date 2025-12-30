@@ -59,6 +59,7 @@ function normalizeSpaces(s) {
 
 function pickLangText(v) {
   if (v == null) return "";
+  if (typeof v === "boolean") return v ? "true" : "false";
   if (typeof v === "string" || typeof v === "number") return String(v);
   if (Array.isArray(v)) return "";
 
