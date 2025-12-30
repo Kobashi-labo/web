@@ -200,6 +200,66 @@ function formatAuthors(item) {
 }
 
 // ---------------------
+// presentations: authors (robust)
+// researchmap presentations may use fields like presenters/speakers/contributors.
+// We try several candidates and fall back gracefully.
+// ---------------------
+function getPresentationPeopleArray(item) {
+  const cands = [
+    item?.presenters,
+    item?.presenter,
+    item?.speakers,
+    item?.speaker,
+    item?.contributors,
+    item?.contributor,
+    item?.authors, // sometimes reused
+  ];
+
+  for (const c of cands) {
+    if (!c) continue;
+    if (Array.isArray(c)) return c;
+    if (typeof c === "object") {
+      // language keyed arrays or nested
+      if (Array.isArray(c.en)) return c.en;
+      if (Array.isArray(c.ja)) return c.ja;
+      if (Array.isArray(c["rm:en"])) return c["rm:en"];
+      if (Array.isArray(c["rm:ja"])) return c["rm:ja"];
+      // sometimes single person object
+      if (c.name || c.full_name || c.display_name) return [c];
+    }
+    if (typeof c === "string") return [c];
+  }
+  return [];
+}
+
+function pickPersonName(p) {
+  if (p == null) return "";
+  if (typeof p === "string") return p;
+  if (typeof p === "object") {
+    return (
+      p.name ||
+      p.full_name ||
+      p.display_name ||
+      p.en ||
+      p.ja ||
+      p["rm:en"] ||
+      p["rm:ja"] ||
+      ""
+    );
+  }
+  return "";
+}
+
+function formatPresentationAuthors(item) {
+  const people = getPresentationPeopleArray(item)
+    .map(pickPersonName)
+    .filter(Boolean);
+  if (!people.length) return ""; // presentations can be event-only
+  return people.map(formatOneAuthor).join("; ");
+}
+
+
+// ---------------------
 // presentations helpers
 // ---------------------
 function pickPresentationTitle(item) {
@@ -432,7 +492,7 @@ function toNumberedPaperList(items) {
     no: idx + 1,
     year: pickPaperYear(item),
     title: pickPaperTitle(item),
-    authors: formatAuthors(item),
+    authors: formatPresentationAuthors(item),
     venue: pickPaperVenue(item),
   }));
 
@@ -454,7 +514,7 @@ function toNumberedPresentationList(items) {
     no: idx + 1,
     year: pickPresentationYear(item),
     title: pickPresentationTitle(item),
-    authors: formatAuthors(item),
+    authors: formatPresentationAuthors(item),
     venue: pickPresentationVenue(item),
   }));
 
