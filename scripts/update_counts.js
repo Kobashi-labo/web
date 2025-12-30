@@ -1,16 +1,25 @@
 /**
  * scripts/update_counts.js
  * - Fetch researchmap API
- * - Build data/counts.json
- * - Build publications/journal-papers.html (journal-only, year-grouped, IEEE style)
+ * - Count items
+ * - Build publications/journal-papers.html
  *
- * Node 18+
+ * Changes (per request):
+ * 1) Include ALL authors
+ * 2) Keep family name, initials for others
+ * 3) Serial number is global ascending from oldest
+ * 4) Display newest first
  */
 
 const fs = require("fs");
 const path = require("path");
 
-const RESEARCHMAP_PERMALINK = process.env.RESEARCHMAP_PERMALINK || "read0134502";
+// =========================
+// ENV
+// =========================
+const RESEARCHMAP_PERMALINK = process.env.RESEARCHMAP_PERMALINK || "";
+const RESEARCHMAP_API_KEY = process.env.RESEARCHMAP_API_KEY || "";
+
 const OUT_COUNTS_JSON = process.env.OUT_COUNTS
   ? path.resolve(process.env.OUT_COUNTS)
   : path.join("data", "counts.json");
@@ -19,74 +28,120 @@ const OUT_JOURNAL_HTML = process.env.OUT_JOURNAL_HTML
   ? path.resolve(process.env.OUT_JOURNAL_HTML)
   : path.join("publications", "journal-papers.html");
 
-
-/* =========================
- * utils
- * ========================= */
-
-function ensureDir(p) {
-  fs.mkdirSync(p, { recursive: true });
+// =========================
+// utils
+// =========================
+function ensureDir(dir) {
+  fs.mkdirSync(dir, { recursive: true });
 }
 
-function escHtml(s) {
-  return String(s ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
-
-function isObject(v) {
-  return v && typeof v === "object" && !Array.isArray(v);
+function sleep(ms) {
+  return new Promise((r) => setTimeout(r, ms));
 }
 
 function normalizeSpaces(s) {
-  return String(s ?? "").replace(/\s+/g, " ").trim();
+  return String(s ?? "")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
-/* ---- object → string 完全正規化 ---- */
 function pickLangText(v) {
   if (v == null) return "";
   if (typeof v === "string" || typeof v === "number") return String(v);
-  if (Array.isArray(v)) return v.map(pickLangText).filter(Boolean).join(" ");
-
-  if (isObject(v)) {
+  if (typeof v === "object") {
+    if (v.ja) return String(v.ja);
+    if (v.en) return String(v.en);
+    if (v["rm:ja"]) return String(v["rm:ja"]);
+    if (v["rm:en"]) return String(v["rm:en"]);
     if (v.name) return pickLangText(v.name);
     if (v.full_name) return pickLangText(v.full_name);
     if (v.display_name) return pickLangText(v.display_name);
-
-    const cand =
-      v.en ?? v.ja ?? v["rm:en"] ?? v["rm:ja"] ?? v.value ?? v.text ?? "";
-    if (cand) return pickLangText(cand);
-
-    return "";
+    const cand = v.en ?? v.ja ?? v["rm:en"] ?? v["rm:ja"];
+    if (cand) return String(cand);
   }
-  return "";
+  return String(v);
 }
 
 function firstNonEmpty(...vals) {
   for (const v of vals) {
-    const t = normalizeSpaces(pickLangText(v));
-    if (t) return t;
+    const s = normalizeSpaces(pickLangText(v));
+    if (s) return s;
   }
   return "";
 }
 
-/* =========================
- * 年
- * ========================= */
+function escHtml(s) {
+  return String(s ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+// =========================
+// fetch
+// =========================
+async function fetchJson(url) {
+  const res = await fetch(url, {
+    headers: {
+      Accept: "application/json",
+      ...(RESEARCHMAP_API_KEY ? { "X-API-KEY": RESEARCHMAP_API_KEY } : {}),
+    },
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`fetch failed: ${res.status} ${res.statusText}\n${text}`);
+  }
+
+  return res.json();
+}
+
+function normalizeItems(json) {
+  const items = json?.items ?? json?.data ?? json ?? [];
+  const next = json?.next ?? json?._links?.next?.href ?? null;
+  return { items: Array.isArray(items) ? items : [], next };
+}
+
+async function fetchAllItems(baseUrl) {
+  const all = [];
+  const seen = new Set();
+  let url = baseUrl;
+
+  for (let i = 0; i < 50; i++) {
+    const json = await fetchJson(url);
+    const { items, next } = normalizeItems(json);
+
+    for (const it of items) {
+      const id = it?.["rm:id"] || it?.id;
+      if (id && seen.has(id)) continue;
+      if (id) seen.add(id);
+      all.push(it);
+    }
+    if (!next) break;
+    url = next.startsWith("http") ? next : `https://api.researchmap.jp${next}`;
+    await sleep(200);
+  }
+  return all;
+}
+
+// =========================
+// mapping
+// =========================
 function toYear(item) {
   const cands = [
     item?.year,
     item?.published_year,
     item?.publication_year,
+    item?.["rm:published_year"],
+    item?.["rm:publication_year"],
+    item?.published_at,
     item?.publication_date,
-    item?.issued,
     item?.date,
-  ]
-    .map((v) => normalizeSpaces(pickLangText(v)))
-    .filter(Boolean);
+    item?.issued,
+    item?.issued_date,
+  ].map((v) => pickLangText(v));
 
   for (const c of cands) {
     const m = c.match(/(19|20)\d{2}/);
@@ -95,31 +150,56 @@ function toYear(item) {
   return "----";
 }
 
-/* =========================
- * URL
- * ========================= */
 function toUrl(item) {
   const doi = firstNonEmpty(item?.doi, item?.DOI, item?.["rm:doi"]);
   if (doi) {
     const clean = doi.replace(/^https?:\/\/(dx\.)?doi\.org\//i, "");
     return `https://doi.org/${clean}`;
   }
-
   return firstNonEmpty(item?.url, item?.URL, item?._links?.self?.href);
 }
 
-/* =========================
- * 著者（IEEE 形式）
- * ========================= */
+function toTitle(item) {
+  return firstNonEmpty(item?.title, item?.paper_title, item?.["rm:title"]);
+}
 
+function toJournalName(item) {
+  return firstNonEmpty(
+    item?.journal,
+    item?.journal_title,
+    item?.journal_name,
+    item?.publication_name,
+    item?.["rm:journal"],
+    item?.["rm:journal_title"]
+  );
+}
+
+function toVolNoPp(item) {
+  const vol = firstNonEmpty(item?.volume, item?.vol, item?.["rm:volume"]);
+  const no = firstNonEmpty(item?.number, item?.issue, item?.no, item?.["rm:number"]);
+  const pp = firstNonEmpty(item?.page, item?.pages, item?.pp, item?.["rm:page"]);
+
+  const parts = [];
+  if (vol) parts.push(`vol. ${vol}`);
+  if (no) parts.push(`no. ${no}`);
+  if (pp) {
+    const clean = normalizeSpaces(pp).replace(/^pp?\.\s*/i, "");
+    parts.push(`pp. ${clean}`);
+  }
+  return parts.join(", ");
+}
+
+// =========================
+// Authors: robust extraction + initials
+// =========================
 function formatAuthorName(raw) {
   const name = normalizeSpaces(pickLangText(raw));
   if (!name) return "";
 
-  // 日本語名はそのまま
+  // Japanese names: keep as-is
   if (/[ぁ-んァ-ン一-龥]/.test(name)) return name;
 
-  // "Family, Given Middle" 形式
+  // "Family, Given Middle"
   if (name.includes(",")) {
     const [family, given] = name.split(",").map(normalizeSpaces);
     const initials = given
@@ -127,23 +207,18 @@ function formatAuthorName(raw) {
       .filter(Boolean)
       .map((w) => w[0].toUpperCase() + ".")
       .join(" ");
-    // 姓は省略しない
     return normalizeSpaces(`${initials} ${family}`);
   }
 
-  // "Given Middle Family" 形式（researchmapで多い）
+  // "Given Middle Family"
   const tokens = name.split(" ").filter(Boolean);
   if (tokens.length === 1) return tokens[0];
 
-  const family = tokens[tokens.length - 1]; // 姓（省略しない）
+  const family = tokens[tokens.length - 1];
   const givenTokens = tokens.slice(0, -1);
 
-  // given/middle は頭文字にする
   const initials = givenTokens
-    .map((w) => {
-      const c = w[0];
-      return c ? c.toUpperCase() + "." : "";
-    })
+    .map((w) => (w[0] ? w[0].toUpperCase() + "." : ""))
     .filter(Boolean)
     .join(" ");
 
@@ -158,8 +233,92 @@ function joinAuthorsIEEE(list) {
   return `${a.slice(0, -1).join(", ")}, and ${a[a.length - 1]}`;
 }
 
+// Recursively find author-like strings/objects under author-ish keys
+function extractAuthorsDeep(obj) {
+  const out = [];
+  const visited = new Set();
+
+  function pushName(v) {
+    const s = normalizeSpaces(pickLangText(v));
+    if (!s) return;
+    // Ignore very long non-name blobs
+    if (s.length > 120) return;
+    // Heuristic: looks like a name (has space/comma or Japanese chars)
+    if (!(/[ぁ-んァ-ン一-龥]/.test(s) || s.includes(",") || /\s/.test(s))) return;
+    out.push(s);
+  }
+
+  function walk(node, keyHint, depth) {
+    if (node == null || depth > 6) return;
+    if (typeof node !== "object") return;
+
+    if (visited.has(node)) return;
+    visited.add(node);
+
+    if (Array.isArray(node)) {
+      for (const el of node) walk(el, keyHint, depth + 1);
+      return;
+    }
+
+    for (const [k, v] of Object.entries(node)) {
+      const kk = String(k).toLowerCase();
+      const isAuthorKey = /author|creator|contributor|member/.test(kk) || /authors/.test(kk);
+
+      if (v == null) continue;
+
+      // Common structured patterns
+      if (isAuthorKey && typeof v === "object" && !Array.isArray(v)) {
+        // family/given patterns
+        const fam = firstNonEmpty(v.family_name, v.family, v.lastname, v.last_name, v.surname);
+        const giv = firstNonEmpty(v.given_name, v.given, v.firstname, v.first_name, v.forename);
+        if (fam && giv) pushName(`${giv} ${fam}`);
+
+        // full name variants
+        pushName(v.full_name);
+        pushName(v.display_name);
+        pushName(v.name);
+      }
+
+      if (isAuthorKey && typeof v === "string") {
+        // split by ; or and
+        v.split(/\s*;\s*|\s+and\s+/i).forEach(pushName);
+      } else if (isAuthorKey && Array.isArray(v)) {
+        for (const el of v) {
+          if (typeof el === "string") {
+            el.split(/\s*;\s*|\s+and\s+/i).forEach(pushName);
+          } else if (typeof el === "object" && el) {
+            const fam = firstNonEmpty(el.family_name, el.family, el.lastname, el.last_name, el.surname);
+            const giv = firstNonEmpty(el.given_name, el.given, el.firstname, el.first_name, el.forename);
+            if (fam && giv) pushName(`${giv} ${fam}`);
+            pushName(el.full_name);
+            pushName(el.display_name);
+            pushName(el.name);
+            // Some APIs: { en: "...", ja: "..." }
+            pushName(el.en);
+            pushName(el.ja);
+          }
+        }
+      }
+
+      // Always walk deeper; but bias by author keys to ensure we don't miss nested fields
+      walk(v, isAuthorKey ? kk : keyHint, depth + 1);
+    }
+  }
+
+  walk(obj, "", 0);
+
+  // Deduplicate while preserving order
+  const seen = new Set();
+  return out.filter((s) => {
+    const key = s.toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 function toAuthors(item) {
-  // あり得るキーを全部拾う（researchmapの揺れ対策）
+  // 1) Try known top-level pools first
   const pools = [
     item?.authors,
     item?.author,
@@ -171,152 +330,79 @@ function toAuthors(item) {
     item?.member,
     item?.["rm:authors"],
     item?.["rm:author"],
+    item?.["rm:creators"],
+    item?.["rm:contributors"],
+    item?.["rm:members"],
   ].filter((v) => v != null);
 
-  // 1) 配列があれば最優先
-  const arr = pools.find((v) => Array.isArray(v) && v.length);
+  const names = [];
 
-  if (arr) {
-    const names = arr
-  .flatMap((a) => {
-    const s = firstNonEmpty(
-      a?.full_name,
-      a?.display_name,
-      a?.name,
-      a?.["rm:display_name"],
-      a?.family_name && a?.given_name
-        ? `${pickLangText(a.given_name)} ${pickLangText(a.family_name)}`
-        : "",
-      a?.family && a?.given
-        ? `${pickLangText(a.given)} ${pickLangText(a.family)}`
-        : "",
-      a
-    );
-
-    // 1要素に複数著者が入っている場合の救済（区切りがある時だけ分割）
-    if (typeof s === "string" && /;|\s+and\s+/i.test(s)) {
-      return s
-        .split(/\s*;\s*|\s+and\s+/i)
-        .map((x) => x.trim())
-        .filter(Boolean);
+  // Arrays / objects / strings
+  for (const p of pools) {
+    if (Array.isArray(p)) {
+      for (const el of p) names.push(el);
+    } else {
+      names.push(p);
     }
-    return [s];
-  })
-  .map(formatAuthorName)
-  .filter(Boolean);
-
-
-    return joinAuthorsIEEE(names);
   }
 
-  // 2) 文字列（author が "A;B;C" などで来るパターン）を拾う
-  const str = pools
-    .map((v) => (typeof v === "string" ? v : ""))
-    .find((s) => s && s.trim());
+  // 2) Deep extraction fallback (covers schema variations)
+  const deep = extractAuthorsDeep(item);
+  for (const d of deep) names.push(d);
 
-  if (str) {
-    const parts = str
-      .split(/\s*[,;]\s*|\s+and\s+/i)
-      .map((s) => s.trim())
-      .filter(Boolean)
-      .map(formatAuthorName)
-      .filter(Boolean);
+  // 3) Normalize into formatted names
+  const formatted = names
+    .flatMap((a) => {
+      const s = firstNonEmpty(
+        a?.full_name,
+        a?.display_name,
+        a?.name,
+        a?.["rm:display_name"],
+        a?.family_name && a?.given_name
+          ? `${pickLangText(a.given_name)} ${pickLangText(a.family_name)}`
+          : "",
+        a?.family && a?.given ? `${pickLangText(a.given)} ${pickLangText(a.family)}` : "",
+        a
+      );
+      if (typeof s === "string" && /;|\s+and\s+/i.test(s)) {
+        return s
+          .split(/\s*;\s*|\s+and\s+/i)
+          .map((x) => x.trim())
+          .filter(Boolean);
+      }
+      return [s];
+    })
+    .map(formatAuthorName)
+    .filter(Boolean);
 
-    return joinAuthorsIEEE(parts.length ? parts : [formatAuthorName(str)]);
-  }
+  // remove dup after formatting
+  const seen = new Set();
+  const uniq = formatted.filter((s) => {
+    const k = s.toLowerCase();
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
 
-  // 3) それでも無理なら、著者っぽいフィールドを最後に探す（超保険）
-  const alt = firstNonEmpty(
-    item?.author_name,
-    item?.authors_name,
-    item?.creator_name,
-    item?.contributor_name
+  return joinAuthorsIEEE(uniq);
+}
+
+// =========================
+// filter
+// =========================
+function isJournalPaper(item) {
+  const typeStr = normalizeSpaces(
+    [
+      item?.published_paper_type,
+      item?.paper_type,
+      item?.type,
+      item?.raw_type_fields?.published_paper_type,
+    ]
+      .map((v) => pickLangText(v).toLowerCase())
+      .join(" ")
   );
-  if (alt) return joinAuthorsIEEE([formatAuthorName(alt)]);
 
-  return "";
-}
-
-/* =========================
- * Title / Journal
- * ========================= */
-function toTitle(item) {
-  return firstNonEmpty(
-    item?.title,
-    item?.paper_title,
-    item?.published_paper_title,
-    item?.["rm:title"]
-  );
-}
-
-function toJournalName(item) {
-  return firstNonEmpty(
-    item?.journal,
-    item?.journal_name,
-    item?.publication_name,
-    item?.container_title,
-    item?.["rm:journal"]
-  );
-}
-
-/* =========================
- * vol / no / pp
- * ========================= */
-function toVolNoPp(item) {
-  const vol = firstNonEmpty(item?.volume, item?.vol);
-  const no = firstNonEmpty(item?.number, item?.no, item?.issue);
-
-  const sp = firstNonEmpty(item?.starting_page, item?.start_page);
-  const ep = firstNonEmpty(item?.ending_page, item?.end_page);
-  const pr = firstNonEmpty(item?.page_range, item?.pages);
-
-  let pp = "";
-  if (sp && ep) pp = `${sp}\u2013${ep}`;
-  else if (pr) pp = pr;
-
-  const parts = [];
-  if (vol) parts.push(`vol. ${vol}`);
-  if (no) parts.push(`no. ${no}`);
-  if (pp) parts.push(`pp. ${pp}`);
-
-  return parts.join(", ");
-}
-
-/* =========================
- * Journal-only 判定
- * ========================= */
-function isJournalOnly(item) {
-  const j = toJournalName(item).toLowerCase();
-  const t = toTitle(item).toLowerCase();
-  const hay = `${j} | ${t}`;
-
-  const badPatterns = [
-    /\bproceedings\b/,
-    /\bproceedings of\b/,
-    /\bannual international conference\b/,
-    /\binternational conference\b/,
-    /\bconference\b/,
-    /\bsymposium\b/,
-    /\bworkshop\b/,
-    /\bmeeting\b/,
-    /\bcongress\b/,
-  ];
-
-  if (badPatterns.some((re) => re.test(hay))) return false;
-
-  // type がある場合の保険（researchmapの揺れ対策）
-  const typeStr = [
-    item?.published_paper_type,
-    item?.paper_type,
-    item?.type,
-    item?.category,
-    item?.raw_type_fields?.published_paper_type,
-  ]
-    .map((v) => pickLangText(v).toLowerCase())
-    .filter(Boolean)
-    .join(" | ");
-
-  if (/(conference|proceeding|proceedings|symposium|workshop)/.test(typeStr)) return false;
+  if (/(conference|proceedings)/.test(typeStr)) return false;
   if (/(book|chapter|in_book)/.test(typeStr)) return false;
 
   if (typeStr.includes("journal")) return true;
@@ -333,52 +419,17 @@ function isJournalOnly(item) {
 
   if (journalHint.includes("true") || journalHint.includes("1")) return true;
 
-  return Boolean(toJournalName(item));
+  const j = toJournalName(item);
+  if (j) return true;
+
+  return false;
 }
 
-/* =========================
- * fetch
- * ========================= */
-async function fetchJson(url) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return await res.json();
-}
-
-function normalizeItems(json) {
-  if (Array.isArray(json)) return { items: json, next: null };
-  return {
-    items: Array.isArray(json.items) ? json.items : [],
-    next: json?._links?.next?.href || null,
-  };
-}
-
-async function fetchAllCategory(cat) {
-  let url = `https://api.researchmap.jp/${RESEARCHMAP_PERMALINK}/${cat}?format=json&limit=1000&start=1`;
-  const all = [];
-  const seen = new Set();
-
-  for (let i = 0; i < 50; i++) {
-    const json = await fetchJson(url);
-    const { items, next } = normalizeItems(json);
-
-    for (const it of items) {
-      const id = it?.["rm:id"] || it?.id;
-      if (id && seen.has(id)) continue;
-      if (id) seen.add(id);
-      all.push(it);
-    }
-    if (!next) break;
-    url = next.startsWith("http") ? next : `https://api.researchmap.jp${next}`;
-  }
-  return all;
-}
-
-/* =========================
- * HTML
- * ========================= */
+// =========================
+// HTML
+// =========================
 function buildJournalHtml({ updatedAt, items }) {
-  // 1) year ごとにまとめる
+  // group by year
   const byYear = new Map();
   for (const it of items) {
     const y = toYear(it);
@@ -386,7 +437,7 @@ function buildJournalHtml({ updatedAt, items }) {
     byYear.get(y).push(it);
   }
 
-  // 2) 並び替え用キー（できるだけ日付まで使う）
+  // sort key (as much as possible)
   function itemKey(it) {
     const yStr = toYear(it);
     const y = yStr === "----" ? 0 : Number(yStr);
@@ -404,7 +455,8 @@ function buildJournalHtml({ updatedAt, items }) {
       it?.updated_at
     );
 
-    let m = 0, d = 0;
+    let m = 0,
+      d = 0;
     if (typeof dateStr === "string") {
       const mm = dateStr.match(/(19|20)\d{2}[-/](\d{1,2})(?:[-/](\d{1,2}))?/);
       if (mm) {
@@ -431,11 +483,11 @@ function buildJournalHtml({ updatedAt, items }) {
     return -cmpKeyAsc(a, b);
   }
 
-  // 3) 通し番号：古いものから 1,2,3,...（表示順とは独立）
-  const numMap = new Map(); // key -> number
+  // Serial numbers: oldest -> newest (global)
+  const numMap = new Map();
   const flat = items
     .map((it) => {
-      const key = String(it?.["rm:id"] || it?.id || `${toYear(it)}|${toAuthors(it)}|${toTitle(it)}`);
+      const key = String(it?.["rm:id"] || it?.id || `${toYear(it)}|${toTitle(it)}`);
       return { key, it, k: itemKey(it) };
     })
     .sort((a, b) => cmpKeyAsc(a.k, b.k));
@@ -445,7 +497,7 @@ function buildJournalHtml({ updatedAt, items }) {
     if (!numMap.has(row.key)) numMap.set(row.key, serial++);
   }
 
-  // 4) 表示：新しいものから（年も、年内も新しい順）
+  // Display: newest first (year desc, within year desc)
   const years = [...byYear.keys()].sort((a, b) => {
     if (a === "----") return 1;
     if (b === "----") return -1;
@@ -456,7 +508,6 @@ function buildJournalHtml({ updatedAt, items }) {
     .map((y) => {
       const list = byYear.get(y);
 
-      // 年内も新しい順
       const sorted = [...list].sort((a, b) => {
         const ka = itemKey(a);
         const kb = itemKey(b);
@@ -465,7 +516,7 @@ function buildJournalHtml({ updatedAt, items }) {
 
       const lis = sorted
         .map((it) => {
-          const key = String(it?.["rm:id"] || it?.id || `${toYear(it)}|${toAuthors(it)}|${toTitle(it)}`);
+          const key = String(it?.["rm:id"] || it?.id || `${toYear(it)}|${toTitle(it)}`);
           const n = numMap.get(key) ?? 0;
 
           const authors = toAuthors(it);
@@ -475,34 +526,32 @@ function buildJournalHtml({ updatedAt, items }) {
           const year = toYear(it);
           const url = toUrl(it);
 
-          const cite = [
-            authors && `${escHtml(authors)},`,
-            title && `“${escHtml(title)},”`,
-            journal && `<i>${escHtml(journal)}</i>,`,
-            vnp && `${escHtml(vnp)},`,
-            year !== "----" ? `${year}.` : ".",
-          ]
-            .filter(Boolean)
-            .join(" ");
+          const citeParts = [];
+          if (authors) citeParts.push(`${escHtml(authors)},`);
+          if (title) citeParts.push(`“${escHtml(title)},”`);
+          if (journal) citeParts.push(`<i>${escHtml(journal)}</i>,`);
+          if (vnp) citeParts.push(`${escHtml(vnp)},`);
+          citeParts.push(year !== "----" ? `${year}.` : ".");
+
+          const cite = citeParts.join(" ");
 
           return `
           <li class="paper">
             <div class="box">
               <span class="num">${n}.</span>
-              <div class="cite">${cite}${
-            url ? ` <a href="${escHtml(url)}" target="_blank">[link]</a>` : ""
-          }</div>
+              <div class="cite">${cite}${url ? ` <a href="${escHtml(url)}" target="_blank">[link]</a>` : ""}</div>
             </div>
           </li>`;
         })
         .join("\n");
 
+      // IMPORTANT: use UL to avoid double numbering from <ol>
       return `
 <section class="year-block">
   <h2>${escHtml(y)}</h2>
-  <ol class="paper-list">
+  <ul class="paper-list">
 ${lis}
-  </ol>
+  </ul>
 </section>`;
     })
     .join("\n");
@@ -529,15 +578,26 @@ ${lis}
 </html>`;
 }
 
-/* =========================
- * main
- * ========================= */
+// =========================
+// main
+// =========================
 async function main() {
-  const published = await fetchAllCategory("published_papers");
-  const journals = published.filter(isJournalOnly);
+  if (!RESEARCHMAP_PERMALINK) {
+    throw new Error("RESEARCHMAP_PERMALINK is empty");
+  }
+
+  const base = `https://api.researchmap.jp/${encodeURIComponent(
+    RESEARCHMAP_PERMALINK
+  )}/published_papers?per_page=200`;
 
   const updatedAt = new Date().toISOString();
-  
+
+  const published = await fetchAllItems(base);
+  const journals = published.filter(isJournalPaper);
+
+  console.log("RESEARCHMAP_PERMALINK =", RESEARCHMAP_PERMALINK);
+  console.log("published total =", published.length);
+  console.log("journal =", journals.length);
   console.log("OUT_COUNTS_JSON =", OUT_COUNTS_JSON);
   console.log("OUT_JOURNAL_HTML =", OUT_JOURNAL_HTML);
 
@@ -561,8 +621,6 @@ async function main() {
     OUT_JOURNAL_HTML,
     buildJournalHtml({ updatedAt: updatedAt.slice(0, 10), items: journals })
   );
-
-  console.log("Done.");
 }
 
 main().catch(console.error);
