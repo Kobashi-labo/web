@@ -435,8 +435,7 @@ function buildJournalHtml({ updatedAt, items }) {
       it?.updated_at
     );
 
-    let m = 0,
-      d = 0;
+    let m = 0, d = 0;
     if (typeof dateStr === "string") {
       const mm = dateStr.match(/(19|20)\d{2}[-/](\d{1,2})(?:[-/](\d{1,2}))?/);
       if (mm) {
@@ -462,7 +461,7 @@ function buildJournalHtml({ updatedAt, items }) {
     return -cmpAsc(a, b);
   }
 
-  // serial: oldest -> newest
+  // serial: oldest -> newest (global)
   const numMap = new Map();
   const flat = items
     .map((it) => {
@@ -506,23 +505,17 @@ function buildJournalHtml({ updatedAt, items }) {
           if (journal) citeParts.push(`<i>${escHtml(journal)}</i>,`);
           if (vnp) citeParts.push(`${escHtml(vnp)},`);
           citeParts.push(year !== "----" ? `${year}.` : ".");
-
           const cite = citeParts.join(" ");
 
-          return `
-  <div class="paper">
-    <div class="box">
-      <span class="num">${n}.</span>
-      <div class="cite">${cite}${url ? ` <a href="${escHtml(url)}" target="_blank">[link]</a>` : ""}</div>
-    </div>
-  </div>`;
+          // No <ul>/<ol>/<li>, and keep number + cite on same line.
+          return `<div class="pub-item"><span class="pub-num">${n}.</span> <span class="pub-cite">${cite}${url ? ` <a href="${escHtml(url)}" target="_blank">[link]</a>` : ""}</span></div>`;
         })
         .join("\n");
 
       return `
 <section class="year-block">
   <h2>${escHtml(y)}</h2>
-  <div class="paper-list">
+  <div class="pub-list">
 ${rows}
   </div>
 </section>`;
