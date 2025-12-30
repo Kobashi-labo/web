@@ -106,17 +106,19 @@ body {
 /* link: 控えめピル（※先頭の . を忘れずに） */
 .pub-cite a{
   display: inline-block;
-  margin-left: 0.35em;
-  padding: 0.05em 0.45em;
+  margin-left: 0.4em;
+  padding: 0.12em 0.55em;
   border-radius: 999px;
   text-decoration: none;
   font-weight: 700;
-  font-size: 0.9em;
+  font-size: 0.85em;
   color: #1e3a8a;
-  background: rgba(59,130,246,0.08);
+  background: rgba(59,130,246,0.10);
+  vertical-align: baseline;
 }
+
 .pub-cite a:hover{
-  background: rgba(59,130,246,0.14);
+  background: rgba(59,130,246,0.18);
 }
 
 /* ===== Responsive ===== */
