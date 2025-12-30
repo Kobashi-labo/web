@@ -29,6 +29,7 @@ jobs:
           OUT_COUNTS: data/counts.json
           OUT_JOURNAL_HTML: publications/journal-papers.html
           OUT_REVIEW_HTML: publications/review-articles.html
+          OUT_RAW_JSON: data/researchmap_raw.json
         run: |
           node scripts/update_counts.js
 
