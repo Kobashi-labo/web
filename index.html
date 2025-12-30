@@ -558,13 +558,13 @@
                         <p>書籍の章（<span data-rm-count="book_chapters">-</span>章）</p>
                     </a>
 
-                    <a href="publications/conference-proceedings.html" target="_blank" class="pub-link-card">
+                    <a href="publications/conference-proceedings.html" class="pub-link-card">
                         <h3>🎤 Conference Proceeding Papers</h3>
                         <p>国際会議論文（<span data-rm-count="intl_conf">-</span>編）</p>
                     
                     </a>
 
-                    <a href="https://researchmap.jp/read0134502/presentations" target="_blank" class="pub-link-card">
+                    <a href="publications/oral-presentations.html" class="pub-link-card">
                         <h3>🗣️ Oral Presentations</h3>
                         <p>口頭発表（<span data-rm-count="presentations">-</span>件）</p>
                     </a>
@@ -706,12 +706,12 @@
                         <p>Book chapters (<span data-rm-count="book_chapters">-</span>)</p>
                     </a>
 
-                    <a href="publications/conference-proceedings.html" target="_blank" class="pub-link-card">
+                    <a href="publications/conference-proceedings.html" class="pub-link-card">
                         <h3>🎤 Conference Papers</h3>
                         <p>International conference proceedings (<span data-rm-count="intl_conf">-</span>)</p>
                     </a>
 
-                    <a href="https://researchmap.jp/read0134502/presentations" target="_blank" class="pub-link-card">
+                    <a href="publications/oral-presentations.html" class="pub-link-card">
                         <h3>🗣️ Oral Presentations</h3>
                         <p>Oral presentations (<span data-rm-count="presentations">-</span> talks)</p>
                     </a>
@@ -850,23 +850,29 @@
       const res = await fetch("data/counts.json", { cache: "no-cache" });
       if (!res.ok) throw new Error("counts.json not found");
       const d = await res.json();
-    
+
       // updatedAt 表示
       setUpdatedAt(d.updatedAt);
-    
-      // ✅ counts.json（数だけ版）のキーに合わせる
-      const journal = Number(d.journal_paper_count ?? 0);
-      const conf = Number(d.conference_paper_count ?? 0);
-    
-      // HTML は data-rm-count="journal" と "intl_conf" のまま使う
+
+      // ✅ counts.json（counts only）キーに合わせる
+      const journal = Number(d.journal_paper_count ?? d.journal ?? 0);
+      const conf = Number(d.conference_paper_count ?? d.intl_conf ?? 0);
+      const presProvided = (d.presentations_count != null) || (d.presentations != null);
+      const pres = Number(d.presentations_count ?? d.presentations ?? 0);
+      const papersTotal = Number(d.papers_total ?? (journal + conf));
+
+      // HTML 側の data-rm-count キー
       setCount("journal", journal);
       setCount("intl_conf", conf);
-    
-      // 「論文総数（査読付き）」は journal + conference として表示
-      setCount("papers", journal + conf);
-    
-      // presentations は counts.json に無いので、ここでは触らない
-      // → 下の fallback（researchmap API）で入る
+      setCount("presentations", pres);
+      setCount("papers", papersTotal);
+
+      // presentations が counts.json に無い場合だけ API で補完
+      if (!presProvided) {
+        fetchAllCategory("presentations")
+          .then(items => setCount("presentations", items.length))
+          .catch(e => console.error(e));
+      }
     }
 
   // ---- fallback: researchmap API ----
