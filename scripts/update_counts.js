@@ -2,11 +2,11 @@
  * scripts/update_counts.js
  *
  * Generates:
- * - data/counts.json
+ * - data/counts.json              (counts ONLY, small)
  * - publications/journal-papers.html
  * - publications/conference-proceedings.html
  *
- * Requirements (from user)
+ * Requirements
  * 1. Include ALL authors
  * 2. Keep family name as-is; other parts as initials
  * 3. Serial number: per-page global, oldest = 1,2,3...
@@ -59,7 +59,6 @@ function escapeHtml(str) {
 
 function pickTitle(item) {
   const t = item?.paper_title || item?.title || {};
-  // prefer English if present, else Japanese, else any string
   if (typeof t === "string") return t;
   return t.en || t.ja || Object.values(t)[0] || "";
 }
@@ -77,7 +76,6 @@ function pickVenue(item) {
 }
 
 function pickYear(item) {
-  // many records have publication_date like "2024-03-01"
   const d = item?.publication_date || item?.rm_publication_date || item?.year;
   if (!d) return "";
   const s = String(d);
@@ -86,13 +84,9 @@ function pickYear(item) {
 }
 
 function getAuthorsArray(item) {
-  // researchmap typical: authors: { ja: [{name:..}, ...], en: [...] }
   const a = item?.authors;
   if (!a) return [];
   if (Array.isArray(a)) return a;
-  if (a.en && Array.isArray(a.en)) return a.en;
-  if (a.ja && Array.isArray(a.ja)) return a.ja;
-  // sometimes: { "ja": ["name1","name2"] }
   if (a.en && Array.isArray(a.en)) return a.en;
   if (a.ja && Array.isArray(a.ja)) return a.ja;
   return [];
@@ -102,27 +96,17 @@ function getAuthorsArray(item) {
  * Keep family name as-is; other parts as initials
  * Examples:
  * - "Shoichi NISHIO" -> "S. NISHIO"
- * - "Belayat HOSSAIN" -> "B. HOSSAIN"
- * - "Syoji KOBASHI" -> "S. KOBASHI"
- * - "Naomi YAGI" -> "N. YAGI"
  */
 function formatOneAuthor(name) {
   const s = String(name || "").trim();
   if (!s) return "";
-
-  // Split by whitespace
   const parts = s.split(/\s+/).filter(Boolean);
   if (parts.length === 1) return parts[0];
-
-  // family name is the last token (keep as-is)
   const family = parts[parts.length - 1];
-
-  // given/middle names -> initials
   const initials = parts
     .slice(0, -1)
     .map((p) => (p ? p[0].toUpperCase() + "." : ""))
     .join(" ");
-
   return (initials ? initials + " " : "") + family;
 }
 
@@ -130,7 +114,6 @@ function formatAuthors(item) {
   const authors = getAuthorsArray(item)
     .map((a) => (typeof a === "string" ? a : a?.name || a?.en || a?.ja || ""))
     .filter(Boolean);
-
   return authors.map(formatOneAuthor).join("; ");
 }
 
@@ -146,15 +129,14 @@ async function fetchAllPublishedPapers() {
     RESEARCHMAP_PERMALINK
   )}/published_papers`;
 
-  const limit = 1000; // spec maximum
-  let start = 1; // spec default is 1 (see docs/examples)
+  const limit = 1000;
+  let start = 1;
   let all = [];
 
   while (true) {
     const u = new URL(base);
     u.searchParams.set("limit", String(limit));
     u.searchParams.set("start", String(start));
-    // Prefer JSON (most endpoints default to json)
     u.searchParams.set("format", "json");
     if (RESEARCHMAP_API_KEY) u.searchParams.set("api_key", RESEARCHMAP_API_KEY);
 
@@ -170,7 +152,6 @@ async function fetchAllPublishedPapers() {
 
     const data = await res.json();
     const items = Array.isArray(data?.items) ? data.items : [];
-
     all = all.concat(items);
 
     if (items.length < limit) break;
@@ -188,7 +169,6 @@ function isJournal(item) {
     item?.published_paper_type ||
     item?.raw_type_fields?.published_paper_type ||
     "";
-  // Most common value: "scientific_journal"
   return String(t).toLowerCase().includes("scientific_journal");
 }
 
@@ -198,21 +178,19 @@ function isConferenceProceedings(item) {
     item?.raw_type_fields?.published_paper_type ||
     "";
   const s = String(t).toLowerCase();
-  // Handle typical values like "international_conference_proceedings"
   return s.includes("conference") || s.includes("proceedings");
 }
 
 // ---------------------
 // HTML builders
 // ---------------------
-function htmlPage({ title, updatedAtISO, items, permalink, pageId }) {
-  // items already in display order (newest first) and have `no` (oldest=1)
+function htmlPage({ title, updatedAtISO, items, permalink }) {
   const rows = items
     .map((p) => {
-      const title = escapeHtml(p.title);
-      const authors = escapeHtml(p.authors);
-      const venue = escapeHtml(p.venue);
-      const year = escapeHtml(p.year);
+      const t = escapeHtml(p.title);
+      const a = escapeHtml(p.authors);
+      const v = escapeHtml(p.venue);
+      const y = escapeHtml(p.year);
       const rmLink = p.id
         ? `https://researchmap.jp/${encodeURIComponent(permalink)}/published_papers/${encodeURIComponent(
             p.id
@@ -224,10 +202,10 @@ function htmlPage({ title, updatedAtISO, items, permalink, pageId }) {
       return `
       <div class="paper-item">
         <span class="paper-number">[${p.no}]</span>
-        <span class="paper-authors">${authors}</span><br/>
-        <span class="paper-title"><strong>${title}</strong></span>${linkHtml}<br/>
-        <span class="paper-venue">${venue}</span>
-        <span class="paper-year"> (${year})</span>
+        <span class="paper-authors">${a}</span><br/>
+        <span class="paper-title"><strong>${t}</strong></span>${linkHtml}<br/>
+        <span class="paper-venue">${v}</span>
+        <span class="paper-year"> (${y})</span>
       </div>`;
     })
     .join("\n");
@@ -239,7 +217,7 @@ function htmlPage({ title, updatedAtISO, items, permalink, pageId }) {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>${escapeHtml(title)}</title>
   <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; margin: 24px; line-height: 1.45; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans"; margin: 24px; line-height: 1.45; }
     h1 { margin: 0 0 8px; }
     .meta { color: #666; font-size: 0.95rem; margin-bottom: 18px; }
     .paper-item { margin: 0 0 14px; }
@@ -251,7 +229,7 @@ function htmlPage({ title, updatedAtISO, items, permalink, pageId }) {
 <body>
   <h1>${escapeHtml(title)}</h1>
   <div class="meta">Last updated: ${escapeHtml(updatedAtISO)}</div>
-  <div id="${escapeHtml(pageId)}">
+  <div>
 ${rows || "    <div>(No items found)</div>"}
   </div>
 </body>
@@ -259,19 +237,17 @@ ${rows || "    <div>(No items found)</div>"}
 }
 
 function toNumberedDisplayList(items) {
-  // oldest first -> assign no, then reverse for display newest first
   const sorted = [...items].sort((a, b) => {
     const ya = Number(pickYear(a) || 0);
     const yb = Number(pickYear(b) || 0);
     if (ya !== yb) return ya - yb;
-    // stable fallback: by id string
-    return String(a?.rm_id || a?.["rm:id"] || a?.id || "").localeCompare(
-      String(b?.rm_id || b?.["rm:id"] || b?.id || "")
+    return String(a?.["rm:id"] || a?.id || "").localeCompare(
+      String(b?.["rm:id"] || b?.id || "")
     );
   });
 
   const numbered = sorted.map((item, idx) => ({
-    id: String(item?.["rm:id"] || item?.id || item?.rm_id || ""),
+    id: String(item?.["rm:id"] || item?.id || ""),
     no: idx + 1,
     year: pickYear(item),
     title: pickTitle(item),
@@ -279,7 +255,7 @@ function toNumberedDisplayList(items) {
     venue: pickVenue(item),
   }));
 
-  return numbered.reverse();
+  return numbered.reverse(); // newest first display
 }
 
 // ---------------------
@@ -296,43 +272,32 @@ async function main() {
 
   const updatedAtISO = new Date().toISOString();
 
+  // counts.json is COUNTS ONLY (small)
   const counts = {
     permalink: RESEARCHMAP_PERMALINK,
     updatedAt: updatedAtISO,
     journal_paper_count: journal.length,
     conference_paper_count: conf.length,
-    journal_papers: journal,
-    conference_papers: conf,
-    // For debugging / future tuning
     unclassified_count: all.length - journalRaw.length - confRaw.length,
   };
 
-  // write JSON
   ensureDir(path.dirname(OUT_COUNTS_JSON));
   fs.writeFileSync(OUT_COUNTS_JSON, JSON.stringify(counts, null, 2), "utf-8");
 
-  // write HTML pages
   ensureDir(path.dirname(OUT_JOURNAL_HTML));
   ensureDir(path.dirname(OUT_CONF_HTML));
 
-  const journalHtml = htmlPage({
-    title: "Journal Papers",
-    updatedAtISO,
-    items: journal,
-    permalink: RESEARCHMAP_PERMALINK,
-    pageId: "journal-papers",
-  });
+  fs.writeFileSync(
+    OUT_JOURNAL_HTML,
+    htmlPage({ title: "Journal Papers", updatedAtISO, items: journal, permalink: RESEARCHMAP_PERMALINK }),
+    "utf-8"
+  );
 
-  const confHtml = htmlPage({
-    title: "Conference Proceeding Papers",
-    updatedAtISO,
-    items: conf,
-    permalink: RESEARCHMAP_PERMALINK,
-    pageId: "conference-proceedings",
-  });
-
-  fs.writeFileSync(OUT_JOURNAL_HTML, journalHtml, "utf-8");
-  fs.writeFileSync(OUT_CONF_HTML, confHtml, "utf-8");
+  fs.writeFileSync(
+    OUT_CONF_HTML,
+    htmlPage({ title: "Conference Proceeding Papers", updatedAtISO, items: conf, permalink: RESEARCHMAP_PERMALINK }),
+    "utf-8"
+  );
 
   console.log("✅ Updated:");
   console.log(" -", OUT_COUNTS_JSON);
