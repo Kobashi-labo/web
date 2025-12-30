@@ -1,14 +1,14 @@
 /**
- * scripts/update_counts.js
- * - Fetch researchmap API
- * - Count items
- * - Build publications/journal-papers.html
+ * scripts/update_counts.js (final)
  *
- * Changes (per request):
- * 1) Include ALL authors
- * 2) Keep family name, initials for others
- * 3) Serial number is global ascending from oldest
- * 4) Display newest first
+ * Requirements
+ * 1. Include ALL authors
+ * 2. Keep family name as-is; other parts as initials
+ * 3. Serial number: global, oldest = 1,2,3...
+ * 4. Display: newest first
+ *
+ * NOTE:
+ * - Avoid <ul>/<ol> to prevent bullets/double numbering.
  */
 
 const fs = require("fs");
@@ -48,26 +48,19 @@ function normalizeSpaces(s) {
 function pickLangText(v) {
   if (v == null) return "";
   if (typeof v === "string" || typeof v === "number") return String(v);
-
-  // Arrays are not directly stringified (prevents "[object Object]")
   if (Array.isArray(v)) return "";
 
   if (typeof v === "object") {
-    // If language fields exist but are arrays, ignore here and let caller handle arrays.
+    // most common language wrappers
     if (v.ja && !Array.isArray(v.ja)) return String(v.ja);
     if (v.en && !Array.isArray(v.en)) return String(v.en);
     if (v["rm:ja"] && !Array.isArray(v["rm:ja"])) return String(v["rm:ja"]);
     if (v["rm:en"] && !Array.isArray(v["rm:en"])) return String(v["rm:en"]);
 
+    // nested
     if (v.name) return pickLangText(v.name);
     if (v.full_name) return pickLangText(v.full_name);
     if (v.display_name) return pickLangText(v.display_name);
-
-    const cand = (v.en && !Array.isArray(v.en) ? v.en : null) ??
-                 (v.ja && !Array.isArray(v.ja) ? v.ja : null) ??
-                 (v["rm:en"] && !Array.isArray(v["rm:en"]) ? v["rm:en"] : null) ??
-                 (v["rm:ja"] && !Array.isArray(v["rm:ja"]) ? v["rm:ja"] : null);
-    if (cand) return String(cand);
 
     return "";
   }
@@ -101,12 +94,10 @@ async function fetchJson(url) {
       ...(RESEARCHMAP_API_KEY ? { "X-API-KEY": RESEARCHMAP_API_KEY } : {}),
     },
   });
-
   if (!res.ok) {
     const text = await res.text().catch(() => "");
     throw new Error(`fetch failed: ${res.status} ${res.statusText}\n${text}`);
   }
-
   return res.json();
 }
 
@@ -163,14 +154,14 @@ function toYear(item) {
 }
 
 function toUrl(item) {
-  // 1) direct doi fields (if any)
+  // direct
   const doiDirect = firstNonEmpty(item?.doi, item?.DOI, item?.["rm:doi"]);
   if (doiDirect) {
     const clean = doiDirect.replace(/^https?:\/\/(dx\.)?doi\.org\//i, "");
     return `https://doi.org/${clean}`;
   }
 
-  // 2) identifiers.doi (researchmap often provides doi as an array)
+  // identifiers.doi (array or string)
   const doiArr = item?.identifiers?.doi;
   if (Array.isArray(doiArr) && doiArr.length) {
     const clean = String(doiArr[0]).replace(/^https?:\/\/(dx\.)?doi\.org\//i, "");
@@ -181,14 +172,13 @@ function toUrl(item) {
     return `https://doi.org/${clean}`;
   }
 
-  // 3) see_also: doi
+  // see_also doi
   const seeAlso = item?.see_also;
   if (Array.isArray(seeAlso)) {
     const doiLink = seeAlso.find((x) => x?.label === "doi" && x?.["@id"]);
     if (doiLink?.["@id"]) return String(doiLink["@id"]);
   }
 
-  // 4) fallback
   return firstNonEmpty(item?.url, item?.URL, item?._links?.self?.href);
 }
 
@@ -211,7 +201,6 @@ function toVolNoPp(item) {
   const vol = firstNonEmpty(item?.volume, item?.vol, item?.["rm:volume"]);
   const no = firstNonEmpty(item?.number, item?.issue, item?.no, item?.["rm:number"]);
 
-  // pages (researchmap often uses starting_page / ending_page)
   const start = firstNonEmpty(item?.starting_page, item?.start_page, item?.first_page);
   const end = firstNonEmpty(item?.ending_page, item?.end_page, item?.last_page);
 
@@ -230,14 +219,13 @@ function toVolNoPp(item) {
 }
 
 // =========================
-// Authors: robust extraction + initials
+// Authors (NO deep recursion; avoid [object Object])
 // =========================
 function formatAuthorName(raw) {
   const name = normalizeSpaces(pickLangText(raw));
   if (!name) return "";
-  if (name.toLowerCase() === "[object object]") return "";
 
-  // Japanese names: keep as-is
+  // Japanese -> 그대로
   if (/[ぁ-んァ-ン一-龥]/.test(name)) return name;
 
   // "Family, Given Middle"
@@ -257,7 +245,6 @@ function formatAuthorName(raw) {
 
   const family = tokens[tokens.length - 1];
   const givenTokens = tokens.slice(0, -1);
-
   const initials = givenTokens
     .map((w) => (w[0] ? w[0].toUpperCase() + "." : ""))
     .filter(Boolean)
@@ -274,109 +261,65 @@ function joinAuthorsIEEE(list) {
   return `${a.slice(0, -1).join(", ")}, and ${a[a.length - 1]}`;
 }
 
-// Recursively find author-like strings/objects under author-ish keys
-function extractAuthorsDeep(obj) {
-  const out = [];
-  const visited = new Set();
+function extractAuthorArray(v) {
+  // v can be:
+  // - [ {name: ...}, ... ]
+  // - [ "A B", ... ]
+  // - { en: [..], ja: [..] }
+  // - "A;B;C"
+  if (v == null) return [];
 
-  function pushName(v) {
-    const s = normalizeSpaces(pickLangText(v));
-    if (!s) return;
-    if (s.toLowerCase() === "[object object]") return;
-    // Ignore very long non-name blobs
-    if (s.length > 120) return;
-    // Heuristic: looks like a name (has space/comma or Japanese chars)
-    if (!(/[ぁ-んァ-ン一-龥]/.test(s) || s.includes(",") || /\s/.test(s))) return;
-    out.push(s);
+  if (typeof v === "string") {
+    return v
+      .split(/\s*;\s*|\s+and\s+/i)
+      .map((x) => x.trim())
+      .filter(Boolean);
   }
 
-  function walk(node, keyHint, depth) {
-    if (node == null || depth > 6) return;
-    if (typeof node !== "object") return;
+  if (Array.isArray(v)) return v;
 
-    if (visited.has(node)) return;
-    visited.add(node);
+  if (typeof v === "object") {
+    const arr =
+      (Array.isArray(v.ja) && v.ja) ||
+      (Array.isArray(v.en) && v.en) ||
+      (Array.isArray(v["rm:ja"]) && v["rm:ja"]) ||
+      (Array.isArray(v["rm:en"]) && v["rm:en"]) ||
+      null;
 
-    if (Array.isArray(node)) {
-      for (const el of node) walk(el, keyHint, depth + 1);
-      return;
-    }
+    if (arr) return arr;
 
-    for (const [k, v] of Object.entries(node)) {
-      const kk = String(k).toLowerCase();
-      const isAuthorKey = /author|creator|contributor|member/.test(kk) || /authors/.test(kk);
-
-      if (v == null) continue;
-
-      // Common structured patterns
-      if (isAuthorKey && typeof v === "object" && !Array.isArray(v)) {
-        // family/given patterns
-        const fam = firstNonEmpty(v.family_name, v.family, v.lastname, v.last_name, v.surname);
-        const giv = firstNonEmpty(v.given_name, v.given, v.firstname, v.first_name, v.forename);
-        if (fam && giv) pushName(`${giv} ${fam}`);
-
-        // full name variants
-        pushName(v.full_name);
-        pushName(v.display_name);
-        pushName(v.name);
-      }
-
-      if (isAuthorKey && typeof v === "string") {
-        // split by ; or and
-        v.split(/\s*;\s*|\s+and\s+/i).forEach(pushName);
-      } else if (isAuthorKey && Array.isArray(v)) {
-        for (const el of v) {
-          if (typeof el === "string") {
-            el.split(/\s*;\s*|\s+and\s+/i).forEach(pushName);
-          } else if (typeof el === "object" && el) {
-            const fam = firstNonEmpty(el.family_name, el.family, el.lastname, el.last_name, el.surname);
-            const giv = firstNonEmpty(el.given_name, el.given, el.firstname, el.first_name, el.forename);
-            if (fam && giv) pushName(`${giv} ${fam}`);
-            pushName(el.full_name);
-            pushName(el.display_name);
-            pushName(el.name);
-            // Some APIs: { en: "...", ja: "..." }
-            pushName(el.en);
-            pushName(el.ja);
-          }
-        }
-      }
-
-      // Always walk deeper; but bias by author keys to ensure we don't miss nested fields
-      walk(v, isAuthorKey ? kk : keyHint, depth + 1);
-    }
+    return [];
   }
 
-  walk(obj, "", 0);
+  return [];
+}
 
-  // Deduplicate while preserving order
-  const seen = new Set();
-  return out.filter((s) => {
-    const key = s.toLowerCase();
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
+function normalizeAuthorElem(a) {
+  if (a == null) return "";
+  if (typeof a === "string") return a;
+
+  if (typeof a === "object") {
+    // common patterns
+    const s = firstNonEmpty(a?.name, a?.full_name, a?.display_name);
+    if (s) return s;
+
+    // sometimes {name:{en:".."}} etc
+    const s2 = pickLangText(a?.name);
+    if (s2) return s2;
+
+    // given/family split
+    const fam = firstNonEmpty(a?.family_name, a?.family, a?.lastname, a?.last_name, a?.surname);
+    const giv = firstNonEmpty(a?.given_name, a?.given, a?.firstname, a?.first_name, a?.forename);
+    if (fam && giv) return `${giv} ${fam}`;
+
+    return "";
+  }
+
+  return "";
 }
 
 function toAuthors(item) {
-  // Special case: researchmap "authors" often comes as { en: [ {name: ...}, ... ] }
-  const authObj = item?.authors;
-  if (authObj && typeof authObj === "object" && !Array.isArray(authObj)) {
-    const pickArr = (k) => (Array.isArray(authObj?.[k]) ? authObj[k] : null);
-    const arr = pickArr("ja") || pickArr("en") || pickArr("rm:ja") || pickArr("rm:en");
-    if (arr) {
-      const names = arr
-        .map((a) => firstNonEmpty(a?.name, a?.full_name, a?.display_name, a))
-        .map(formatAuthorName)
-        .filter(Boolean);
-      const joined = joinAuthorsIEEE(names);
-      if (joined) return joined;
-    }
-  }
-
-  // 1) Try known top-level pools first
-  const pools = [
+  const sources = [
     item?.authors,
     item?.author,
     item?.creators,
@@ -392,35 +335,17 @@ function toAuthors(item) {
     item?.["rm:members"],
   ].filter((v) => v != null);
 
-  const names = [];
-
-  // Arrays / objects / strings
-  for (const p of pools) {
-    if (Array.isArray(p)) {
-      for (const el of p) names.push(el);
-    } else {
-      names.push(p);
-    }
+  const rawList = [];
+  for (const src of sources) {
+    const arr = extractAuthorArray(src);
+    for (const el of arr) rawList.push(el);
   }
 
-  // 2) Deep extraction fallback (covers schema variations)
-  const deep = extractAuthorsDeep(item);
-  for (const d of deep) names.push(d);
-
-  // 3) Normalize into formatted names
-  const formatted = names
-    .flatMap((a) => {
-      const s = firstNonEmpty(
-        a?.full_name,
-        a?.display_name,
-        a?.name,
-        a?.["rm:display_name"],
-        a?.family_name && a?.given_name
-          ? `${pickLangText(a.given_name)} ${pickLangText(a.family_name)}`
-          : "",
-        a?.family && a?.given ? `${pickLangText(a.given)} ${pickLangText(a.family)}` : "",
-        a
-      );
+  const formatted = rawList
+    .map(normalizeAuthorElem)
+    .flatMap((s) => {
+      if (!s) return [];
+      // string that contains multiple authors
       if (typeof s === "string" && /;|\s+and\s+/i.test(s)) {
         return s
           .split(/\s*;\s*|\s+and\s+/i)
@@ -432,7 +357,7 @@ function toAuthors(item) {
     .map(formatAuthorName)
     .filter(Boolean);
 
-  // remove dup after formatting
+  // de-dup
   const seen = new Set();
   const uniq = formatted.filter((s) => {
     const k = s.toLowerCase();
@@ -476,14 +401,12 @@ function isJournalPaper(item) {
 
   if (journalHint.includes("true") || journalHint.includes("1")) return true;
 
-  const j = toJournalName(item);
-  if (j) return true;
-
-  return false;
+  // last resort: has journal name
+  return !!toJournalName(item);
 }
 
 // =========================
-// HTML
+// HTML (no ul/ol)
 // =========================
 function buildJournalHtml({ updatedAt, items }) {
   // group by year
@@ -494,7 +417,7 @@ function buildJournalHtml({ updatedAt, items }) {
     byYear.get(y).push(it);
   }
 
-  // sort key (as much as possible)
+  // sort key
   function itemKey(it) {
     const yStr = toYear(it);
     const y = yStr === "----" ? 0 : Number(yStr);
@@ -524,11 +447,10 @@ function buildJournalHtml({ updatedAt, items }) {
 
     const title = (toTitle(it) || "").toLowerCase();
     const id = String(it?.["rm:id"] || it?.id || "");
-
     return { y, m, d, title, id };
   }
 
-  function cmpKeyAsc(a, b) {
+  function cmpAsc(a, b) {
     if (a.y !== b.y) return a.y - b.y;
     if (a.m !== b.m) return a.m - b.m;
     if (a.d !== b.d) return a.d - b.d;
@@ -536,25 +458,25 @@ function buildJournalHtml({ updatedAt, items }) {
     if (a.id !== b.id) return a.id < b.id ? -1 : 1;
     return 0;
   }
-  function cmpKeyDesc(a, b) {
-    return -cmpKeyAsc(a, b);
+  function cmpDesc(a, b) {
+    return -cmpAsc(a, b);
   }
 
-  // Serial numbers: oldest -> newest (global)
+  // serial: oldest -> newest
   const numMap = new Map();
   const flat = items
     .map((it) => {
       const key = String(it?.["rm:id"] || it?.id || `${toYear(it)}|${toTitle(it)}`);
       return { key, it, k: itemKey(it) };
     })
-    .sort((a, b) => cmpKeyAsc(a.k, b.k));
+    .sort((a, b) => cmpAsc(a.k, b.k));
 
   let serial = 1;
   for (const row of flat) {
     if (!numMap.has(row.key)) numMap.set(row.key, serial++);
   }
 
-  // Display: newest first (year desc, within year desc)
+  // display: newest first (year desc, within year desc)
   const years = [...byYear.keys()].sort((a, b) => {
     if (a === "----") return 1;
     if (b === "----") return -1;
@@ -563,15 +485,10 @@ function buildJournalHtml({ updatedAt, items }) {
 
   const blocks = years
     .map((y) => {
-      const list = byYear.get(y);
+      const list = byYear.get(y) || [];
+      const sorted = [...list].sort((a, b) => cmpDesc(itemKey(a), itemKey(b)));
 
-      const sorted = [...list].sort((a, b) => {
-        const ka = itemKey(a);
-        const kb = itemKey(b);
-        return cmpKeyDesc(ka, kb);
-      });
-
-      const lis = sorted
+      const rows = sorted
         .map((it) => {
           const key = String(it?.["rm:id"] || it?.id || `${toYear(it)}|${toTitle(it)}`);
           const n = numMap.get(key) ?? 0;
@@ -593,22 +510,21 @@ function buildJournalHtml({ updatedAt, items }) {
           const cite = citeParts.join(" ");
 
           return `
-          <li class="paper">
-            <div class="box">
-              <span class="num">${n}.</span>
-              <div class="cite">${cite}${url ? ` <a href="${escHtml(url)}" target="_blank">[link]</a>` : ""}</div>
-            </div>
-          </li>`;
+  <div class="paper">
+    <div class="box">
+      <span class="num">${n}.</span>
+      <div class="cite">${cite}${url ? ` <a href="${escHtml(url)}" target="_blank">[link]</a>` : ""}</div>
+    </div>
+  </div>`;
         })
         .join("\n");
 
-      // IMPORTANT: use UL to avoid double numbering from <ol>
       return `
 <section class="year-block">
   <h2>${escHtml(y)}</h2>
-  <ul class="paper-list">
-${lis}
-  </ul>
+  <div class="paper-list">
+${rows}
+  </div>
 </section>`;
     })
     .join("\n");
