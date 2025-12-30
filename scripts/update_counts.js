@@ -508,7 +508,7 @@ function buildJournalHtml({ updatedAt, items }) {
           const cite = citeParts.join(" ");
 
           // No <ul>/<ol>/<li>, and keep number + cite on same line.
-          return `<div class="pub-item"><span class="pub-num">${n}.</span> <span class="pub-cite">${cite}${url ? ` <a href="${escHtml(url)}" target="_blank">[link]</a>` : ""}</span></div>`;
+          return `<div class="pub-item"><span class="pub-num">${n}.</span> <span class="pub-cite">${cite}${url ? `&nbsp;<a href="${escHtml(url)}" target="_blank">[link]</a>` : ""}</span></div>`;
         })
         .join("\n");
 
