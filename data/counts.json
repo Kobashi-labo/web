@@ -1,7 +1,2459 @@
 {
   "permalink": "read0134502",
-  "updatedAt": "2025-12-30T06:25:40.749Z",
-  "papers_total": 312,
-  "journal": 94,
-  "reviews": 4
+  "updatedAt": "2025-12-30T06:53:24.183Z",
+  "journal_paper_count": 94,
+  "conference_paper_count": 212,
+  "journal_papers": [
+    {
+      "id": "51725474",
+      "no": 94,
+      "year": "2025",
+      "title": "Dynamic multi-scale deep learning with mixture of experts for differentiating iNPH and PSP using MRI.",
+      "authors": "F. Sawa; D. Fujita; K. Shimada; H. Aihara; T. Uehara; Y. Koide; R. Kawasaki; K. Ishii; S. Kobashi",
+      "venue": "International journal of computer assisted radiology and surgery"
+    },
+    {
+      "id": "51725473",
+      "no": 93,
+      "year": "2025",
+      "title": "Comparative safety of stent retriever designs for intracranial atherosclerotic disease related large vessel occlusion using agarose models.",
+      "authors": "Y. Imaoka; K. Mikami; A. Fuchita; S. Ikeda; N. Ren; S. Watanabe; S. Abe; T. Yoshie; S. Namitome; S. Kobashi; H. Imamura; K. Iihara",
+      "venue": "Scientific reports"
+    },
+    {
+      "id": "51262699",
+      "no": 92,
+      "year": "2025",
+      "title": "Community-Level Compact City Design, Health Care Provision, and Outcomes of Patients With Stroke.",
+      "authors": "Y. Imaoka; N. Ren; S. Ogata; S. Watanabe; T. Itatani; E. Kiyoshige; H. Imamura; K. Nishimura; S. Kobashi; Y. Kaku; K. Arimura; H. Fukuda; M. Ihara; T. Ohta; Y. Matsumaru; N. Sakai; T. Kitazono; S. Fujimoto; K. Ogasawara; K. Yoshimoto; A. Mukasa; K. Iihara",
+      "venue": "Journal of the American Heart Association"
+    },
+    {
+      "id": "49675992",
+      "no": 91,
+      "year": "2025",
+      "title": "Automated Impaction Angulation Measurement of Mandibular Third Molars for Winter’s Classification Using Deep Learning",
+      "authors": "M. A. Ali; D. Fujita; H. Kishimoto; Y. Makihara; K. Noguchi; S. Kobashi",
+      "venue": "Journal of Advanced Computational Intelligence and Intelligent Informatics"
+    },
+    {
+      "id": "49675991",
+      "no": 90,
+      "year": "2025",
+      "title": "Early prediction of bronchopulmonary dysplasia in preterm infants using chest X-rays through a comparative analysis of 13 CNN models across different post-birth days",
+      "authors": "M. A. Ali; R. Maeda; D. Fujita; N. Miyahara; F. Namba; S. Kobashi",
+      "venue": "Discover Computing"
+    },
+    {
+      "id": "48808985",
+      "no": 89,
+      "year": "2024",
+      "title": "Recurrent prediction within 1, 3, and 5 years after acute ischemic stroke based on machine learning using 10 years J-ASPECT study",
+      "authors": "S. Watanabe; N. Ren; S. Ogata; Y. Nakaoku; A. Hagihara; S. Kobashi; H. Hiramatsu; T. Ohta; T. Noguchi; H. Kataoka; M. Ihara; K. Nishimura; K. Iihara",
+      "venue": "Japanese Journal of Stroke"
+    },
+    {
+      "id": "48807438",
+      "no": 88,
+      "year": "2024",
+      "title": "CHA2DS2-VASc score and prior oral anticoagulant use on endovascular treatment for acute ischemic stroke.",
+      "authors": "Y. Imaoka; N. Ren; S. Ogata; H. Imamura; Y. Kaku; K. Arimura; S. Watanabe; E. Kiyoshige; K. Nishimura; S. Kobashi; M. Ihara; K. Kamiyama; M. Morimoto; T. Ohta; H. Endo; Y. Matsumaru; N. Sakai; T. Kitazono; S. Fujimoto; K. Ogasawara; K. Iihara",
+      "venue": "Annals of clinical and translational neurology"
+    },
+    {
+      "id": "48807437",
+      "no": 87,
+      "year": "2024",
+      "title": "Prediction of cardiovascular events after carotid endarterectomy using pathological images and clinical data.",
+      "authors": "S. Ishida; K. Morita; K. Hatakeyama; N. Ren; S. Watanabe; S. Kobashi; K. Iihara; T. Wakabayashi",
+      "venue": "International journal of computer assisted radiology and surgery"
+    },
+    {
+      "id": "47975563",
+      "no": 86,
+      "year": "2024",
+      "title": "Personalized heart rate management through data-driven dynamic exercise control.",
+      "authors": "T. Sato; T. Nishino; N. Kawaguchi; H. Mori; H. Uchida; K. Murotani; Y. Kimura; I. Mizukura; S. Kobashi; O. Arrieta",
+      "venue": "Scientific reports"
+    },
+    {
+      "id": "46915769",
+      "no": 85,
+      "year": "2024",
+      "title": "根管治療痕を考慮したパノラマX線画像における歯牙自動認識法",
+      "authors": "D. FUJITA; Y. ADACHI; S. KOBASHI",
+      "venue": "Journal of Japan Society for Fuzzy Theory and Intelligent Informatics"
+    },
+    {
+      "id": "46642196",
+      "no": 84,
+      "year": "2024",
+      "title": "Enhancing fracture diagnosis in pelvic X-rays by deep convolutional neural network with synthesized images from 3D-CT.",
+      "authors": "R. Rahman; N. Yagi; K. Hayashi; A. Maruo; H. Muratsu; S. Kobashi",
+      "venue": "Scientific reports"
+    },
+    {
+      "id": "46642195",
+      "no": 83,
+      "year": "2024",
+      "title": "Deep Learning-Based Computer-Aided Diagnosis of Osteochondritis Dissecans of the Humeral Capitellum Using Ultrasound Images.",
+      "authors": "K. Takatsuji; Y. Kida; K. Sasaki; D. Fujita; Y. Kobayashi; T. Sukenari; Y. Kotoura; M. Minami; S. Kobashi; K. Takahashi",
+      "venue": "The Journal of bone and joint surgery. American volume"
+    },
+    {
+      "id": "45826500",
+      "no": 82,
+      "year": "2024",
+      "title": "Deep learning-based osteochondritis dissecans detection in ultrasound images with humeral capitellum localization.",
+      "authors": "K. Sasaki; D. Fujita; K. Takatsuji; Y. Kotoura; M. Minami; Y. Kobayashi; T. Sukenari; Y. Kida; K. Takahashi; S. Kobashi",
+      "venue": "International journal of computer assisted radiology and surgery"
+    },
+    {
+      "id": "45826518",
+      "no": 81,
+      "year": "2023",
+      "title": "Development of TKA treatment strategy by factor extraction method for patient satisfaction",
+      "authors": "藤田大輔; 山本偉嗣; 諸岡孝俊; 井石琢也; 牛飼武; 吉矢晋一; 小橋昌司",
+      "venue": "Japanese Journal of Clinical Biomechanics (Web)"
+    },
+    {
+      "id": "44381507",
+      "no": 80,
+      "year": "2023",
+      "title": "Fragility Fracture of Pelvis Prediction from Computed Tomography Using Boring Survey and Convolutional Neural Network",
+      "authors": "R. Rahman; N. Yagi; K. Hayashi; A. Maruo; H. Muratsu; S. Kobashi",
+      "venue": "Journal of Advanced Computational Intelligence and Intelligent Informatics"
+    },
+    {
+      "id": "43682094",
+      "no": 79,
+      "year": "2023",
+      "title": "Teeth and prostheses detection in dental panoramic X-rays using CNN-based object detector and a priori knowledge-based algorithm",
+      "authors": "M. A. Ali; D. Fujita; S. Kobashi",
+      "venue": "Scientific Reports"
+    },
+    {
+      "id": "41670617",
+      "no": 78,
+      "year": "2023",
+      "title": "Detection of Shoulder Rotator Cuff Tears from X-Ray Image by Using Convolutional Neural Network",
+      "authors": "S. OKUDA; D. FUJITA; H. TANAKA; T. MUTO; H. INUI; S. KOBASHI",
+      "venue": "Journal of Japan Society for Fuzzy Theory and Intelligent Informatics"
+    },
+    {
+      "id": "37224694",
+      "no": 77,
+      "year": "2022",
+      "title": "A machine learning-based severity prediction tool for diabetic sensorimotor polyneuropathy using Michigan neuropathy screening instrumentations.",
+      "authors": "F. Haque; M. B. I. Reaz; M. E. H. Chowdhury; R. Malik; M. Alhatou; S. Kobashi; I. Ara; S. H. M. Ali; A. A. A. Bakar; G. Srivastava",
+      "venue": "CoRR"
+    },
+    {
+      "id": "36407695",
+      "no": 76,
+      "year": "2022",
+      "title": "Automatic Carpal Site Detection Method for Evaluation of Rheumatoid Arthritis Using Deep Learning",
+      "authors": "K. Nakatsu; R. Rahman; K. Morita; D. Fujita; S. Kobashi",
+      "venue": "Journal of Advanced Computational Intelligence and Intelligent Informatics"
+    },
+    {
+      "id": "36902835",
+      "no": 75,
+      "year": "2021",
+      "title": "Machine learning based player level estimation with 3-D kinematic analysis of throwing motion capture.",
+      "authors": "中津康平; 田中洋; 乾浩明; 信原克哉; 小橋昌司",
+      "venue": "臨床バイオメカニクス"
+    },
+    {
+      "id": "36407703",
+      "no": 74,
+      "year": "2021",
+      "title": "Human Activity Classification Based on Angle Variance Analysis Utilizing the Poincare Plot",
+      "authors": "S. Ahmed; T. A. Bhuiyan; T. Kishi; M. Nii; S. Kobashi",
+      "venue": "Applied Sciences"
+    },
+    {
+      "id": "36407700",
+      "no": 73,
+      "year": "2021",
+      "title": "Detecting pelvic fracture on 3D-CT using deep convolutional neural networks with multi-orientated slab images.",
+      "authors": "K. Ukai; R. Rahman; N. Yagi; K. Hayashi; A. Maruo; H. Muratsu; S. Kobashi",
+      "venue": "Scientific reports"
+    },
+    {
+      "id": "36407699",
+      "no": 72,
+      "year": "2021",
+      "title": "A nomogram-based diabetic sensorimotor polyneuropathy severity prediction using Michigan neuropathy screening instrumentations",
+      "authors": "F. Haque; M. B. I. Reaz; M. E. Chowdhury; S. H. M. Ali; A. A. A. Bakar; T. Rahman; S. Kobashi; C. A. Dhawale; M. A. S. Bhuiyan",
+      "venue": "Computers in Biology and Medicine"
+    },
+    {
+      "id": "36407698",
+      "no": 71,
+      "year": "2021",
+      "title": "Prediction of Ureter ESWL Outcome by Machine Learning and Model Interpretation Approach Using SHAP",
+      "authors": "D. FUJITA; S. HARUMOTO; R. DEGUCHI; S. YAMASHITA; S. KOBASHI",
+      "venue": "International Journal of Biomedical Soft Computing and Human Sciences"
+    },
+    {
+      "id": "41973784",
+      "no": 70,
+      "year": "2020",
+      "title": "Automatic segmentation of the humerus region in 3-D shoulder CT images using U-Net",
+      "authors": "F. P. MAHDI; H. TANAKA; K. NOBUHARA; S. KOBASHI",
+      "venue": "International Journal of Biomedical Soft Computing and Human Sciences: the official journal of the Biomedical Fuzzy Systems Association"
+    },
+    {
+      "id": "41134378",
+      "no": 69,
+      "year": "2020",
+      "title": "Surgical Phase Recognition with Wearable Video Camera for Computer-aided Orthopaedic Surgery-AI Navigation System",
+      "authors": "S. Nishio; B. Hossain; M. Nii; N. Yagi; T. Hiranaka; S. Kobashi",
+      "venue": "International Journal of Affective Engineering"
+    },
+    {
+      "id": "31448227",
+      "no": 68,
+      "year": "2020",
+      "title": "Optimization technique combined with deep learning method for teeth recognition in dental panoramic radiographs",
+      "authors": "F. P. Mahdi; K. Motoki; S. Kobashi",
+      "venue": "Scientific Reports"
+    },
+    {
+      "id": "31448226",
+      "no": 67,
+      "year": "2020",
+      "title": "Stride-Phase Kinematic Parameters That Predict Peak Elbow Varus Torque",
+      "authors": "H. Tanaka; T. Hayashi; H. Inui; T. Muto; K. Tsuchiyama; H. Ninomiya; Y. Nakamura; S. Kobashi; K. Nobuhara",
+      "venue": "Orthopaedic Journal of Sports Medicine"
+    },
+    {
+      "id": "30621701",
+      "no": 66,
+      "year": "2020",
+      "title": "Construction of 3-D humeral head statistical shape model in CT images",
+      "authors": "F. P. Mahdi; T. Muto; H. Tanaka; H. Inui; K. Nobuhara; S. Kobashi",
+      "venue": "Applied Sciences (Switzerland)"
+    },
+    {
+      "id": "30621671",
+      "no": 65,
+      "year": "2020",
+      "title": "Spatiotemporal statistical shape model for temporal shape change analysis of adult brain",
+      "authors": "B. Alam; M. Nii; A. Shimizu; S. Kobashi",
+      "venue": "Current Medical Imaging Reviews"
+    },
+    {
+      "id": "28423375",
+      "no": 64,
+      "year": "2020",
+      "title": "Bone tunnel placement determination method for 3-D images and its evaluation for anterior cruciate ligament reconstruction",
+      "authors": "K. Morita; M. Nii; M. S. Koh; K. Kashiwa; H. Nakayama; S. Kambara; S. Yoshiya; S. Kobashi",
+      "venue": "Current Medical Imaging Reviews"
+    },
+    {
+      "id": "50056891",
+      "no": 63,
+      "year": "2019",
+      "title": "MRIによる腱板断裂の画像診断 MRI画像を用いた3次元形状腱板断裂モデルの構築",
+      "authors": "T. Muto; H. Inui; H. Ninomiya; H. Tanaka; K. Ishiro; K. Morita; S. Kobashi; K. Nobuhara",
+      "venue": "Clinical Orthopaedic Surgery"
+    },
+    {
+      "id": "17538501",
+      "no": 62,
+      "year": "2019",
+      "title": "Intraoperative kinematic analysis of posterior stabilized total knee arthroplasty with asymmetric helical post-cam design",
+      "authors": "T. Morooka; M. Okuno; D. Seino; T. Iseki; S. Fukunishi; S. Kobashi; S. Yoshiya",
+      "venue": "European Journal of Orthopaedic Surgery and Traumatology"
+    },
+    {
+      "id": "16193998",
+      "no": 61,
+      "year": "2019",
+      "title": "Facial skin blood perfusion change based liveness detection using video images",
+      "authors": "K. Ukai; R. Rahman; S. Kobashi",
+      "venue": "IEEJ Transactions on Sensors and Micromachines"
+    },
+    {
+      "id": "16193996",
+      "no": 60,
+      "year": "2019",
+      "title": "Surgical outcome prediction in total knee arthroplasty using machine learning",
+      "authors": "B. Hossain; T. Morooka; M. Okuno; M. Nii; S. Yoshiya; S. Kobashi",
+      "venue": "Intelligent Automation and Soft Computing"
+    },
+    {
+      "id": "16193994",
+      "no": 59,
+      "year": "2019",
+      "title": "医療と情報 第1部 ヘルスケア・インフォマティクスの先端技術 2)医用画像診断の未来",
+      "authors": "盛田健人; 小橋昌司",
+      "venue": "情報処理"
+    },
+    {
+      "id": "16193991",
+      "no": 58,
+      "year": "2019",
+      "title": "Facial skin blood perfusion change based liveness detection using video images",
+      "authors": "K. Ukai; R. Rahman; S. Kobashi",
+      "venue": "Electronics and Communications in Japan"
+    },
+    {
+      "id": "8152956",
+      "no": 57,
+      "year": "2018",
+      "title": "Advancements of Image Processing and Vision in Healthcare.",
+      "authors": "M. A. R. Ahad; S. Kobashi; J. M. R. S. Tavares",
+      "venue": "Journal of healthcare engineering"
+    },
+    {
+      "id": "8152385",
+      "no": 56,
+      "year": "2018",
+      "title": "Real-time Surgical Tools Recognition in Total Knee Arthroplasty Using Deep Neural Networks.",
+      "authors": "M. Hossain; S. Nishio; T. Hiranaka; S. Kobashi",
+      "venue": "CoRR"
+    },
+    {
+      "id": "8152384",
+      "no": 55,
+      "year": "2018",
+      "title": "Relationship Between Cerebral Aneurysm Development and Cerebral Artery Shape",
+      "authors": "M. Yasugi; B. Hossain; M. Nii; S. Kobashi",
+      "venue": "JOURNAL OF ADVANCED COMPUTATIONAL INTELLIGENCE AND INTELLIGENT INFORMATICS"
+    },
+    {
+      "id": "8152383",
+      "no": 54,
+      "year": "2018",
+      "title": "Implanted Knee Joint Kinematics Recognition in Digital Radiograph Images Using Particle Filter.",
+      "authors": "K. Morita; M. Nii; N. Ikoma; T. Morooka; S. Yoshiya; S. Kobashi",
+      "venue": "J. Adv. Comput. Intell. Intell. Informatics"
+    },
+    {
+      "id": "46756643",
+      "no": 53,
+      "year": "2018",
+      "title": "内反変形膝に対するDouble Level Osteotomyの術後回旋アライメントの変化 3次元CTを用いた解析",
+      "authors": "神. 俊一郎; 中. 寛; 小. 昌司; 吉. 晋一",
+      "venue": "臨床バイオメカニクス"
+    },
+    {
+      "id": "46383279",
+      "no": 52,
+      "year": "2018",
+      "title": "SVRを用いた手関節X線画像におけるリウマチmTSスコアの推定",
+      "authors": "盛. 健人; 田. 徳起; 新. 学; 小. 昌司",
+      "venue": "MEDICAL IMAGING TECHNOLOGY"
+    },
+    {
+      "id": "28384960",
+      "no": 51,
+      "year": "2018",
+      "title": "Special issue on the power of fuzzy-dedicated to the father of fuzzy logic",
+      "authors": "Y. Hata; S. Kobashi; H. Nakajima",
+      "venue": "Journal of Advanced Computational Intelligence and Intelligent Informatics"
+    },
+    {
+      "id": "28384957",
+      "no": 50,
+      "year": "2018",
+      "title": "Editorial: the Power of Fuzzy - Dedicated to the Father of Fuzzy Logic.",
+      "authors": "Y. Hata; S. Kobashi; H. Nakajima",
+      "venue": "JACIII"
+    },
+    {
+      "id": "8152955",
+      "no": 49,
+      "year": "2017",
+      "title": "Reconstruction of 3-D torn rotator cuff model in open MRI for computer-aided diagnosis.",
+      "authors": "井城一輝; 盛田健人; 新居学; 田中洋; 小橋昌司; 信原克哉",
+      "venue": "臨床バイオメカニクス"
+    },
+    {
+      "id": "28031589",
+      "no": 48,
+      "year": "2017",
+      "title": "On Map-Based Analysis of Item Relationships in Specific Health Examination Data for Subjects Possibly Having Diabetes",
+      "authors": "N. Kamiura; S. Kobashi; M. Nii; T. Yumoto; I. Yamamoto",
+      "venue": "IEICE TRANSACTIONS ON INFORMATION AND SYSTEMS"
+    },
+    {
+      "id": "26655968",
+      "no": 47,
+      "year": "2017",
+      "title": "Ovarian Follicle Classification without Direct Deformation Information from Ultrasonic Images",
+      "authors": "N. Manabu; N. Manabu; K. Riku; M. Masakazu; K. Syoji; K. Naotake; H. Yutaka; I. Seturo; I. Tomomoto; M. Hidehiko",
+      "venue": "International Journal of Biomedical Soft Computing and Human Sciences"
+    },
+    {
+      "id": "8239487",
+      "no": 46,
+      "year": "2016",
+      "title": "Pulmonary artery domain region extraction from MDCT image",
+      "authors": "A. Yukawa; A. Kono; T. Nishii; N. Kamiura; S. Kobashi; Y. Hata",
+      "venue": "INTERNATIONAL JOURNAL OF APPLIED ELECTROMAGNETICS AND MECHANICS"
+    },
+    {
+      "id": "8239481",
+      "no": 45,
+      "year": "2016",
+      "title": "Special issue on soft computing in medical informatics",
+      "authors": "K. S.; A. M.A.R.; K. N.; T. Y.; Y. N.",
+      "venue": "International Journal of Innovative Computing, Information and Control"
+    },
+    {
+      "id": "8152406",
+      "no": 44,
+      "year": "2016",
+      "title": "Brain age estimation using multiple regression analysis in brain mr images",
+      "authors": "A. S.B.; N. R.; K. S.",
+      "venue": "International Journal of Innovative Computing, Information and Control"
+    },
+    {
+      "id": "8152393",
+      "no": 43,
+      "year": "2016",
+      "title": "Post-operative implanted knee kinematics prediction in total knee arthroscopy using clinical big data",
+      "authors": "H. B.M.; N. M.; M. T.; O. M.; Y. S.; K. S.",
+      "venue": "Lecture Notes in Computer Science (including subseries Lecture Notes in Artificial Intelligence and Lecture Notes in Bioinformatics)"
+    },
+    {
+      "id": "8152390",
+      "no": 42,
+      "year": "2016",
+      "title": "Soft Computing in Medical Image Processing",
+      "authors": "K. S.; N. L.G.; U. J.K.",
+      "venue": "Computational and Mathematical Methods in Medicine"
+    },
+    {
+      "id": "28115805",
+      "no": 41,
+      "year": "2016",
+      "title": "Continuous-wavelet-transform-based visualization for seminiferous tubule using broadband ultrasonic imaging",
+      "authors": "S. Furukawa; S. Kobashi; N. Kamiura; Y. Hata; S. Imawaki; T. Ishikawa",
+      "venue": "INTERNATIONAL JOURNAL OF APPLIED ELECTROMAGNETICS AND MECHANICS"
+    },
+    {
+      "id": "8152403",
+      "no": 40,
+      "year": "2015",
+      "title": "Gap effect abnormalities during a visually guided Pro-Saccade task in children with attention deficit hyperactivity disorder",
+      "authors": "M. Y.; W. M.; T. M.; M. I.; K. S.; T. M.; K. Y.; K. Y.K.",
+      "venue": "PLoS ONE"
+    },
+    {
+      "id": "37402478",
+      "no": 39,
+      "year": "2015",
+      "title": "On Personal Identication for Ophthalmological Patients Based on Clinical Data Measured by Optical Coherence Tomography",
+      "authors": "T. Ryota; K. Naotake; I. Teijiro; K. Syoji; T. Hitoshi; Y. Tomofusa",
+      "venue": "Transactions of the Institute of Systems, Control and Information Engineers"
+    },
+    {
+      "id": "8152404",
+      "no": 38,
+      "year": "2014",
+      "title": "From cartoon to real time MRI: In vivo monitoring of phagocyte migration in mouse brain",
+      "authors": "M. Y.; C. T.; F. T.; K. S.; O. K.; Y. S.; T. Y.; K. Y.; H. Y.; Y. Y.",
+      "venue": "Scientific Reports"
+    },
+    {
+      "id": "17575362",
+      "no": 37,
+      "year": "2014",
+      "title": "Ultrasonic muscular thickness measurement in temperature variation",
+      "authors": "H. H.; I. S.; K. K.; K. S.; H. Y.",
+      "venue": "Advances in Intelligent Systems and Computing"
+    },
+    {
+      "id": "17538511",
+      "no": 36,
+      "year": "2014",
+      "title": "An energy visualization by camera monitoring",
+      "authors": "F. T.; E. T.; T. K.; K. S.; H. Y.",
+      "venue": "Advances in Intelligent Systems and Computing"
+    },
+    {
+      "id": "17538510",
+      "no": 35,
+      "year": "2014",
+      "title": "Foot age estimation system from walking dynamics based on fuzzy logic",
+      "authors": "T. T.; S. Y.; K. S.; K. K.; H. Y.",
+      "venue": "Journal of Advanced Computational Intelligence and Intelligent Informatics"
+    },
+    {
+      "id": "17538509",
+      "no": 34,
+      "year": "2014",
+      "title": "Regional analysis and predictive modeling for asthmatic attacks in Himeji City",
+      "authors": "K. S.; K. Y.; K. K.; K. S.; H. Y.",
+      "venue": "Advances in Intelligent Systems and Computing"
+    },
+    {
+      "id": "7368492",
+      "no": 33,
+      "year": "2013",
+      "title": "Automated pelvic anatomical coordinate system is reproducible for determination of anterior pelvic plane",
+      "authors": "H. S.; N. T.; F. T.; K. N.; S. N.; K. S.; K. M.",
+      "venue": "Computer Methods in Biomechanics and Biomedical Engineering"
+    },
+    {
+      "id": "7368491",
+      "no": 32,
+      "year": "2013",
+      "title": "Noninvasive cellular quantity measurement in Bone Marrow Stromal Cells/ Beta-tricalcium phosphate.",
+      "authors": "N. Yagi; T. Ishikawa; K. Kuramoto; S. Kobashi; Y. Hata",
+      "venue": "Annual International Conference of the IEEE Engineering in Medicine and Biology Society. IEEE Engineering in Medicine and Biology Society. Annual International Conference"
+    },
+    {
+      "id": "7368490",
+      "no": 31,
+      "year": "2013",
+      "title": "Fuzzy connectedness image segmentation for newborn brain extraction in MR images.",
+      "authors": "S. Kobashi; J. K. Udupa",
+      "venue": "Annual International Conference of the IEEE Engineering in Medicine and Biology Society. IEEE Engineering in Medicine and Biology Society. Annual International Conference"
+    },
+    {
+      "id": "17575378",
+      "no": 30,
+      "year": "2013",
+      "title": "Noninvasive Diagnosis of Blood Flow for Transcranial Doppler Ultrasonography",
+      "authors": "Y. N.; N. M.; K. K.; K. S.; H. Y.",
+      "venue": "International Journal of Intelligent Computing in Medical Sciences and Image Processing"
+    },
+    {
+      "id": "17575377",
+      "no": 29,
+      "year": "2013",
+      "title": "A Fuzzy Moving Object Estimation Using Infrared TOF Camera",
+      "authors": "T. T.; K. K.; K. S.; H. Y.",
+      "venue": "International Journal of Intelligent Computing in Medical Sciences and Image Processing"
+    },
+    {
+      "id": "17575376",
+      "no": 28,
+      "year": "2013",
+      "title": "Newborn Brain MR Image Segmentation Using Deformable Surface Model Based on Fuzzy Knowledge Models",
+      "authors": "K. S.; K. K.; W. Y.; A. K.; I. R.; I. T.; H. S.; H. Y.",
+      "venue": "International Journal of Intelligent Computing in Medical Sciences and Image Processing"
+    },
+    {
+      "id": "17575367",
+      "no": 27,
+      "year": "2013",
+      "title": "On optimal operator for combining left and right sole pressure data in biometrics security",
+      "authors": "T. T.; K. K.; K. S.; H. Y.",
+      "venue": "Advances in Fuzzy Systems"
+    },
+    {
+      "id": "7368478",
+      "no": 26,
+      "year": "2012",
+      "title": "A neonatal brain MR image template of 1 week newborn",
+      "authors": "H. A.; K. S.; K. K.; W. Y.; A. K.; I. R.; I. T.; H. S.; H. Y.",
+      "venue": "International Journal of Computer Assisted Radiology and Surgery"
+    },
+    {
+      "id": "7368486",
+      "no": 25,
+      "year": "2011",
+      "title": "Cerebral contour extraction with particle method in neonatal MR images",
+      "authors": "K. S.; Y. D.; W. Y.; A. K.; I. R.; K. K.; H. S.; H. Y.",
+      "venue": "Journal of Advanced Computational Intelligence and Intelligent Informatics"
+    },
+    {
+      "id": "28331730",
+      "no": 24,
+      "year": "2011",
+      "title": "Analysis of Weight-Bearing Kinematics of Posterior-Stabilized Total Knee Arthroplasty With Novel Helical Post-Cam Design",
+      "authors": "Y. Tsumori; S. Yoshiya; M. Kurosaka; S. Kobashi; N. Shibanuma; M. Yamaguchi",
+      "venue": "JOURNAL OF ARTHROPLASTY"
+    },
+    {
+      "id": "17575396",
+      "no": 23,
+      "year": "2011",
+      "title": "Special issue on computer automation",
+      "authors": "S. Kobashi; N. Takagi",
+      "venue": "International Journal of Intelligent Computing in Medical Sciences and Image Processing"
+    },
+    {
+      "id": "16194038",
+      "no": 22,
+      "year": "2011",
+      "title": "Automated 3-D kinematis analysis of TKA knee with 2-D digital radiograph video using Monte Carlo method",
+      "authors": "中. 祐介; 小. 昌司; 今. 史明",
+      "venue": "Japanese journal of clinical biomechanics"
+    },
+    {
+      "id": "16194022",
+      "no": 21,
+      "year": "2011",
+      "title": "Fuzzy-logic is precise-Its application to biometric system",
+      "authors": "T. J.T.; K. K.; K. S.; H. Y.",
+      "venue": "Scientia Iranica"
+    },
+    {
+      "id": "16194020",
+      "no": 20,
+      "year": "2011",
+      "title": "A fuzzy biosignal detection algorithm and its application to health monitoring",
+      "authors": "H. Y.; K. S.; K. K.; N. H.",
+      "venue": "Applied and Computational Mathematics"
+    },
+    {
+      "id": "7368493",
+      "no": 19,
+      "year": "2010",
+      "title": "Writing errors as a result of frontal dysfunction in Japanese patients with amyotrophic lateral sclerosis.",
+      "authors": "S. Tsuji-Akimoto; S. Hamada; I. Yabe; I. Tamura; M. Otsuki; S. Kobashi; H. Sasaki",
+      "venue": "Journal of neurology"
+    },
+    {
+      "id": "47792685",
+      "no": 18,
+      "year": "2010",
+      "title": "Fuzzy visual hull algorithm for three-dimensional shape reconstruction of TKA implants from X-ray cone-beam images",
+      "authors": "S. Kobashi; N. Shibanuma; Y. Hata",
+      "venue": "Journal of Advanced Computational Intelligence and Intelligent Informatics"
+    },
+    {
+      "id": "47792498",
+      "no": 17,
+      "year": "2010",
+      "title": "An ultrasonic and air pressure sensing system for detection of behavior before getting out of bed aided by fuzzy theory",
+      "authors": "H. Yamaguchi; H. Nakajima; K. Taniguchi; S. Kobashi; Y. Hata",
+      "venue": "IEICE Transactions on Information and Systems"
+    },
+    {
+      "id": "47792475",
+      "no": 16,
+      "year": "2010",
+      "title": "Lung lobar segmentation using tubular tissue density from multidetector-row CT images",
+      "authors": "S. Kobashi; Y. Hata",
+      "venue": "International Journal of Innovative Computing, Information and Control"
+    },
+    {
+      "id": "17575360",
+      "no": 15,
+      "year": "2010",
+      "title": "Automated 3-D Kinematics Analysis of Implanted Knee with 2-D Digital Radiography Video",
+      "authors": "K. Syoji; N. Yusuke; Y. Shinichi",
+      "venue": "Medical Imaging Technology"
+    },
+    {
+      "id": "16194039",
+      "no": 14,
+      "year": "2010",
+      "title": "World Automation Congress (WAC) 2010開催報告",
+      "authors": "小. 昌司; 畑. 豊",
+      "venue": "知能と情報 : 日本知能情報ファジィ学会誌 : journal of Japan Society for Fuzzy Theory and Intelligent Informatics"
+    },
+    {
+      "id": "17538506",
+      "no": 13,
+      "year": "2009",
+      "title": "Fuzzy segmentation of endorrhachis in magnetic resonance images and its fuzzy maximum intensity projection",
+      "authors": "Y. Hata; S. Kobashi",
+      "venue": "APPLIED SOFT COMPUTING"
+    },
+    {
+      "id": "17538504",
+      "no": 12,
+      "year": "2009",
+      "title": "Human Health Care System of Systems",
+      "authors": "Y. Hata; S. Kobashi; H. Nakajima",
+      "venue": "IEEE SYSTEMS JOURNAL"
+    },
+    {
+      "id": "7368494",
+      "no": 11,
+      "year": "2006",
+      "title": "Interactive segmentation of the cerebral lobes with fuzzy inference in 3T MR images.",
+      "authors": "S. Kobashi; Y. Fujiki; M. Matsui; N. Inoue; K. Kondo; Y. Hata; T. Sawada",
+      "venue": "IEEE transactions on systems, man, and cybernetics. Part B, Cybernetics : a publication of the IEEE Systems, Man, and Cybernetics Society"
+    },
+    {
+      "id": "26656216",
+      "no": 10,
+      "year": "2006",
+      "title": "Computer-aided diagnosis of intracranial aneurysms in MRA images with case-based reasoning",
+      "authors": "S. Kobashi; K. Kondo; Y. Hata",
+      "venue": "IEICE Transactions on Fundamentals of Electronics, Communications and Computer Sciences"
+    },
+    {
+      "id": "17575392",
+      "no": 9,
+      "year": "2006",
+      "title": "Computer-aided diagnosis of intracranial aneurysms in MRA images with case-based reasoning",
+      "authors": "S. Kobashi; K. Kondo; Y. Hata",
+      "venue": "IEICE TRANSACTIONS ON INFORMATION AND SYSTEMS"
+    },
+    {
+      "id": "17575391",
+      "no": 8,
+      "year": "2006",
+      "title": "Automated quantification of 3D knee kinematics using 2D X-ray fluoroscopy video sequence images",
+      "authors": "S. Kobashi; T. Tomosada; N. Shibanuma; M. Yamaguchi; H. Muratsu; K. Kondo; S. Yoshiya; M. Kurosaka; Y. Hata",
+      "venue": "International Journal of Computer Assisted Radiology and Surgery"
+    },
+    {
+      "id": "17575390",
+      "no": 7,
+      "year": "2006",
+      "title": "Fully automated measurement of 3D knee kinematics after anterior cruciate ligament reconstruction using multidetector-row CT and X- Ray fluoroscopic images",
+      "authors": "D. Kubo; S. Kobashi; A. Okayama; N. Shibanuma; M. Yagi; K. Kondo; S. Yoshiya; Y. Hata",
+      "venue": "International Journal of Computer Assisted Radiology and Surgery"
+    },
+    {
+      "id": "17575388",
+      "no": 6,
+      "year": "2006",
+      "title": "Fully automated segmentation of cerebral ventricles from 3-D SPGR MR images using fuzzy representative line",
+      "authors": "S. Kobashi; K. Kondo; Y. Hata",
+      "venue": "SOFT COMPUTING"
+    },
+    {
+      "id": "7368495",
+      "no": 5,
+      "year": "2005",
+      "title": "Transcranial ultrasonography system for visualizing skull and brain surface aided by fuzzy expert system.",
+      "authors": "Y. Hata; S. Kobashi; K. Kondo; Y. T. Kitamura; T. Yanagida",
+      "venue": "IEEE transactions on systems, man, and cybernetics. Part B, Cybernetics : a publication of the IEEE Systems, Man, and Cybernetics Society"
+    },
+    {
+      "id": "25264542",
+      "no": 4,
+      "year": "2005",
+      "title": "Fuzzy image matching for pose recognition of occulted knee implants using fluoroscopy images",
+      "authors": "K. S; K. T; S. N; Y. M; M. H; K. K; Y. S; H. Y; K. M",
+      "venue": "J Advanced Computational Intelligence and Intelligent Informatics"
+    },
+    {
+      "id": "16194026",
+      "no": 3,
+      "year": "2004",
+      "title": "Target image enhancement using representative line in MR cholangiography images",
+      "authors": "S. Kobashi; K. Kondo; Y. Hata",
+      "venue": "INTERNATIONAL JOURNAL OF IMAGING SYSTEMS AND TECHNOLOGY"
+    },
+    {
+      "id": "27129169",
+      "no": 2,
+      "year": "2000",
+      "title": "FIG application for 3D medical imagings",
+      "authors": "Y. Hata; S. Kobashi; Y. Kitamura; T. Yanagida",
+      "venue": "Medical Imaging Technology"
+    },
+    {
+      "id": "27129168",
+      "no": 1,
+      "year": "2000",
+      "title": "A fuzzy rule-based region growing method for segmentating 3-D dynamic MRI.",
+      "authors": "S. Kobashi; Y. Hata; Y. T. Kitamura; T. Yanagida",
+      "venue": "Biomedical Soft Computing and Human Sciences"
+    }
+  ],
+  "conference_papers": [
+    {
+      "id": "51952562",
+      "no": 212,
+      "year": "2025",
+      "title": "Computer-Aided Surgery System Using Three-Dimensional Tomographic Images for Endoscopic Retrograde Cholangiopancreatography (ERCP): Preliminary Study",
+      "authors": "Y. Adachi; Y. Kawase; M. Gonda; A. Sakai; Y. Kodama; S. Kobashi",
+      "venue": "Proc. of The 26th International Symposium on Advanced Intelligent Systems"
+    },
+    {
+      "id": "51952558",
+      "no": 211,
+      "year": "2025",
+      "title": "Predicting Therapeutic Intervention in Asymptomatic Carotid Plaque: A Comparative Study of Multi-modal MRI Radiomics and Deep Learning",
+      "authors": "S. Yokoyama; T. Mizobe; H. Aihara; T. Hayashi; T. Urata; S. Kobashi",
+      "venue": "Proc. of The 26th International Symposium on Advanced Intelligent Systems"
+    },
+    {
+      "id": "51952555",
+      "no": 210,
+      "year": "2025",
+      "title": "Stool-Prioritized Segmentation via Anatomically Guided Multi-Task U-Net Segmentation in Abdominal X-ray Images",
+      "authors": "N. Takashima; T. Sanuki; Y. Kinoshita; Center; S. Kobashi",
+      "venue": "Proc. of The 26th International Symposium on Advanced Intelligent Systems"
+    },
+    {
+      "id": "51725471",
+      "no": 209,
+      "year": "2025",
+      "title": "Invisible Yet Detected: PelFANet with Attention-Guided Anatomical Fusion for Pelvic Fracture Diagnosis.",
+      "authors": "S. T. Bhuiyan; R. Rahman; S. Wasi; N. Yagi; S. Kobashi; A. Islam; S. B. Alam",
+      "venue": "CoRR"
+    },
+    {
+      "id": "51287367",
+      "no": 208,
+      "year": "2025",
+      "title": "MAP-CARE: PREDICTING FUTURE SURGICAL INTERVENTION IN ASYMPTOMATIC CAROTID STENOSIS VIA MULTI-MODAL RADIOMICS",
+      "authors": "",
+      "venue": "International Conference on Machine Learning and Cybernetics"
+    },
+    {
+      "id": "51287363",
+      "no": 207,
+      "year": "2025",
+      "title": "IMPROVING STOOL SEGMENTATION IN ABDOMINAL X-RAYS USING GAS MASK GUIDANCE WITH U-NET",
+      "authors": "N. TAKASHIMA; T. SANUKI; Y. KINOSHITA; S. KOBASHI",
+      "venue": "the International Conference on Machine Learning and Cybernetics"
+    },
+    {
+      "id": "51287361",
+      "no": 206,
+      "year": "2025",
+      "title": "Perturbation-Based Deep Learning Reveals Dynamic Spatiotemporal Shifts in Pediatric Brain Development from CT Imaging",
+      "authors": "F. Sawa; N. Takashima; S. Ando; N. Yagi; K. Ando; R. Ishikawa; S. Kobashi",
+      "venue": "International Conference on Machine Learning and Cybernetics"
+    },
+    {
+      "id": "51287217",
+      "no": 205,
+      "year": "2025",
+      "title": "Image-to-Biomarker Prediction of CSF Amyloid-β via Multimodal Deep Learning on MRI and Brain Perfusion SPECT",
+      "authors": "",
+      "venue": "29th International Conference on Knowledge-Based and Intelligent Information & Engineering Systems"
+    },
+    {
+      "id": "51287215",
+      "no": 204,
+      "year": "2025",
+      "title": "Self-Extubation Early Warning via Autoencoder Anomaly Detection and a Novel Simulator for Quantitative Evaluation",
+      "authors": "Y. Sakaguchi; T. Fujita; S. Kobashi",
+      "venue": "29th International Conference on Knowledge-Based and Intelligent Information & Engineering Systems"
+    },
+    {
+      "id": "48992778",
+      "no": 203,
+      "year": "2024",
+      "title": "Prediction of Cardiovascular Disease Development for CEA Patients Using Multimodal Learning",
+      "authors": "S. Ishida; K. Morita; K. Hatakeyama; N. Ren; S. Watanabe; S. Kobashi; K. Iihara; T. Wakabayashi",
+      "venue": "2024 Joint 13th International Conference on Soft Computing and Intelligent Systems and 25th International Symposium on Advanced Intelligent Systems, SCIS and ISIS 2024"
+    },
+    {
+      "id": "48992777",
+      "no": 202,
+      "year": "2024",
+      "title": "Automated Depth-Level Classification of Impacted Mandibular Third Molars Using Deep Learning on Panoramic X-Rays",
+      "authors": "M. A. Ali; D. Fujita; Y. Makihara; K. Noguchi; S. Kobashi",
+      "venue": "2024 Joint 13th International Conference on Soft Computing and Intelligent Systems and 25th International Symposium on Advanced Intelligent Systems, SCIS and ISIS 2024"
+    },
+    {
+      "id": "48992776",
+      "no": 201,
+      "year": "2024",
+      "title": "Differentiating Idiopathic Normal Pressure Hydrocephalus Using Multi-Head Attention CNN with Diversify-Loss in Brain MRI",
+      "authors": "F. Sawa; D. Fujita; K. Shimada; K. Ishii; S. Kobashi",
+      "venue": "2024 Joint 13th International Conference on Soft Computing and Intelligent Systems and 25th International Symposium on Advanced Intelligent Systems, SCIS and ISIS 2024"
+    },
+    {
+      "id": "48992775",
+      "no": 200,
+      "year": "2024",
+      "title": "ESWL Outcome Prediction with SMOTE and Stratified Sampling",
+      "authors": "S. Kobayashi; D. Fujita; H. Shibutani; S. Gohara; S. Kobashi",
+      "venue": "2024 Joint 13th International Conference on Soft Computing and Intelligent Systems and 25th International Symposium on Advanced Intelligent Systems, SCIS and ISIS 2024"
+    },
+    {
+      "id": "48992774",
+      "no": 199,
+      "year": "2024",
+      "title": "Automated Detection and Classification of Mandibular Third Molar Impactions in Panoramic X-Rays",
+      "authors": "M. A. Ali; D. Fujita; S. Kobashi",
+      "venue": "2024 Joint 13th International Conference on Soft Computing and Intelligent Systems and 25th International Symposium on Advanced Intelligent Systems, SCIS and ISIS 2024"
+    },
+    {
+      "id": "47975854",
+      "no": 198,
+      "year": "2024",
+      "title": "Advanced YOLOv7-Based Detection and Enumeration of Teeth and Restorations in Panoramic X-rays",
+      "authors": "M. A. Ali; D. Fujita; S. Kobashi",
+      "venue": "Proceedings ofInternational Conference on Machine Learning and Cybernetics"
+    },
+    {
+      "id": "47975695",
+      "no": 197,
+      "year": "2024",
+      "title": "Novel Cine MRI Feature Extraction Method for Assessing Cesarean Scar Syndrome",
+      "authors": "N. A. Roza; R. Rahman; D. Fujita; S. Misaki; A. Seko; S. Tsuji; Y. Watanabe; S. Kobashi",
+      "venue": "World Automation Congress"
+    },
+    {
+      "id": "47975685",
+      "no": 196,
+      "year": "2024",
+      "title": "Hierarchical U-Net and Image Patch Technique for Intracerebral Hematoma Segmentation in Thick-Slice CT Images",
+      "authors": "A. Nagasawa; D. Fujita; S. Watanabe; N. Ren; K. Iihara; S. Kobashi",
+      "venue": "World Automation Congress"
+    },
+    {
+      "id": "47975671",
+      "no": 195,
+      "year": "2024",
+      "title": "Effects of Brain Injury on Brain Age Estimation in Pediatric Brain CT images,\" World Automation Congress, in press.",
+      "authors": "N. Takashima; S. Ando; D. Fujita; M. Nii; K. Ando; R. Ishikura; S. Kobashi",
+      "venue": "World Automation Congress"
+    },
+    {
+      "id": "46915824",
+      "no": 194,
+      "year": "2023",
+      "title": "Detection of Osteochondritis Dissecans from Ultrasound Images by Ensemble Deep Learning",
+      "authors": "K. Sasaki; D. Fujita; S. Kobashi",
+      "venue": "The 24th International Symposium on Advanced Intelligent Systems (ISIS),"
+    },
+    {
+      "id": "46915823",
+      "no": 193,
+      "year": "2023",
+      "title": "A Preliminary Study on a Sheet-Type Self-Extubation Detection Device",
+      "authors": "Y. Muroi; D. Fujita; S. Kobashi; T. Fujita",
+      "venue": "The 24th International Symposium on Advanced Intelligent Systems (ISIS)"
+    },
+    {
+      "id": "46915820",
+      "no": 192,
+      "year": "2023",
+      "title": "Deep Learning Approach for Early Detection and Prediction of Chronic Lung Disease in Neonates Chest X-ray Images",
+      "authors": "R. Maeda; D. Fujita; S. Kobashi",
+      "venue": "The 24th International Symposium on Advanced Intelligent Systems (ISIS)"
+    },
+    {
+      "id": "46915812",
+      "no": 191,
+      "year": "2023",
+      "title": "Interpretability of ESWL Outcome Prediction Model and Feature Selection Using SHAP values,",
+      "authors": "S. Kobayashi; D. Fujita; S. Kobashi",
+      "venue": "24th International Symposium on Advanced Intelligent Systems"
+    },
+    {
+      "id": "46915808",
+      "no": 190,
+      "year": "2023",
+      "title": "Comparison of U-Net Backbones on Segmenting Gas and Stool Regions from Abdominal X-Ray Images",
+      "authors": "N. Takashima; D. Fujita; S. Kobashi",
+      "venue": "The 24th International Symposium on Advanced Intelligent Systems (ISIS)"
+    },
+    {
+      "id": "46915802",
+      "no": 189,
+      "year": "2023",
+      "title": "Teeth detection and numbering method in dental panoramic X-ray images using YOLOv7",
+      "authors": "M. A. ALI; D. FUJITA; S. KOBASHI",
+      "venue": "The 24th International Symposium on Advanced Intelligent Systems (ISIS)"
+    },
+    {
+      "id": "46915792",
+      "no": 188,
+      "year": "2023",
+      "title": "Prediction of ESWL Outcome by Combining CT/X-Ray Images and Clinical Findings",
+      "authors": "S. Kobayashi; D. Fujita; H. Shibutani; S. Gohara; S. Kobashi",
+      "venue": "17th International Conference on Innovative Computing, Information and Control (ICICIC2023)"
+    },
+    {
+      "id": "46915786",
+      "no": 187,
+      "year": "2023",
+      "title": "A Preliminary Study on Abdominal X-Ray Image Segmentation Using U-Net Models",
+      "authors": "N. Takashima; D. Fujita; T. Sanuki; Y. Kinoshita; S. Kobashi",
+      "venue": "17th International Conference on Innovative Computing, Information and Control (ICICIC2023)"
+    },
+    {
+      "id": "46915776",
+      "no": 186,
+      "year": "2023",
+      "title": "Prognostic Estimation of Cardiovascular Disease Using Anomaly Detection and Pathological Image of CEA Patients",
+      "authors": "S. Ishida; K. Morita; N. Ren; S. Watanabe; S. Kobashi; K. Hatakeyama; K. Iihara; T. Wakabayashi",
+      "venue": "17th International Conference on Innovative Computing, Information and Control (ICICIC2023)"
+    },
+    {
+      "id": "46912501",
+      "no": 185,
+      "year": "2023",
+      "title": "Fracture Recognition from Pelvic X-ray Images Using Deep Convolutional Neural Networks",
+      "authors": "R. Rahman; D. Fujita; N. Yagi; S. Kobahsi",
+      "venue": "International Conference on TECHNOLOGY;BUSINESS, AND JUSTICE;TOWARDS SMART;BANGLADESH"
+    },
+    {
+      "id": "46912381",
+      "no": 184,
+      "year": "2023",
+      "title": "Pelvic bone region segmentation (PBRS) from X-ray image using convolutional neural network (CNN)",
+      "authors": "S. A. U. Alam; S. B. Alam; S. Saha; M. Haque; R. Rahman; S. Kobashi",
+      "venue": "2023 26th International Conference on Computer and Information Technology, ICCIT 2023"
+    },
+    {
+      "id": "46912367",
+      "no": 183,
+      "year": "2023",
+      "title": "Prediction of Bed-Leaving Behaviors Using Edge AI to Prevent Medical Accidents",
+      "authors": "N. Kondo; D. Fujita; S. Kobashi; T. Fujita",
+      "venue": "Conference Proceedings - IEEE International Conference on Systems, Man and Cybernetics"
+    },
+    {
+      "id": "44381509",
+      "no": 182,
+      "year": "2023",
+      "title": "Radiomics Based Prediction of Symptomatic Carotid Plaque in MR Images",
+      "authors": "T. Mori; D. Fujita; T. Hayashi; T. Mizobe; H. Aihara; S. Kobashi",
+      "venue": "Proceedings - International Conference on Machine Learning and Cybernetics"
+    },
+    {
+      "id": "44381508",
+      "no": 181,
+      "year": "2023",
+      "title": "Medical Personal Protective Equipment Detection Using YOLOV7",
+      "authors": "M. A. Ali; M. Haque; S. B. Alam; R. Rahman; M. Amin; S. Kobashi",
+      "venue": "Proceedings - International Conference on Machine Learning and Cybernetics"
+    },
+    {
+      "id": "43704578",
+      "no": 180,
+      "year": "2023",
+      "title": "Discrimination of Intracerebral Hematoma and Intraventricular Hemorrhage in Initial CT Images Using Hierarchical Region Extraction Method",
+      "authors": "K. Oka; D. Fujita; K. Arimura; K. Iihara; S. Kobashi",
+      "venue": "Proceedings of SPIE - The International Society for Optical Engineering"
+    },
+    {
+      "id": "43704576",
+      "no": 179,
+      "year": "2023",
+      "title": "Kidney Tumor Recognition from Abdominal CT Images using Transfer Learning",
+      "authors": "S. Wasi; S. B. Alam; R. Rahman; M. A. Amin; S. Kobashi",
+      "venue": "Proceedings of The International Symposium on Multiple-Valued Logic"
+    },
+    {
+      "id": "42744376",
+      "no": 178,
+      "year": "2023",
+      "title": "Predicting the Development of Chronic Lung Disease in Neonataes from Chest X-ray Images Using Deep Learning",
+      "authors": "R. Maeda; D. Fujita; K. Tanaka; J. Ozawa; M. Haga; N. Miyahara; F. Nanba; S. Kobashi",
+      "venue": "Proceedings of The International Symposium on Multiple-Valued Logic"
+    },
+    {
+      "id": "42744373",
+      "no": 177,
+      "year": "2023",
+      "title": "Detection of osteochondritis dissecans using convolutional neural networks for computer-aided diagnosis of baseball elbow",
+      "authors": "K. Sasaki; D. Fujita; K. Takatsuji; Y. Kotoura; T. Sukenari; M. Minami; Y. Kobayashi; Y. Kida; K. Takahashi; S. Kobashi",
+      "venue": "Proceedings of The International Symposium on Multiple-Valued Logic"
+    },
+    {
+      "id": "41920991",
+      "no": 176,
+      "year": "2023",
+      "title": "Discrimination of ICH and IVH in Initial CT Images Using Hierarchical Region Extraction Мethod",
+      "authors": "K. Oka; D. Fujita; K. Arimura; K. Iihara; S. Kobashi",
+      "venue": "International Workshop on Advanced Imaging Technology (IWAIT) 2023"
+    },
+    {
+      "id": "41920898",
+      "no": 175,
+      "year": "2023",
+      "title": "A Machine Learning-Based Severity Prediction Tool for the Michigan Neuropathy Screening Instrument",
+      "authors": "F. Haque; M. B. I. Reaz; M. E. H. Chowdhury; M. I. B. Shapiai; R. A. Malik; M. Alhatou; S. Kobashi; I. Ara; S. H. M. Ali; A. A. A. Bakar; M. A. S. Bhuiyan",
+      "venue": "Diagnostics"
+    },
+    {
+      "id": "42620387",
+      "no": 174,
+      "year": "2022",
+      "title": "Medical Tubing Self-Extraction Trouble Avoidance Support System Using Flexible Sensor and IoT",
+      "authors": "Y. Muroi; D. Fujita; K. Takahama; S. Kobashi; T. Fujita",
+      "venue": "2022 Joint 12th International Conference on Soft Computing and Intelligent Systems and 23rd International Symposium on Advanced Intelligent Systems (SCIS&amp;ISIS)"
+    },
+    {
+      "id": "42620382",
+      "no": 173,
+      "year": "2022",
+      "title": "Quantification of Pediatric Brain Development with X-ray CT Images using 3D-CNN",
+      "authors": "R. Morita; S. Ando; D. Fujita; S. Ishikawa; K. Onoue; K. Ando; R. Ishikura; S. Kobashi",
+      "venue": "2022 Joint 12th International Conference on Soft Computing and Intelligent Systems and 23rd International Symposium on Advanced Intelligent Systems (SCIS&amp;ISIS)"
+    },
+    {
+      "id": "42620379",
+      "no": 172,
+      "year": "2022",
+      "title": "Pediatric Brain CT Image Segmentation Methods for Effective Age Prediction Models",
+      "authors": "R. Morita; S. Ando; D. Fujita; S. Ishikawa; K. Onoue; K. Ando; R. Ishikura; S. Kobashi",
+      "venue": "2022 World Automation Congress (WAC)"
+    },
+    {
+      "id": "42620372",
+      "no": 171,
+      "year": "2022",
+      "title": "Tooth Recognition in X-Ray Dental Panoramic Images with Prosthetic Detection",
+      "authors": "K. Oka; A. Ali; D. Fujita; S. Kobashi",
+      "venue": "2022 International Conference on Machine Learning and Cybernetics (ICMLC)"
+    },
+    {
+      "id": "42620367",
+      "no": 170,
+      "year": "2022",
+      "title": "Predicting the severity of Neonatal Chronic Lung Disease from chest X-ray images using deep learning",
+      "authors": "R. Maeda; D. Fujita; K. Tanaka; J. Ozawa; M. Haga; H. Miyahara; F. Nanba; S. Kobashi",
+      "venue": "2022 IEEE International Conference on Systems, Man, and Cybernetics (SMC)"
+    },
+    {
+      "id": "42620360",
+      "no": 169,
+      "year": "2022",
+      "title": "Detection of osteochondritis dissecans in ultrasound images for computer-aided diagnosis of baseball elbow",
+      "authors": "K. Sasaki; D. Fujita; K. Takatsuji; Y. Kotoura; M. Minami; Y. Kobayashi; T. Sukenari; Y. Kida; K. Takahashi; S. Kobashi",
+      "venue": "2022 IEEE International Conference on Systems, Man, and Cybernetics (SMC)"
+    },
+    {
+      "id": "36902798",
+      "no": 168,
+      "year": "2022",
+      "title": "The challenge of detecting impact fracture of the pelvis in CT images using the CNN model.",
+      "authors": "N. Yamamoto; D. Fujita; M. R. Rahman; N. Yagi; K. Hayashi; A. Maruo; H. Muratsu; S. Kobashi",
+      "venue": "LifeTech"
+    },
+    {
+      "id": "37850975",
+      "no": 167,
+      "year": "2021",
+      "title": "Boring Survey Based Fracture Detection (BSFD) for Fragility Fracture of the Pelvis in CT Images.",
+      "authors": "N. Yamamoto; D. Fujita; M. R. Rahman; N. Yagi; K. Hayashi; A. Maruo; H. Muratsu; S. Kobashi",
+      "venue": "2021 International Conference on Machine Learning and Cybernetics (ICMLC)"
+    },
+    {
+      "id": "37224697",
+      "no": 166,
+      "year": "2021",
+      "title": "CNN Based Hierarchical Intracerebral Hematoma Region Extraction Method in Head Thick-Slice CT Images.",
+      "authors": "K. Oka; D. Fujita; Y. Nohara; S. Inoue; K. Arimura; K. Iihara; S. Kobashi",
+      "venue": "2021 International Conference on Machine Learning and Cybernetics (ICMLC)"
+    },
+    {
+      "id": "37224696",
+      "no": 165,
+      "year": "2021",
+      "title": "Brain Devlopment Age Prediction Using Convolutnal Neural Network on Pediatrics Brain Ct Mages.",
+      "authors": "R. Morita; S. Ando; D. Fujita; M. Nii; K. Ando; R. Ishikura; S. Kobashi",
+      "venue": "2021 International Conference on Machine Learning and Cybernetics (ICMLC)"
+    },
+    {
+      "id": "36407702",
+      "no": 164,
+      "year": "2021",
+      "title": "A Deep Learning Technique for Automatic Teeth Recognition in Dental Panoramic X-Ray Images Using Modified Palmer Notation System",
+      "authors": "F. P. Mahdi; S. Kobashi",
+      "venue": "Intelligent Learning for Computer Vision"
+    },
+    {
+      "id": "34568974",
+      "no": 163,
+      "year": "2021",
+      "title": "Comparison of Machine Learning Methods for Predicting Modified Total Shape Score in X-ray Radiography.",
+      "authors": "K. Nakatsu; K. M. 0001; D. Fujita; S. Kobashi",
+      "venue": "2021 World Automation Congress(WAC)"
+    },
+    {
+      "id": "34568972",
+      "no": 162,
+      "year": "2021",
+      "title": "Predictors of Intracerebral Hematoma Enlargement Using Brain CT Images in Emergency Medical Care.",
+      "authors": "K. Oka; T. Hirahara; Y. Nohara; S. Inoue; K. Arimura; S. Kobashi; K. Iihara",
+      "venue": "5th IEEE International Conference on Cybernetics(CYBCONF)"
+    },
+    {
+      "id": "34568979",
+      "no": 161,
+      "year": "2020",
+      "title": "Hand Frame Extraction in Surgical Video Images Using Convolutional Neural Network.",
+      "authors": "S. Sakib; B. Hossain; T. Hiranaka; S. Kobashi",
+      "venue": "Joint 11th International Conference on Soft Computing and Intelligent Systems and 21st International Symposium on Advanced Intelligent Systems(SCIS/ISIS)"
+    },
+    {
+      "id": "34568978",
+      "no": 160,
+      "year": "2020",
+      "title": "Automatic Teeth Recognition Method from Dental Panoramic Images Using Faster R-CNN and Prior Knowledge Model.",
+      "authors": "K. Motoki; F. P. Mahdi; N. Yagi; M. Nii; S. Kobashi",
+      "venue": "Joint 11th International Conference on Soft Computing and Intelligent Systems and 21st International Symposium on Advanced Intelligent Systems(SCIS/ISIS)"
+    },
+    {
+      "id": "34568977",
+      "no": 159,
+      "year": "2020",
+      "title": "Automatic Teeth Recognition in Dental X-Ray Images Using Transfer Learning Based Faster R-CNN.",
+      "authors": "F. P. Mahdi; N. Yagi; S. Kobashi",
+      "venue": "50th IEEE International Symposium on Multiple-Valued Logic(ISMVL)"
+    },
+    {
+      "id": "31448218",
+      "no": 158,
+      "year": "2020",
+      "title": "An automated fracture detection from pelvic CT images with 3-D convolutional neural networks",
+      "authors": "N. Yamamoto; R. Rahman; N. Yagi; K. Hayashi; A. Maruo; H. Muratsu; S. Kobashi",
+      "venue": "2020 International Symposium on Community-Centric Systems, CcS 2020"
+    },
+    {
+      "id": "31448217",
+      "no": 157,
+      "year": "2020",
+      "title": "Finger Joint Detection Method in Hand X-ray Radiograph Images Using Statistical Shape Model and Support Vector Machine",
+      "authors": "K. Nakatsu; K. Morita; N. Yagi; S. Kobashi",
+      "venue": "2020 International Symposium on Community-Centric Systems, CcS 2020"
+    },
+    {
+      "id": "30621661",
+      "no": 156,
+      "year": "2020",
+      "title": "A deep learning approach for surgical instruments detection in orthopaedic surgery using transfer learning",
+      "authors": "B. Hossain; S. Nishio; H. Takafunio; S. Kobashi",
+      "venue": "Proceedings of SPIE - The International Society for Optical Engineering"
+    },
+    {
+      "id": "30621660",
+      "no": 155,
+      "year": "2020",
+      "title": "Surgical Phase Recognition Method with a Sequential Consistency for CAOS-AI Navigation System",
+      "authors": "S. Nishio; B. Hossain; N. Yagi; M. Nii; T. Hiranaka; S. Kobashi",
+      "venue": "LifeTech 2020 - 2020 IEEE 2nd Global Conference on Life Sciences and Technologies"
+    },
+    {
+      "id": "30621659",
+      "no": 154,
+      "year": "2020",
+      "title": "Artificial humeral head modeling using Kmeans++ clustering and PCA",
+      "authors": "Y. Kubo; M. Nii; T. Muto; H. Tanaka; H. Inui; N. Yagi; K. Nobuhara; S. Kobashi",
+      "venue": "LifeTech 2020 - 2020 IEEE 2nd Global Conference on Life Sciences and Technologies"
+    },
+    {
+      "id": "30621663",
+      "no": 153,
+      "year": "2019",
+      "title": "A Quantification Approach of Uterine Peristalsis Propagated from the Cervix and the Fundus",
+      "authors": "N. Tasnim; F. P. Mahdi; S. B. Alam; N. Yagi; A. Nakashima; I. Komesu; Y. Tokunaga; T. Sakumoto; S. Kobashi",
+      "venue": "Proceedings - International Conference on Machine Learning and Cybernetics"
+    },
+    {
+      "id": "30621662",
+      "no": 152,
+      "year": "2019",
+      "title": "Estimation of Human Activities by Fuzzy Classification Systems for Understanding Subject Persons' Situation",
+      "authors": "S. Ahmed; T. Kishi; M. Nii; K. Higuchi; S. Kobashi",
+      "venue": "Proceedings - International Conference on Machine Learning and Cybernetics"
+    },
+    {
+      "id": "28384959",
+      "no": 151,
+      "year": "2019",
+      "title": "Ovarian follicle classification using numerical and B-mode image features from ultrasound scanning devices",
+      "authors": "M. Nii; Y. Kato; M. Morimoto; S. Kobashi; N. Kamiura; Y. Hata; S. Imawaki; T. Ishikawa; H. Matsubayashi",
+      "venue": "2018 Joint 7th International Conference on Informatics, Electronics and Vision and 2nd International Conference on Imaging, Vision and Pattern Recognition, ICIEV-IVPR 2018"
+    },
+    {
+      "id": "16194001",
+      "no": 150,
+      "year": "2019",
+      "title": "A SVM integrated Case Based Learning Data GA for Solar Flare Prediction",
+      "authors": "Y. Taniguchi; Y. Kubota; S. Tsuruta; T. Muranushi; Y. Hada-Muranushi; Y. Mizuno; S. Kobashi; Y. Sakurai; R. Knauf; A. Kutics",
+      "venue": "Proceedings of the 2018 IEEE Symposium Series on Computational Intelligence, SSCI 2018"
+    },
+    {
+      "id": "16194000",
+      "no": 149,
+      "year": "2019",
+      "title": "Implanted knee kinematics prediction: Comparative performance analysis of machine learning techniques",
+      "authors": "B. Hossain; T. Morooka; M. Okuno; M. Nii; S. Yoshiya; S. Kobashi",
+      "venue": "2018 Joint 7th International Conference on Informatics, Electronics and Vision and 2nd International Conference on Imaging, Vision and Pattern Recognition, ICIEV-IVPR 2018"
+    },
+    {
+      "id": "16193997",
+      "no": 148,
+      "year": "2019",
+      "title": "Real-time surgical tools recognition in total knee arthroplasty using deep neural networks",
+      "authors": "M. Hossain; S. Nishio; T. Hiranaka; S. Kobashi",
+      "venue": "2018 Joint 7th International Conference on Informatics, Electronics and Vision and 2nd International Conference on Imaging, Vision and Pattern Recognition, ICIEV-IVPR 2018"
+    },
+    {
+      "id": "16175185",
+      "no": 147,
+      "year": "2019",
+      "title": "Abdominal organ area segmentation using u-net for cancer radiotherapy support",
+      "authors": "N. Yagi; M. Nii; S. Kobashi",
+      "venue": "Conference Proceedings - IEEE International Conference on Systems, Man and Cybernetics"
+    },
+    {
+      "id": "8152949",
+      "no": 146,
+      "year": "2018",
+      "title": "Automated estimation of mTS score in hand joint X-ray image using machine learning",
+      "authors": "A. Tashita; K. Morita; K. Morita; M. Nii; N. Nakagawa; S. Kobashi",
+      "venue": "2017 6th International Conference on Informatics, Electronics and Vision and 2017 7th International Symposium in Computational Medical and Health Technology, ICIEV-ISCMHT 2017"
+    },
+    {
+      "id": "17538500",
+      "no": 145,
+      "year": "2018",
+      "title": "MD-LMS Algorithm Based Brain Functional Connectivity Analysis in Resting State fMRI.",
+      "authors": "W. Marui; S. Kan; M. Nii; M. Shibata; S. Kobashi",
+      "venue": "2018 World Automation Congress, WAC 2018, Stevenson, WA, USA, June 3-6, 2018"
+    },
+    {
+      "id": "17538499",
+      "no": 144,
+      "year": "2018",
+      "title": "3-D Statistical Shape Model of the Humerus Towards Artificial Shoulder Joint Design.",
+      "authors": "Y. Kubo; M. B. Hossain; M. Nii; T. Muto; H. Tanaka; H. Inui; K. Nobuhara; S. Kobashi",
+      "venue": "2018 World Automation Congress, WAC 2018, Stevenson, WA, USA, June 3-6, 2018"
+    },
+    {
+      "id": "16194008",
+      "no": 143,
+      "year": "2018",
+      "title": "Tongue movement classification in chewing and swallowing using electromyography",
+      "authors": "M. Nii; S. Okajima; R. Sakashita; M. Hamada; S. Kobashi",
+      "venue": "2017 6th International Conference on Informatics, Electronics and Vision and 2017 7th International Symposium in Computational Medical and Health Technology, ICIEV-ISCMHT 2017"
+    },
+    {
+      "id": "16175191",
+      "no": 142,
+      "year": "2018",
+      "title": "A SVM integrated Case Based Learning Data GA for Solar Flare Prediction.",
+      "authors": "Y. Taniguchi; Y. Kubota; S. Tsuruta; T. Muranushi; Y. H. Muranushi; Y. Mizuno; S. Kobashi; Y. Sakurai; R. Knauf; A. Kutics",
+      "venue": "IEEE Symposium Series on Computational Intelligence, SSCI 2018, Bangalore, India, November 18-21, 2018"
+    },
+    {
+      "id": "16175190",
+      "no": 141,
+      "year": "2018",
+      "title": "Finger Joint Detection Method for the Automatic Estimation of Rheumatoid Arthritis Progression Using Machine Learning.",
+      "authors": "K. M. 0001; P. Chan; M. Nii; N. Nakagawa; S. Kobashi",
+      "venue": "Proceedings - 2018 IEEE International Conference on Systems, Man, and Cybernetics, SMC 2018"
+    },
+    {
+      "id": "16175189",
+      "no": 140,
+      "year": "2018",
+      "title": "Disorder Development Onset Prediction Based on Spatiotemporal Statistical Shape Model.",
+      "authors": "S. B. Alam; A. Shimizu; K. Ando; R. Ishikura; S. Kobashi",
+      "venue": "Proceedings - 2018 IEEE International Conference on Systems, Man, and Cybernetics, SMC 2018"
+    },
+    {
+      "id": "16175188",
+      "no": 139,
+      "year": "2018",
+      "title": "Real-Time Orthopedic Surgery Procedure Recognition Method with Video Images from Smart Glasses Using Convolutional Neural Network.",
+      "authors": "S. Nishio; M. Hossain; M. B. Hossain; M. Nii; T. Hiranaka; S. Kobashi",
+      "venue": "Proceedings - 2018 IEEE International Conference on Systems, Man, and Cybernetics, SMC 2018"
+    },
+    {
+      "id": "16175187",
+      "no": 138,
+      "year": "2018",
+      "title": "A Filter-Based Method to Calculate Heart Rate from Near Infrared Video.",
+      "authors": "R. Rahman; K. Ukai; S. Kobashi",
+      "venue": "2018 Joint 10th International Conference on Soft Computing and Intelligent Systems (SCIS) and 19th International Symposium on Advanced Intelligent Systems (ISIS), Toyama, Japan, December 5-8, 2018"
+    },
+    {
+      "id": "16175186",
+      "no": 137,
+      "year": "2018",
+      "title": "Quantum Particle Swarm Optimization for Multilevel Thresholding-Based Image Segmentation on Dental X-Ray Images.",
+      "authors": "F. P. Mahdi; S. Kobashi",
+      "venue": "2018 Joint 10th International Conference on Soft Computing and Intelligent Systems (SCIS) and 19th International Symposium on Advanced Intelligent Systems (ISIS), Toyama, Japan, December 5-8, 2018"
+    },
+    {
+      "id": "8239470",
+      "no": 136,
+      "year": "2017",
+      "title": "Prediction of post-operative implanted knee function using machine learning in clinical big data",
+      "authors": "S. Kobashi; B. Hossain; M. Nii; S. Kambara; T. Morooka; M. Okuno; S. Yoshiya",
+      "venue": "Proceedings - International Conference on Machine Learning and Cybernetics"
+    },
+    {
+      "id": "8152395",
+      "no": 135,
+      "year": "2017",
+      "title": "Prediction of post-operative implanted knee function using machine learning in clinical big data",
+      "authors": "S. Kobashi; B. Hossain; M. Nii; S. Kambara; T. Morooka; M. Okuno; S. Yoshiya",
+      "venue": "Proceedings - International Conference on Machine Learning and Cybernetics"
+    },
+    {
+      "id": "8152394",
+      "no": 134,
+      "year": "2017",
+      "title": "Clinical big image data based pre-operative planning in ACL reconstruction",
+      "authors": "K. Morita; M. Nii; S. Kambara; K. Kashiwa; H. Nakayama; S. Yoshiya; S. Kobashi",
+      "venue": "Proceedings - International Conference on Machine Learning and Cybernetics"
+    },
+    {
+      "id": "8152389",
+      "no": 133,
+      "year": "2017",
+      "title": "Particle filter based implanted knee kinematics analysis for the postoperative evaluation",
+      "authors": "K. Morita; M. Nii; N. Ikoma; T. Morooka; S. Yoshiya; S. Kobashi",
+      "venue": "2017 IEEE International Conference on Systems, Man, and Cybernetics, SMC 2017"
+    },
+    {
+      "id": "8152388",
+      "no": 132,
+      "year": "2017",
+      "title": "Evaluation of a classification method for MR image segmentation.",
+      "authors": "Y. Kubota; S. Tsuruta; S. Kobashi; Y. Sakurai; R. Knauf",
+      "venue": "2017 IEEE International Conference on Systems, Man, and Cybernetics, SMC 2017"
+    },
+    {
+      "id": "8152387",
+      "no": 131,
+      "year": "2017",
+      "title": "Muscle thickness measurement from ultrasonic wave using continuous wavelet analysis.",
+      "authors": "S. B. Alam; R. Rahman; S. Kobashi; Y. Hata",
+      "venue": "2017 International Conference on Machine Learning and Cybernetics, ICMLC 2017, Ningbo, China, July 9-12, 2017"
+    },
+    {
+      "id": "8152386",
+      "no": 130,
+      "year": "2017",
+      "title": "Computer-aided diagnosis system for Rheumatoid Arthritis using machine learning.",
+      "authors": "K. M. 0001; A. Tashita; M. Nii; S. Kobashi",
+      "venue": "Proceedings of 2017 International Conference on Machine Learning and Cybernetics, ICMLC 2017"
+    },
+    {
+      "id": "28427865",
+      "no": 129,
+      "year": "2017",
+      "title": "MRI-based 3D-shape model improves diagnosis of rotator cuff tear",
+      "authors": "T. Muto; H. Inui; H. Tanaka; K. Ishiro; K. Morita; H. Ninomiya; M. Komai; Y. Kanatani; K. Hashimoto; S. Kobashi; K. Nobuhara",
+      "venue": "2017 6th International Conference on Informatics, Electronics and Vision & 2017 7th International Symposium in Computational Medical and Health Technology (ICIEV-ISCMHT)"
+    },
+    {
+      "id": "8239480",
+      "no": 128,
+      "year": "2016",
+      "title": "Solar Flare Prediction by SVM Integrated CBGA with Dynamic Mutation Rate",
+      "authors": "Y. Yamamoto; D. Itoh; S. Tsuruta; T. Muranushi; Y. Hada-Muranushi; S. Kobashi; Y. Mizuno; R. Knauf",
+      "venue": "2016 WORLD AUTOMATION CONGRESS (WAC)"
+    },
+    {
+      "id": "8239476",
+      "no": 127,
+      "year": "2016",
+      "title": "Simple Brain Atrophy Quantification Method Using MR Images",
+      "authors": "S. B. Alam; S. Kobashi",
+      "venue": "2016 5TH INTERNATIONAL CONFERENCE ON INFORMATICS, ELECTRONICS AND VISION (ICIEV)"
+    },
+    {
+      "id": "8239475",
+      "no": 126,
+      "year": "2016",
+      "title": "SVM integrated Case Based Restarting GA for further Improving Solar Flare Prediction",
+      "authors": "Y. Yamamoto; D. Itoh; S. Tsuruta; T. Muranushi; Y. Hada-Muranushi; S. Kobashi; Y. Mizuno; R. Knauf",
+      "venue": "2016 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC)"
+    },
+    {
+      "id": "8239473",
+      "no": 125,
+      "year": "2016",
+      "title": "Macrophage learning-tracking algorithm in time-lapse MR images.",
+      "authors": "A. Tashita; S. Kobashi; M. Nii; Y. Mori; Y. Yoshioka; Y. Hata",
+      "venue": "Proceedings - International Conference on Machine Learning and Cybernetics"
+    },
+    {
+      "id": "8239471",
+      "no": 124,
+      "year": "2016",
+      "title": "Cerebral aneurysm occurrence prediction by morphometric analysis of the Willis ring",
+      "authors": "M. Yasugi; B. Hossain; H. Shibutani; T. Nomura; M. Nii; M. Morimoto; S. Kobashi",
+      "venue": "2016 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC)"
+    },
+    {
+      "id": "8152968",
+      "no": 123,
+      "year": "2016",
+      "title": "An Efficient Classification Method for Knee MR Image Segmentation",
+      "authors": "Y. Yamamoto; S. Tsuruta; S. Kobashi; Y. Sakurai; R. Knauf",
+      "venue": "2016 12TH INTERNATIONAL CONFERENCE ON SIGNAL-IMAGE TECHNOLOGY & INTERNET-BASED SYSTEMS (SITIS)"
+    },
+    {
+      "id": "8152409",
+      "no": 122,
+      "year": "2016",
+      "title": "Construction of Statistical Shape Model of Femoral Bone Using MR Images",
+      "authors": "M. B. Hossain; M. Nii; S. Kobashi",
+      "venue": "2016 5TH INTERNATIONAL CONFERENCE ON INFORMATICS, ELECTRONICS AND VISION (ICIEV)"
+    },
+    {
+      "id": "8152405",
+      "no": 121,
+      "year": "2016",
+      "title": "Machine learning approaches for brain morphology analysis in MR images",
+      "authors": "K. S; A. S.B; N. M",
+      "venue": "ISCIIA 2016 - 7th International Symposium on Computational Intelligence and Industrial Applications"
+    },
+    {
+      "id": "8152402",
+      "no": 120,
+      "year": "2016",
+      "title": "SVM integrated Case Based Restarting GA for further Improving Solar Flare Prediction",
+      "authors": "Y. Yamamoto; D. Itoh; S. Tsuruta; T. Muranushi; Y. Hada-Muranushi; S. Kobashi; Y. Mizuno; R. Knauf",
+      "venue": "2016 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC)"
+    },
+    {
+      "id": "8152401",
+      "no": 119,
+      "year": "2016",
+      "title": "Application of Self-Organizing Maps to Data Classification and Data Prediction for Female Subjects with Unhealthy-Level Visceral Fat",
+      "authors": "N. Kamiura; S. Kobashi; M. Nii; T. Yumoto; K. Sorachi",
+      "venue": "2016 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC)"
+    },
+    {
+      "id": "8152400",
+      "no": 118,
+      "year": "2016",
+      "title": "Cerebral aneurysm occurrence prediction by morphometric analysis of the Willis ring",
+      "authors": "M. Yasugi; B. Hossain; H. Shibutani; T. Nomura; M. Nii; M. Morimoto; S. Kobashi",
+      "venue": "2016 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC)"
+    },
+    {
+      "id": "8152399",
+      "no": 117,
+      "year": "2016",
+      "title": "Identification of Ovarian Follicle with Ovum from Ultrasonic Images",
+      "authors": "M. Nii; H. Kozakai; M. Morimoto; S. Kobashi; N. Kamiura; Y. Hata; S. Imawaki; T. Ishikawa; H. Matsubayashi",
+      "venue": "2016 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC)"
+    },
+    {
+      "id": "8152398",
+      "no": 116,
+      "year": "2016",
+      "title": "An Efficient Classification Method for Knee MR Image Segmentation",
+      "authors": "Y. Yamamoto; S. Tsuruta; S. Kobashi; Y. Sakurai; R. Knauf",
+      "venue": "2016 12TH INTERNATIONAL CONFERENCE ON SIGNAL-IMAGE TECHNOLOGY & INTERNET-BASED SYSTEMS (SITIS)"
+    },
+    {
+      "id": "8152397",
+      "no": 115,
+      "year": "2016",
+      "title": "Implanted Knee Kinematics Analysis by 2-D/3-D Registration Using Particle Filter",
+      "authors": "K. Morita; M. Nii; F. Imamura; T. Morooka; S. Yoshiya; S. Kobashi",
+      "venue": "2016 JOINT 8TH INTERNATIONAL CONFERENCE ON SOFT COMPUTING AND INTELLIGENT SYSTEMS (SCIS) AND 17TH INTERNATIONAL SYMPOSIUM ON ADVANCED INTELLIGENT SYSTEMS (ISIS)"
+    },
+    {
+      "id": "8152396",
+      "no": 114,
+      "year": "2016",
+      "title": "Macrophage learning-tracking algorithm in time-lapse MR images.",
+      "authors": "A. Tashita; S. Kobashi; M. Nii; Y. Mori; Y. Yoshioka; Y. Hata",
+      "venue": "International Conference on Machine Learning and Cybernetics, ICMLC 2016, Jeju Island, South Korea, July 10-13, 2016"
+    },
+    {
+      "id": "8152392",
+      "no": 113,
+      "year": "2016",
+      "title": "Blumensaat's Line Detection for Quadrant Method on MR Images",
+      "authors": "K. Morita; S. Kobashi; K. Kashiwa; H. Nakayama; S. Kambara; M. Morimoto; S. Yoshiya; S. Aikawa",
+      "venue": "2016 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ-IEEE)"
+    },
+    {
+      "id": "8152391",
+      "no": 112,
+      "year": "2016",
+      "title": "Solar Flare Prediction by SVM integrated GA",
+      "authors": "Y. Yamamoto; S. Tsuruta; Y. Hada-Muranushi; Y. Mizuno; T. Muranushi; S. Kobashi; R. Knauf",
+      "venue": "2016 IEEE CONGRESS ON EVOLUTIONARY COMPUTATION (CEC)"
+    },
+    {
+      "id": "28132526",
+      "no": 111,
+      "year": "2016",
+      "title": "A Meal Menu Recognition System using RGB-D Sensor",
+      "authors": "M. Morimoto; S. Hagihara; S. Kobashi; S. Aikawa",
+      "venue": "2016 5TH INTERNATIONAL CONFERENCE ON INFORMATICS, ELECTRONICS AND VISION (ICIEV)"
+    },
+    {
+      "id": "8239490",
+      "no": 110,
+      "year": "2015",
+      "title": "Computer-aided Surgical Planning of Anterior Cruciate Ligament Reconstruction in MR Images",
+      "authors": "K. Morita; S. Kobashi; K. Kashiwa; H. Nakayama; S. Kambara; M. Morimoto; S. Yoshiya; S. Aikawa",
+      "venue": "KNOWLEDGE-BASED AND INTELLIGENT INFORMATION & ENGINEERING SYSTEMS 19TH ANNUAL CONFERENCE, KES-2015"
+    },
+    {
+      "id": "8239489",
+      "no": 109,
+      "year": "2015",
+      "title": "Feature selection of manifold learning using principal component analysis in brain MR image",
+      "authors": "S. B. Alam; R. Nakano; S. Kobashi; N. Kamiura",
+      "venue": "2015 4TH INTERNATIONAL CONFERENCE ON INFORMATICS, ELECTRONICS & VISION ICIEV 15"
+    },
+    {
+      "id": "8239488",
+      "no": 108,
+      "year": "2015",
+      "title": "ICP based neonatal brain MRI normalization method",
+      "authors": "K. Morita; S. Kobashi; Y. Wakata; K. Ando; R. Ishikura; N. Kamiura",
+      "venue": "IEEE International Conference on Fuzzy Systems"
+    },
+    {
+      "id": "8239486",
+      "no": 107,
+      "year": "2015",
+      "title": "Improvement of Sun Flare Prediction by SVM integrated GA",
+      "authors": "Y. Yamamoto; S. Tsuruta; T. Muranushi; Y. H. Muranushi; S. Kobashi; Y. Mizuno; R. Knauf",
+      "venue": "2015 11TH INTERNATIONAL CONFERENCE ON SIGNAL-IMAGE TECHNOLOGY & INTERNET-BASED SYSTEMS (SITIS)"
+    },
+    {
+      "id": "8239483",
+      "no": 106,
+      "year": "2015",
+      "title": "Macrophage tracking using the Hungarian algorithm in time lapse MR images",
+      "authors": "A. Tashita; S. Kobashi; Y. Mori; M. Morimoto; S. Aikawa; Y. Yoshioka; Y. Hata",
+      "venue": "2015 7TH INTERNATIONAL CONFERENCE ON EMERGING TRENDS IN ENGINEERING & TECHNOLOGY (ICETET)"
+    },
+    {
+      "id": "8239482",
+      "no": 105,
+      "year": "2015",
+      "title": "Medical Checkup and Image Data Analysis for Preventing Life Style Diseases",
+      "authors": "M. Nii; M. Momimoto; S. Kobashi; N. Kamiura; Y. Hata; K. Sorachi",
+      "venue": "2015 7TH INTERNATIONAL CONFERENCE ON EMERGING TRENDS IN ENGINEERING & TECHNOLOGY (ICETET)"
+    },
+    {
+      "id": "8152407",
+      "no": 104,
+      "year": "2015",
+      "title": "Neonatal Brain Age Estimation Using Manifold Learning Regression Analysis",
+      "authors": "R. Nakano; S. Kobashi; S. B. Alam; M. Morimoto; Y. Wakata; K. Ando; R. Ishikura; S. Hirota; S. Aikawa",
+      "venue": "2015 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC 2015): BIG DATA ANALYTICS FOR HUMAN-CENTRIC SYSTEMS"
+    },
+    {
+      "id": "28349984",
+      "no": 103,
+      "year": "2015",
+      "title": "On Relationship Analysis of Health Examination Items Using Self-Organizing Maps",
+      "authors": "H. Komori; S. Kobashi; N. Kamiura; Y. Hata; K. Sorachi",
+      "venue": "2015 4TH INTERNATIONAL CONFERENCE ON INFORMATICS, ELECTRONICS & VISION ICIEV 15"
+    },
+    {
+      "id": "28342495",
+      "no": 102,
+      "year": "2015",
+      "title": "ICP based Neonatal Brain MRI Normalization Method",
+      "authors": "K. Morita; S. Kobashi; Y. Wakata; K. Ando; R. Ishikura; N. Kamiura",
+      "venue": "2015 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ-IEEE 2015)"
+    },
+    {
+      "id": "8239492",
+      "no": 101,
+      "year": "2014",
+      "title": "Morphological changes of aging brain structure in MRI analysis",
+      "authors": "S. B. Alam; R. Nakano; N. Kamiura; S. Kobashi",
+      "venue": "2014 JOINT 7TH INTERNATIONAL CONFERENCE ON SOFT COMPUTING AND INTELLIGENT SYSTEMS (SCIS) AND 15TH INTERNATIONAL SYMPOSIUM ON ADVANCED INTELLIGENT SYSTEMS (ISIS)"
+    },
+    {
+      "id": "28084036",
+      "no": 100,
+      "year": "2014",
+      "title": "On Reduction of Sojourn Time for Patients at Department of Cardiology",
+      "authors": "N. Kamiura; T. Hara; S. Kobashi; K. Kuramoto; T. Fujii",
+      "venue": "2014 7TH INTERNATIONAL CONFERENCE ON BIOMEDICAL ENGINEERING AND INFORMATICS (BMEI 2014)"
+    },
+    {
+      "id": "17575363",
+      "no": 99,
+      "year": "2014",
+      "title": "MDCT Image Based Assessment of Acetabular Cup Orientation in Total Hip Arthroplasty",
+      "authors": "S. Kobashi; K. Iwasa; T. Fujishiro; S. Hayashi; S. Hashimoto; R. Kuroda; M. Kurosaka; N. Kamiura",
+      "venue": "2014 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS (SMC)"
+    },
+    {
+      "id": "17575361",
+      "no": 98,
+      "year": "2014",
+      "title": "In vivo MRI monitoring of inflammatory alterations and cellular dynamics in the central nervous system",
+      "authors": "Y. Mori; Y. Arima; T. Chen; D. Zhu; Y. Komai; M. Murakami; Y. Yoshioka; T. Fujisawa; S. Kobashi; Y. Hata",
+      "venue": "2014 WORLD AUTOMATION CONGRESS (WAC): EMERGING TECHNOLOGIES FOR A NEW PARADIGM IN SYSTEM OF SYSTEMS ENGINEERING"
+    },
+    {
+      "id": "17538508",
+      "no": 97,
+      "year": "2014",
+      "title": "Image Alignment for Single-cell Imaging of Macrophage in the Mouse Brain Using 11.7T MRI",
+      "authors": "S. Kobashi; Y. Mori; Y. Yoshioka; Y. Hata",
+      "venue": "2014 WORLD AUTOMATION CONGRESS (WAC): EMERGING TECHNOLOGIES FOR A NEW PARADIGM IN SYSTEM OF SYSTEMS ENGINEERING"
+    },
+    {
+      "id": "17538507",
+      "no": 96,
+      "year": "2014",
+      "title": "Neonatal Brain Segmentation Using 4-D Fuzzy Object Model",
+      "authors": "S. Kobashi; R. Nakano; K. Kuramoto; Y. Wakata; K. Ando; R. Ishikura; T. Ishikawa; S. Hirota; Y. Hata; N. Kamiura",
+      "venue": "2014 INTERNATIONAL CONFERENCE ON INFORMATICS, ELECTRONICS & VISION (ICIEV)"
+    },
+    {
+      "id": "7368477",
+      "no": 95,
+      "year": "2013",
+      "title": "Ultrasonic Frequency Response Analysis for Quantitative Measurements in Bone Marrow Stromal Cells",
+      "authors": "N. Yagi; K. Kuramoto; S. Kobashi; Y. Hata; T. Ishikawa",
+      "venue": "2013 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC 2013)"
+    },
+    {
+      "id": "7368476",
+      "no": 94,
+      "year": "2013",
+      "title": "Interactive fuzzy connectedness image segmentation for neonatal brain MR image segmentation",
+      "authors": "S. Kobashi; K. Kuramoto; Y. Hata",
+      "venue": "2013 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC 2013)"
+    },
+    {
+      "id": "7368475",
+      "no": 93,
+      "year": "2013",
+      "title": "Quantitative Evaluation of Patient Specific Instrument for Total Knee Arthoroplasty",
+      "authors": "S. Kobashi; A. Toda; N. Shibanuma; Y. Hata",
+      "venue": "2013 INTERNATIONAL CONFERENCE ON SIGNAL-IMAGE TECHNOLOGY & INTERNET-BASED SYSTEMS (SITIS)"
+    },
+    {
+      "id": "7368474",
+      "no": 92,
+      "year": "2013",
+      "title": "Image-based evaluation of patient specific instrument attachment in TKA",
+      "authors": "S. Kobashi; A. Toda; N. Shibanuma; Y. Hata",
+      "venue": "Procedia Computer Science"
+    },
+    {
+      "id": "7368473",
+      "no": 91,
+      "year": "2013",
+      "title": "Mining multi human locations using thermopile array sensors",
+      "authors": "M. Kuki; H. Nakajima; N. Tsuchiya; K. Kuramoto; S. Kobashi; Y. Hata",
+      "venue": "Proceedings of The International Symposium on Multiple-Valued Logic"
+    },
+    {
+      "id": "7368472",
+      "no": 90,
+      "year": "2013",
+      "title": "A fuzzy human detection for security system using infrared laser camera",
+      "authors": "T. Takeda; K. Kuramoto; S. Kobashi; Y. Hata",
+      "venue": "Proceedings of The International Symposium on Multiple-Valued Logic"
+    },
+    {
+      "id": "7368471",
+      "no": 89,
+      "year": "2013",
+      "title": "Fuzzy Damage Extraction Method for Ultrasonic Nondestructive Testing Images",
+      "authors": "K. Tsukuda; T. Egawa; K. Taniguchi; K. Kuramoto; S. Kobashi; Y. Hata",
+      "venue": "2013 IEEE 43RD INTERNATIONAL SYMPOSIUM ON MULTIPLE-VALUED LOGIC (ISMVL 2013)"
+    },
+    {
+      "id": "7368470",
+      "no": 88,
+      "year": "2013",
+      "title": "Wearable Human Activity Recognition by Electrocardiograph and Accelerometer",
+      "authors": "T. Fujimoto; H. Nakajima; N. Tsuchiya; H. Marukawa; K. Kuramoto; S. Kobashi; Y. Hata",
+      "venue": "2013 IEEE 43RD INTERNATIONAL SYMPOSIUM ON MULTIPLE-VALUED LOGIC (ISMVL 2013)"
+    },
+    {
+      "id": "28223172",
+      "no": 87,
+      "year": "2013",
+      "title": "Fuzzy object models for newborn brain MR image segmentation",
+      "authors": "S. Kobashi; J. K. Udupa",
+      "venue": "MEDICAL IMAGING 2013: BIOMEDICAL APPLICATIONS IN MOLECULAR, STRUCTURAL, AND FUNCTIONAL IMAGING"
+    },
+    {
+      "id": "17575382",
+      "no": 86,
+      "year": "2013",
+      "title": "Webcam-based Accurate Eye-central Localization",
+      "authors": "H. M. Elahi; D. Islam; I. Ahmed; S. Kobashi; M. A. R. Ahad",
+      "venue": "2013 SECOND INTERNATIONAL CONFERENCE ON ROBOT, VISION AND SIGNAL PROCESSING (RVSP)"
+    },
+    {
+      "id": "17575381",
+      "no": 85,
+      "year": "2013",
+      "title": "Preface: RVSP 2013",
+      "authors": "J. S. Pan; J. Watada; M. F. Horng; S. Kobashi",
+      "venue": "Proceedings - 2013 2nd International Conference on Robot, Vision and Signal Processing, RVSP 2013"
+    },
+    {
+      "id": "17575380",
+      "no": 84,
+      "year": "2013",
+      "title": "On a priori knowledge in particle filter for in-vivo analysis of implanted knee",
+      "authors": "S. Tada; S. Kobashi; K. Kuramoto; F. Imamura; T. Morooka; K. Kuramoto; S. Yoshiya; Y. Hata",
+      "venue": "2013 SECOND INTERNATIONAL CONFERENCE ON ROBOT, VISION AND SIGNAL PROCESSING (RVSP)"
+    },
+    {
+      "id": "17575375",
+      "no": 83,
+      "year": "2013",
+      "title": "A priori knowledge based deformable surface model for newborn brain MR image segmentation",
+      "authors": "S. Kobashi; A. Hashioka; Y. Wakata; K. Ando; R. Ishikura; K. Kuramoto; T. Ishikawa; S. Hirota; Y. Hata",
+      "venue": "Proceedings of the 2013 4th International Workshop on Computational Intelligence in Medical Imaging, CIMI 2013 - 2013 IEEE Symposium Series on Computational Intelligence, SSCI 2013"
+    },
+    {
+      "id": "17575374",
+      "no": 82,
+      "year": "2013",
+      "title": "Maritime Space Understanding Using Multiple Radar Systems by Iterative Image Reconstuction Algorithm",
+      "authors": "S. Kobashi; H. Mita; K. Nakagawa; K. Nishiyama; H. Maeno; K. Kuramoto; Y. Hata",
+      "venue": "PROCEEDINGS OF THE 2013 IEEE WORKSHOP ON ROBOTIC INTELLIGENCE IN INFORMATIONALLY STRUCTURED SPACE (RIISS)"
+    },
+    {
+      "id": "17575364",
+      "no": 81,
+      "year": "2013",
+      "title": "Workshop on medical image and signal analysis WS-MISA: Editorial",
+      "authors": "G. Schaefer; S. Kobashi; K. Nagamune",
+      "venue": "Proceedings - 2013 International Conference on Signal-Image Technology and Internet-Based Systems, SITIS 2013"
+    },
+    {
+      "id": "7368485",
+      "no": 80,
+      "year": "2012",
+      "title": "Fuzzy Object Model Based Fuzzy Connectedness Image Segmentation of Newborn Brain MR Images",
+      "authors": "S. Kobashi; J. K. Udupa",
+      "venue": "PROCEEDINGS 2012 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC)"
+    },
+    {
+      "id": "7368484",
+      "no": 79,
+      "year": "2012",
+      "title": "Predict Time Series Data for The Number of Asthmatic Attacks in Himeji by Fuzzy-AR Model",
+      "authors": "Y. Kaku; K. Kuramoto; S. Kobashi; Y. Hata",
+      "venue": "PROCEEDINGS OF THE 2012 FIFTH INTERNATIONAL CONFERENCE ON EMERGING TRENDS IN ENGINEERING AND TECHNOLOGY (ICETET 2012)"
+    },
+    {
+      "id": "7368483",
+      "no": 78,
+      "year": "2012",
+      "title": "Biometrics Personal Identification by Wearable Pressure Sensor",
+      "authors": "T. Takeda; K. Kuramoto; S. Kobashi; Y. Hata",
+      "venue": "PROCEEDINGS OF THE 2012 FIFTH INTERNATIONAL CONFERENCE ON EMERGING TRENDS IN ENGINEERING AND TECHNOLOGY (ICETET 2012)"
+    },
+    {
+      "id": "7368482",
+      "no": 77,
+      "year": "2012",
+      "title": "Ultrasonic Evaluation of Seminiferous Tubules by Frequency Map",
+      "authors": "Y. Takashima; T. Ishikawa; S. Kobashi; K. Kuramoto; Y. Hata",
+      "venue": "PROCEEDINGS OF THE 2012 FIFTH INTERNATIONAL CONFERENCE ON EMERGING TRENDS IN ENGINEERING AND TECHNOLOGY (ICETET 2012)"
+    },
+    {
+      "id": "7368481",
+      "no": 76,
+      "year": "2012",
+      "title": "A Fuzzy-AR Model to Predict Human Body Weights",
+      "authors": "H. Tanii; K. Kuramoto; H. Nakajima; S. Kobashi; N. Tsuchiya; Y. Hata",
+      "venue": "2012 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ-IEEE)"
+    },
+    {
+      "id": "7368480",
+      "no": 75,
+      "year": "2012",
+      "title": "Ultrasonic Thickness Evaluation of Seminiferous Tubule by Fuzzy Inference",
+      "authors": "Y. Takashima; T. Ishikawa; K. Kuramoto; S. Kobashi; Y. Hata",
+      "venue": "2012 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ-IEEE)"
+    },
+    {
+      "id": "7368479",
+      "no": 74,
+      "year": "2012",
+      "title": "Asthmatic Attacks Prediction Considering Weather Factors Based on Fuzzy-AR Model",
+      "authors": "Y. Kaku; K. Kuramoto; S. Kobashi; Y. Hata",
+      "venue": "2012 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ-IEEE)"
+    },
+    {
+      "id": "17575389",
+      "no": 73,
+      "year": "2012",
+      "title": "A Fuzzy Time-Series Prediction Model with Multi-Biological Data for Health Management",
+      "authors": "H. Tanii; K. Kuramoto; H. Nakajima; S. Kobashi; N. Tsuchiya; Y. Hata",
+      "venue": "6TH INTERNATIONAL CONFERENCE ON SOFT COMPUTING AND INTELLIGENT SYSTEMS, AND THE 13TH INTERNATIONAL SYMPOSIUM ON ADVANCED INTELLIGENT SYSTEMS"
+    },
+    {
+      "id": "17575387",
+      "no": 72,
+      "year": "2012",
+      "title": "Fuzzy Object Shape Model for Newborn Brain MR Image Segmentation",
+      "authors": "A. Hashioka; K. Kuramoto; S. Kobashi; Y. Wakata; K. Ando; R. Ishikura; T. Ishikawa; S. Hirota; Y. Hata",
+      "venue": "6TH INTERNATIONAL CONFERENCE ON SOFT COMPUTING AND INTELLIGENT SYSTEMS, AND THE 13TH INTERNATIONAL SYMPOSIUM ON ADVANCED INTELLIGENT SYSTEMS"
+    },
+    {
+      "id": "17575385",
+      "no": 71,
+      "year": "2012",
+      "title": "Shape and Appearance Knowledge Based Brain Segmentation for Neonatal MR Images",
+      "authors": "A. Hashioka; S. Kobashi; K. Kuramoto; Y. Wakata; K. Ando; R. Ishikura; T. Ishikawa; S. Hirota; Y. Hata",
+      "venue": "2012 WORLD AUTOMATION CONGRESS (WAC)"
+    },
+    {
+      "id": "17575384",
+      "no": 70,
+      "year": "2012",
+      "title": "A Fusion Method for Marine Radar Images Using EM Algorithm",
+      "authors": "H. Mita; S. Kobashi; K. Nakagawa; K. Nishiyama; H. Maeno; K. Kuramoto; Y. Hata",
+      "venue": "2012 WORLD AUTOMATION CONGRESS (WAC)"
+    },
+    {
+      "id": "17575383",
+      "no": 69,
+      "year": "2012",
+      "title": "A Survey of Fuzzy Logic in Medical and Health Technology",
+      "authors": "Y. Hata; K. Kuramoto; S. Kobashi; H. Nakajima",
+      "venue": "2012 WORLD AUTOMATION CONGRESS (WAC)"
+    },
+    {
+      "id": "17575379",
+      "no": 68,
+      "year": "2012",
+      "title": "Fuzzy Object Shape Model for Newborn Brain MR Image Segmentation",
+      "authors": "A. Hashioka; K. Kuramoto; S. Kobashi; Y. Wakata; K. Ando; R. Ishikura; T. Ishikawa; S. Hirota; Y. Hata",
+      "venue": "6TH INTERNATIONAL CONFERENCE ON SOFT COMPUTING AND INTELLIGENT SYSTEMS, AND THE 13TH INTERNATIONAL SYMPOSIUM ON ADVANCED INTELLIGENT SYSTEMS"
+    },
+    {
+      "id": "7368489",
+      "no": 67,
+      "year": "2011",
+      "title": "A Challenge to Biometrics by Sole Pressure while Walking",
+      "authors": "T. Takeda; K. Kuramoto; S. Kobashi; Y. Hata",
+      "venue": "IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ 2011)"
+    },
+    {
+      "id": "7368488",
+      "no": 66,
+      "year": "2011",
+      "title": "A Fuzzy Logic Approach to Predict Human Body Weight Based on AR Model",
+      "authors": "H. Tanii; K. Kuramoto; H. Nakajima; S. Kobashi; N. Tsuchiya; Y. Hata",
+      "venue": "IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ 2011)"
+    },
+    {
+      "id": "7368487",
+      "no": 65,
+      "year": "2011",
+      "title": "A Testicular Tubule Evaluation Method by Ultrasonic Array Probe",
+      "authors": "Y. Takashima; K. Kuramoto; S. Kobashi; Y. Hata; T. Ishikawa",
+      "venue": "IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ 2011)"
+    },
+    {
+      "id": "17575795",
+      "no": 64,
+      "year": "2011",
+      "title": "A Fuzzy Automated Object Classification by Infrared Laser Camera",
+      "authors": "S. Kanazawa; K. Taniguchi; K. Asari; K. Kuramoto; S. Kobashi; Y. Hata",
+      "venue": "INDEPENDENT COMPONENT ANALYSES, WAVELETS, NEURAL NETWORKS, BIOSYSTEMS, AND NANOENGINEERING IX"
+    },
+    {
+      "id": "17575793",
+      "no": 63,
+      "year": "2011",
+      "title": "Particle method for sub-voxel extraction of cerebral surface in neonatal MR images",
+      "authors": "D. Yokomichi; S. Kobashi; Y. Wakata; K. Ando; R. Ishikura; K. Kuramoto; T. Ishikawa; S. Hirota; Y. Hata",
+      "venue": "Proceedings of the 2011 International Conference on Image Processing, Computer Vision, and Pattern Recognition, IPCV 2011"
+    },
+    {
+      "id": "17575397",
+      "no": 62,
+      "year": "2011",
+      "title": "Fractal dimension-based cortical dysplasia detection using MR images for children with epilepsy",
+      "authors": "S. Kobashi; N. Kawakami; Y. T. Kitamura; K. K. Shimono; K. Kuramoto; M. Taniike; T. Ishikawa; Y. Hata",
+      "venue": "Proceedings of the 2011 International Conference on Image Processing, Computer Vision, and Pattern Recognition, IPCV 2011"
+    },
+    {
+      "id": "17575395",
+      "no": 61,
+      "year": "2011",
+      "title": "Foot Age Estimation for Fall-Prevention using Sole Pressure by Fuzzy logic",
+      "authors": "T. Takeda; Y. Sakai; K. Kuramoto; S. Kobashi; T. Ishikawa; Y. Hata",
+      "venue": "2011 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC)"
+    },
+    {
+      "id": "17575394",
+      "no": 60,
+      "year": "2011",
+      "title": "Particle Filter for Implanted Knee Kinematic Analysis Using Dynamic Radiograph Video",
+      "authors": "S. Kobashi; N. Ikoma; F. Imamura; N. Shibanuma; K. Kuramoto; T. Ishikawa; Y. Hata",
+      "venue": "2011 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC)"
+    },
+    {
+      "id": "17575393",
+      "no": 59,
+      "year": "2011",
+      "title": "Blood Flow Detection under Skull by Doppler Effect",
+      "authors": "M. Nakamura; T. Ishikawa; S. Kobashi; K. Kuramoto; Y. Hata",
+      "venue": "2011 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS (SMC)"
+    },
+    {
+      "id": "16194019",
+      "no": 58,
+      "year": "2011",
+      "title": "Home care system for aging people confined to bed by detached sensor network",
+      "authors": "Y. Hata; S. Kobashi; K. Kuramoto; H. Nakajima",
+      "venue": "IEEE SSCI 2011: Symposium Series on Computational Intelligence - RIISS 2011: 2011 IEEE Workshop on Robotic Intelligence in Informationally Structured Space"
+    },
+    {
+      "id": "16194016",
+      "no": 57,
+      "year": "2011",
+      "title": "Marine radar system of systems for radar image quality improvement using em algorithm",
+      "authors": "H. Mita; S. Kobashi; K. Nakagawa; K. Nishiyama; H. Maeno; K. Kuramoto; Y. Hata",
+      "venue": "Proceedings of 2011 6th International Conference on System of Systems Engineering: SoSE in Cloud Computing, Smart Grid, and Cyber Security, SoSE 2011"
+    },
+    {
+      "id": "16194015",
+      "no": 56,
+      "year": "2011",
+      "title": "Neonatal brain MR image segmentation based on system-of-systems in engineering technology",
+      "authors": "A. Hashioka; K. Yamaguchi; S. Kobashi; Y. Wakata; K. Ando; R. Ishikura; K. Kuramoto; T. Ishikawa; S. Hirota; Y. Hata",
+      "venue": "Proceedings of 2011 6th International Conference on System of Systems Engineering: SoSE in Cloud Computing, Smart Grid, and Cyber Security, SoSE 2011"
+    },
+    {
+      "id": "16194013",
+      "no": 55,
+      "year": "2011",
+      "title": "Biometrics Security by Dynamics of Left and Right Sole Pressure while Walking",
+      "authors": "T. Takeda; K. Kuramoto; S. Kobashi; Y. Hata",
+      "venue": "INDEPENDENT COMPONENT ANALYSES, WAVELETS, NEURAL NETWORKS, BIOSYSTEMS, AND NANOENGINEERING IX"
+    },
+    {
+      "id": "16194011",
+      "no": 54,
+      "year": "2011",
+      "title": "YURAGI-Analysis for Detecting Heart Rate by Mat-Type Sensor in Bed",
+      "authors": "Y. Hata; K. Ho; K. Kuramoto; S. Kobashi; N. Tsuchiya; H. Nakajima",
+      "venue": "INDEPENDENT COMPONENT ANALYSES, WAVELETS, NEURAL NETWORKS, BIOSYSTEMS, AND NANOENGINEERING IX"
+    },
+    {
+      "id": "16194059",
+      "no": 53,
+      "year": "2010",
+      "title": "Computer-aided diagnosis system of systems for neonatal human brain MR images",
+      "authors": "S. Kobashi; D. Yokomichi; K. Yamaguchi; K. Kuramoto; S. Imawaki; Y. Hata",
+      "venue": "2010 5th International Conference on System of Systems Engineering, SoSE 2010"
+    },
+    {
+      "id": "16194057",
+      "no": 52,
+      "year": "2010",
+      "title": "Multi Sensor Approach to Detection of Heartbeat and Respiratory Rate Aided by Fuzzy Logic",
+      "authors": "K. Ho; K. Yamamoto; N. Tsuchiya; H. Nakajima; K. Kuramoto; S. Kobashi; Y. Hata",
+      "venue": "2010 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ-IEEE 2010)"
+    },
+    {
+      "id": "16194056",
+      "no": 51,
+      "year": "2010",
+      "title": "A priori Knowledge Based Particle Filter for Estimating 3-D Pose position of Implanted Knee",
+      "authors": "Y. Nakajima; S. Kobashi; Y. Tsumori; N. Shibanuma; F. Imamura; K. Kuramoto; S. Imawaki; S. Yoshiya; Y. Hata",
+      "venue": "2010 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ-IEEE 2010)"
+    },
+    {
+      "id": "16194055",
+      "no": 50,
+      "year": "2010",
+      "title": "Biometric Personal Authentication by One Step Foot Pressure Distribution Change by Fuzzy Artificial Immune System",
+      "authors": "T. Takeda; K. Taniguchi; K. Asari; K. Kuramoto; S. Kobashi; Y. Hata",
+      "venue": "2010 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ-IEEE 2010)"
+    },
+    {
+      "id": "16194054",
+      "no": 49,
+      "year": "2010",
+      "title": "Automated Fuzzy Logic Based Skull Stripping in Neonatal and Infantile MR Images",
+      "authors": "K. Yamaguchi; Y. Fujimoto; S. Kobashi; Y. Wakata; R. Ishikura; K. Kuramoto; S. Imawaki; S. Hirota; Y. Hata",
+      "venue": "2010 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS (FUZZ-IEEE 2010)"
+    },
+    {
+      "id": "16194052",
+      "no": 48,
+      "year": "2010",
+      "title": "Particle filter based knee kinematics analysis with 2-D/3-D image registration",
+      "authors": "Y. Nakajima; S. Kobashi; Y. Tsumori; N. Shibanuma; F. Imamura; K. Kuramoto; S. Imawaki; S. Yoshiya; Y. Hata",
+      "venue": "2010 World Automation Congress, WAC 2010"
+    },
+    {
+      "id": "16194050",
+      "no": 47,
+      "year": "2010",
+      "title": "Biometric personal identification by dinamics of sole pressure at walking",
+      "authors": "T. Takeda; K. Taniguchi; K. Asari; K. Kuramoto; S. Kobashi; Y. Hata",
+      "venue": "2010 World Automation Congress, WAC 2010"
+    },
+    {
+      "id": "16194049",
+      "no": 46,
+      "year": "2010",
+      "title": "Absolute eye gaze tracking system with MR images",
+      "authors": "S. Kobashi; T. Hozumi; S. Kan; T. Koike; K. Kuramoto; S. Imawaki; S. Miyauchi; Y. Hata",
+      "venue": "SCIS and ISIS 2010 - Joint 5th International Conference on Soft Computing and Intelligent Systems and 11th International Symposium on Advanced Intelligent Systems"
+    },
+    {
+      "id": "16194047",
+      "no": 45,
+      "year": "2010",
+      "title": "Wavelet transform based quantification of pivot-shift testing using inertial and magnetic composite MEMS sensor",
+      "authors": "S. Kobashi; A. Tomaru; Y. Tsumori; S. Yoshiya; K. Kuramoto; S. Imawaki; Y. Hata",
+      "venue": "Proceedings - 3rd International Conference on Emerging Trends in Engineering and Technology, ICETET 2010"
+    },
+    {
+      "id": "16194046",
+      "no": 44,
+      "year": "2010",
+      "title": "Unconstraint knee joint dynamics estimation system using inertial and magnetic composite MEMS sensor",
+      "authors": "A. Tomaru; S. Kobashi; Y. Tsumori; S. Yoshiya; K. Kuramoto; S. Imawaki; Y. Hata",
+      "venue": "Proceedings - 3rd International Conference on Emerging Trends in Engineering and Technology, ICETET 2010"
+    },
+    {
+      "id": "16194045",
+      "no": 43,
+      "year": "2010",
+      "title": "A study on image features using intensity profile for cortical dysplasia degree estimation",
+      "authors": "N. Kawakami; S. Kobashi; K. Kuramoto; Y. T. Kitamura; K. Kagitani-Shimono; S. Imawaki; M. Taniike; Y. Hata",
+      "venue": "2010 World Automation Congress, WAC 2010"
+    },
+    {
+      "id": "16194044",
+      "no": 42,
+      "year": "2010",
+      "title": "Statistical quantification of brain shape deformation with homologous brain shape modeling",
+      "authors": "K. Yamaguchi; S. Kobashi; K. Kuramoto; Y. T. Kitamura; S. Imawaki; Y. Hata",
+      "venue": "2010 World Automation Congress, WAC 2010"
+    },
+    {
+      "id": "16194043",
+      "no": 41,
+      "year": "2010",
+      "title": "Determination of lower limb coordinate systems and application to clinical study using MDCT images",
+      "authors": "S. Fujimoto; S. Kobashi; T. Y. Nishiyama; N. Kanzaki; T. Fujishiro; N. Shibanuma; K. Kuramoto; M. Kurosaka; Y. Hata",
+      "venue": "2010 World Automation Congress, WAC 2010"
+    },
+    {
+      "id": "16194042",
+      "no": 40,
+      "year": "2010",
+      "title": "A 3-DOF Knee Joint Angle Measurement System with Inertial and Magnetic Sensors",
+      "authors": "A. Tomaru; S. Kobashi; Y. Tsumori; S. Yoshiya; K. Kuramoto; S. Imawaki; Y. Hata",
+      "venue": "IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS (SMC 2010)"
+    },
+    {
+      "id": "16194041",
+      "no": 39,
+      "year": "2010",
+      "title": "Cerebral Surface Extraction Based on Particle Method in Neonatal MR Images",
+      "authors": "D. Yokomichi; S. Kobashi; Y. Wakata; K. Ando; R. Ishikura; K. Kuramoto; S. Imawaki; S. Hirota; Y. Hata",
+      "venue": "IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS (SMC 2010)"
+    },
+    {
+      "id": "16194040",
+      "no": 38,
+      "year": "2010",
+      "title": "Foot Age Estimation by Gait Sole Pressure Changes",
+      "authors": "T. Takeda; H. Ye; K. Taniguchi; K. Asari; Y. Sakai; K. Kuramoto; S. Kobashi; Y. Hatal",
+      "venue": "IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS (SMC 2010)"
+    },
+    {
+      "id": "16194037",
+      "no": 37,
+      "year": "2010",
+      "title": "Free Placement Trans-Skull Doppler System with 1.0MHz Array Ultrasonic Probe",
+      "authors": "M. Nakamura; Y. T. Kitamura; T. Yanagida; S. Kobashi; K. Kuramoto; Y. Hata",
+      "venue": "IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS (SMC 2010)"
+    },
+    {
+      "id": "16194033",
+      "no": 36,
+      "year": "2010",
+      "title": "Automated detection of people distribution by a 3D camera",
+      "authors": "K. Ho; K. Taniguchi; K. Asari; K. Kuramoto; S. Kobashi; Y. Hata",
+      "venue": "2010 World Automation Congress, WAC 2010"
+    },
+    {
+      "id": "16194029",
+      "no": 35,
+      "year": "2010",
+      "title": "On a voxel based morphometry analysis in neonatal brain MR images",
+      "authors": "A. Hashioka; S. Kobashi; K. Kuramoto; Y. Wakata; K. Ando; R. Ishikura; S. Imawaki; S. Hirota; Y. Hata",
+      "venue": "SCIS and ISIS 2010 - Joint 5th International Conference on Soft Computing and Intelligent Systems and 11th International Symposium on Advanced Intelligent Systems"
+    },
+    {
+      "id": "16194028",
+      "no": 34,
+      "year": "2010",
+      "title": "Pivot shift evaluation in the knee joint using inertial and magnetic sensors",
+      "authors": "Y. Tsumori; S. Yoshiya; M. Yagi; N. Shibanuma; A. Tomaru; S. Kobashi; K. Kondo; Y. Hata",
+      "venue": "2010 World Automation Congress, WAC 2010"
+    },
+    {
+      "id": "16194024",
+      "no": 33,
+      "year": "2010",
+      "title": "Particle method based sub-voxel cerebral contour extraction in neonatal MR images",
+      "authors": "S. Kobashi; D. Yokomichi; K. Kuramoto; S. Imawaki; Y. Hata",
+      "venue": "4th International Symposium on Computational Intelligence and Industrial Applications, ISCIIA 2010"
+    },
+    {
+      "id": "8239496",
+      "no": 32,
+      "year": "2009",
+      "title": "Trans-skull Imaging System by Ultrasonic Array Probe",
+      "authors": "G. Hiramatsu; Y. Ikeda; S. Kobashi; Y. Hata; S. Imawaki; Y. Kitamura; T. Yanagida",
+      "venue": "2009 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS (SMC 2009), VOLS 1-9"
+    },
+    {
+      "id": "8239495",
+      "no": 31,
+      "year": "2009",
+      "title": "Real Time Autonomic Nervous System Display with Air Cushion Sensor while Seated",
+      "authors": "K. Yamamoto; S. Kobashi; Y. Hata; N. Tsuchiya; H. Nakajima",
+      "venue": "2009 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS (SMC 2009), VOLS 1-9"
+    },
+    {
+      "id": "8239493",
+      "no": 30,
+      "year": "2009",
+      "title": "Human Health Monitoring System of Systems by Non-Contacted Senors",
+      "authors": "Y. Hata; S. Kobashi; H. Yamaguchi; O. Ishikawa; N. Tsuchiya; H. Nakajima",
+      "venue": "2009 IEEE INTERNATIONAL CONFERENCE ON SYSTEM OF SYSTEMS ENGINEERING SOSE 2009"
+    },
+    {
+      "id": "34222967",
+      "no": 29,
+      "year": "2009",
+      "title": "Brain Shape Homologous Modeling Using Sulcal-Distribution Index in MR Images",
+      "authors": "K. Yamaguchi; S. Kobashi; I. Mohri; S. Imawaki; M. Taniike; Y. Hata",
+      "venue": "2009 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS (SMC 2009), VOLS 1-9"
+    },
+    {
+      "id": "29049528",
+      "no": 28,
+      "year": "2009",
+      "title": "Fuzzy Logic Assisted Quantification of Gyral Deformation Index Using Magnetic Resonance Images for the Infantile Brain",
+      "authors": "S. Kobashi; Y. Fujimoto; M. Ogawa; K. Ando; R. Ishikura; S. Imawaki; S. Hirota; Y. Hata",
+      "venue": "ISMVL: 2009 39TH IEEE INTERNATIONAL SYMPOSIUM ON MULTIPLE-VALUED LOGIC"
+    },
+    {
+      "id": "29047631",
+      "no": 27,
+      "year": "2009",
+      "title": "Biometric System by Foot Pressure Change Based on Neural Network",
+      "authors": "H. Ye; S. Kobashi; Y. Hata; K. Taniguchi; K. Asari",
+      "venue": "ISMVL: 2009 39TH IEEE INTERNATIONAL SYMPOSIUM ON MULTIPLE-VALUED LOGIC"
+    },
+    {
+      "id": "29040065",
+      "no": 26,
+      "year": "2009",
+      "title": "Fuzzy Estimation System of Dementia Severity Using Biological Information During Sleep",
+      "authors": "H. Uchida; H. Yamaguchi; S. Kobashi; Y. Hata; N. Tsuchiya; H. Nakajima",
+      "venue": "2009 IEEE INTERNATIONAL CONFERENCE ON FUZZY SYSTEMS, VOLS 1-3"
+    },
+    {
+      "id": "17538505",
+      "no": 25,
+      "year": "2009",
+      "title": "Wearable Joint Kinematic Monitoring System Using Inertial and Magnetic Sensors",
+      "authors": "S. Kobashi; K. Kawano; Y. Tsumori; S. Yoshiya; Y. Hata",
+      "venue": "2009 IEEE WORKSHOP ON ROBOTIC INTELLIGENCE IN INFORMATIONALLY STRUCTURED SPACE"
+    },
+    {
+      "id": "17538503",
+      "no": 24,
+      "year": "2009",
+      "title": "Human Health Monitoring System of Systems with Fuzzy Logic by Sensor Network",
+      "authors": "Y. Hata; S. Kobashi; K. Taniguchi; H. Nakajima",
+      "venue": "2009 IEEE WORKSHOP ON ROBOTIC INTELLIGENCE IN INFORMATIONALLY STRUCTURED SPACE"
+    },
+    {
+      "id": "17538502",
+      "no": 23,
+      "year": "2009",
+      "title": "Wearable Knee Kinematics Monitoring System of MARG Sensor and Pressure Sensor Systems",
+      "authors": "S. Kobashi; Y. Tsumori; S. Imawaki; S. Yoshiya; Y. Hata",
+      "venue": "2009 IEEE INTERNATIONAL CONFERENCE ON SYSTEM OF SYSTEMS ENGINEERING SOSE 2009"
+    },
+    {
+      "id": "16194035",
+      "no": 22,
+      "year": "2008",
+      "title": "BIOMETRIC PERSONAL IDENTIFICATION BASED ON GAIT PATTERN USING BOTH FEET PRESSURE CHANGE",
+      "authors": "T. Yamakawa; K. Taniguchi; K. Asari; S. Kobashi; Y. Hata",
+      "venue": "2008 WORLD AUTOMATION CONGRESS PROCEEDINGS, VOLS 1-3"
+    },
+    {
+      "id": "8152419",
+      "no": 21,
+      "year": "2007",
+      "title": "Cerebral surface extraction from neonatal MR images using cerebral surface model",
+      "authors": "T. Oshiba; S. Kobashi; K. Ando; R. Ishikura; K. Kondo; Y. Hata",
+      "venue": "2007 IEEE INTERNATIONAL CONFERENCE ON SYSTEM OF SYSTEMS ENGINEERING, VOLS 1 AND 2"
+    },
+    {
+      "id": "8152418",
+      "no": 20,
+      "year": "2007",
+      "title": "Analyzing 3D knee kinematics using accelerometers, gyroscopes and magnetometers",
+      "authors": "K. Kawano; S. Kobashi; M. Yagi; K. Kondo; S. Yoshiya; Y. Hata",
+      "venue": "2007 IEEE INTERNATIONAL CONFERENCE ON SYSTEM OF SYSTEMS ENGINEERING, VOLS 1 AND 2"
+    },
+    {
+      "id": "8152417",
+      "no": 19,
+      "year": "2007",
+      "title": "A fuzzy estimation system for cellular quantity of artificial culture bone",
+      "authors": "S. Yamaguchi; K. Nagamune; K. Oe; S. Kobashi; K. Kondo; Y. Hata",
+      "venue": "2007 IEEE/ICME INTERNATIONAL CONFERENCE ON COMPLEX MEDICAL ENGINEERING, VOLS 1-4"
+    },
+    {
+      "id": "8152416",
+      "no": 18,
+      "year": "2007",
+      "title": "Analyze 3-D knee kinematics after anterior cruciate ligament reconstruction using MDCT and digital radiography",
+      "authors": "D. Kubo; S. Kobashi; A. Okayama; N. Shibanuma; M. Yagi; K. Kondo; S. Yoshiya; Y. Hata",
+      "venue": "2007 IEEE/ICME INTERNATIONAL CONFERENCE ON COMPLEX MEDICAL ENGINEERING, VOLS 1-4"
+    },
+    {
+      "id": "8152415",
+      "no": 17,
+      "year": "2007",
+      "title": "Training artificial neural network using MR images for visual axes estimation during sleep",
+      "authors": "Y. Yahata; S. Kobashi; S. Kan; M. Misaki; K. Kondo; S. Miyauchi; Y. Hata",
+      "venue": "2007 IEEE/ICME INTERNATIONAL CONFERENCE ON COMPLEX MEDICAL ENGINEERING, VOLS 1-4"
+    },
+    {
+      "id": "8152414",
+      "no": 16,
+      "year": "2007",
+      "title": "Fuzzy ultrasonic Imaging system for visualizing brain surface under skull considering ultrasonic refraction",
+      "authors": "M. Kimura; S. Kobashi; K. Kondo; Y. Hata; Y. T. Kitamura; T. Yanagida",
+      "venue": "2007 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS, VOLS 1-8"
+    },
+    {
+      "id": "8152413",
+      "no": 15,
+      "year": "2007",
+      "title": "Fuzzy ultrasonic array system for locating screw holes of intramedullary nail",
+      "authors": "Y. Ikeda; S. Kobashi; K. Kondo; Y. Hata",
+      "venue": "2007 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS, VOLS 1-8"
+    },
+    {
+      "id": "8152412",
+      "no": 14,
+      "year": "2007",
+      "title": "Biometric personal identification using sole information",
+      "authors": "T. Yamakawa; K. Taniguchi; T. Momen; S. Kobashi; K. Kondo; Y. Hata",
+      "venue": "2007 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS, VOLS 1-8"
+    },
+    {
+      "id": "8152411",
+      "no": 13,
+      "year": "2007",
+      "title": "Estimation of visual axis during sleep by analyzing infrared video using artificial neural network",
+      "authors": "Y. Yahata; S. Kobashi; S. Kan; M. Misaki; K. Kondo; S. Miyauchi; Y. Hata",
+      "venue": "2007 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS, VOLS 1-8"
+    },
+    {
+      "id": "8152410",
+      "no": 12,
+      "year": "2007",
+      "title": "Robust estimation of knee kinematics after total knee arthroplasty with evolutional computing approach",
+      "authors": "S. Kobashi; N. Shibanuma; K. Kondo; M. Kurosaka; Y. Hata",
+      "venue": "2007 IEEE INTERNATIONAL CONFERENCE ON IMAGE PROCESSING, VOLS 1-7"
+    },
+    {
+      "id": "28733197",
+      "no": 11,
+      "year": "2005",
+      "title": "Detection of brain activation with no stimulus using wavelet analysis",
+      "authors": "S. Imaeda; S. Kobashi; Y. Kitamura; K. Kondo; Y. Hata; T. Yanagida",
+      "venue": "INTERNATIONAL CONFERENCE ON SYSTEMS, MAN AND CYBERNETICS, VOL 1-4, PROCEEDINGS"
+    },
+    {
+      "id": "28546569",
+      "no": 10,
+      "year": "2003",
+      "title": "Tubular tissue-based segmentation of lung lobes from chest MDCT images",
+      "authors": "T. Ohkawa; S. Kobashi; K. Kondo; Y. Hata; T. Nakano",
+      "venue": "IEEE EMBS APBME 2003"
+    },
+    {
+      "id": "28573283",
+      "no": 9,
+      "year": "2002",
+      "title": "Automated volumetry of lateral entricles in 3-D SPGR MR images using physicians' knowledge represented by fuzzy logic",
+      "authors": "S. Kobashi; Y. Hata; M. Matsui; H. Kitagaki; E. Mori; T. Kanagawa",
+      "venue": "CARS 2002: COMPUTER ASSISTED RADIOLOGY AND SURGERY, PROCEEDINGS"
+    },
+    {
+      "id": "29102558",
+      "no": 8,
+      "year": "2001",
+      "title": "Am automated tissue discrimination based on fuzzy analysis of ultrasonic wave",
+      "authors": "K. Sugano; K. Nagamune; S. Kobashi; Y. Hata; T. Sawayama; K. Taniguchi",
+      "venue": "KNOWLEDGE-BASED INTELLIGENT INFORMATION ENGINEERING SYSTEMS & ALLIED TECHNOLOGIES, PTS 1 AND 2"
+    },
+    {
+      "id": "29096726",
+      "no": 7,
+      "year": "2001",
+      "title": "Fuzzy rule based segmentation of CT knee images",
+      "authors": "M. Shibata; S. Kobashi; Y. Hata; Y. Tokimoto; M. Ishikawa",
+      "venue": "KNOWLEDGE-BASED INTELLIGENT INFORMATION ENGINEERING SYSTEMS & ALLIED TECHNOLOGIES, PTS 1 AND 2"
+    },
+    {
+      "id": "29078474",
+      "no": 6,
+      "year": "2001",
+      "title": "3-D visualization of the cholecyst and the bile duct using fuzzy clustering",
+      "authors": "C. Yasuba; S. Kobashi; Y. Hata; Y. Tokimoto; M. Ishikawa",
+      "venue": "KNOWLEDGE-BASED INTELLIGENT INFORMATION ENGINEERING SYSTEMS & ALLIED TECHNOLOGIES, PTS 1 AND 2"
+    },
+    {
+      "id": "29076151",
+      "no": 5,
+      "year": "2001",
+      "title": "A medical image segmentation method using K-means clustering and rough sets",
+      "authors": "T. Matsuura; S. Kobashi; Y. Hata",
+      "venue": "KNOWLEDGE-BASED INTELLIGENT INFORMATION ENGINEERING SYSTEMS & ALLIED TECHNOLOGIES, PTS 1 AND 2"
+    },
+    {
+      "id": "27129166",
+      "no": 4,
+      "year": "2000",
+      "title": "3-D Visualization of the Structure of Cerebral Blood Vessels Using Fuzzy Image Processing.",
+      "authors": "S. Kobashi; Y. Hata; Y. T. Kitamura; T. Yanagida",
+      "venue": "Proceedings of 4th Asian Fuzzy Systems Symposium"
+    },
+    {
+      "id": "28480011",
+      "no": 3,
+      "year": "1998",
+      "title": "Medical image segmentation by fuzzy logic techniques",
+      "authors": "Y. Hata; S. Kobashi; S. Hirano",
+      "venue": "1998 IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN, AND CYBERNETICS, VOLS 1-5"
+    },
+    {
+      "id": "28479100",
+      "no": 2,
+      "year": "1998",
+      "title": "Automated brain MRI volumetry demonstrated a genetic correlate of brain atrophy in Alzheimer's disease",
+      "authors": "E. Mori; M. Yasuda; H. Kitagawa; S. Kobashi; Y. Hata",
+      "venue": "CAR '98 - COMPUTER ASSISTED RADIOLOGY AND SURGERY"
+    },
+    {
+      "id": "28470433",
+      "no": 1,
+      "year": "1998",
+      "title": "Utility of automated hemispheric surface display of MRI in diagnosing for cortical atrophy",
+      "authors": "H. Kitagaki; E. Mori; K. Ishii; S. Kobashi; Y. Hata",
+      "venue": "CAR '98 - COMPUTER ASSISTED RADIOLOGY AND SURGERY"
+    }
+  ],
+  "unclassified_count": 6
 }
