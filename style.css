@@ -1,0 +1,51 @@
+/* ===== Base ===== */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: #111;
+}
+
+.wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1em;
+}
+
+/* ===== Year heading ===== */
+.year-block {
+  margin-top: 1.6em;
+}
+
+.year-block h2 {
+  font-size: 1.4em;
+  font-weight: 600;
+  margin: 1.2em 0 0.4em 0;
+}
+
+/* ===== Journal papers (IEEE-style hanging indent) ===== */
+.pub-list {
+  margin-top: 0.4em;
+}
+
+.pub-item {
+  margin: 0.35em 0;
+  line-height: 1.6;
+  padding-left: 2.6em;   /* hanging indent */
+  text-indent: -2.6em;
+}
+
+.pub-num {
+  font-weight: 600;
+  margin-right: 0.3em;
+  white-space: nowrap;
+}
+
+.pub-cite a {
+  margin-left: 0.25em;
+  text-decoration: none;
+}
+
+.pub-cite a:hover {
+  text-decoration: underline;
+}
