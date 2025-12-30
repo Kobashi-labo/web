@@ -17,18 +17,24 @@ body {
   background: rgba(30, 58, 138, 0.95);
   backdrop-filter: blur(10px);
   color: #fff;
-  padding: 2rem 0; /* 1.6rem → 2rem（トップ寄せ） */
+  padding: 2rem 0;
   box-shadow: 0 8px 32px rgba(0,0,0,0.2);
   border-bottom: 3px solid rgba(255,255,255,0.1);
+
+  /* ★追加：中身を中央に配置 */
+  display: flex;
+  justify-content: center;
 }
 
 /* ヘッダー内の横幅をカード(.wrap)と揃える */
 .site-header > *{
+  width: 100%;               /* ★追加 */
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
   padding: 0 2rem;
 }
+
 
 .site-header a{
   color:#fff;
