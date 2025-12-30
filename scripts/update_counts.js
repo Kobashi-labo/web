@@ -2,7 +2,13 @@
  * scripts/update_counts.js
  * - Fetch researchmap API
  * - Build data/counts.json
- * - Build publications/journal-papers.html (journal-only, year-grouped, IEEE style)
+ * - Build publications/journal-papers.html
+ *
+ * Policy:
+ *  - Journal papers only
+ *  - Display: newest first
+ *  - Numbering: global cumulative (oldest = 1)
+ *  - IEEE style authors
  *
  * Node 18+
  */
@@ -10,16 +16,15 @@
 const fs = require("fs");
 const path = require("path");
 
-const RESEARCHMAP_PERMALINK = process.env.RESEARCHMAP_PERMALINK || "read0134502";
+const RESEARCHMAP_PERMALINK =
+  process.env.RESEARCHMAP_PERMALINK || "read0134502";
 
-// ★ env があればそっちを優先（拡張性）
 const OUT_COUNTS_JSON =
-  process.env.OUT_COUNTS_JSON ||
-  process.env.OUT_COUNTS ||
-  path.join("data", "counts.json");
+  process.env.OUT_COUNTS_JSON || path.join("data", "counts.json");
 
 const OUT_JOURNAL_HTML =
-  process.env.OUT_JOURNAL_HTML || path.join("publications", "journal-papers.html");
+  process.env.OUT_JOURNAL_HTML ||
+  path.join("publications", "journal-papers.html");
 
 /* =========================
  * utils
@@ -38,29 +43,28 @@ function escHtml(s) {
     .replaceAll("'", "&#39;");
 }
 
-function isObject(v) {
-  return v && typeof v === "object" && !Array.isArray(v);
-}
-
 function normalizeSpaces(s) {
   return String(s ?? "").replace(/\s+/g, " ").trim();
 }
 
-/* ---- object → string 正規化（ただし authors のような配列を “潰して結合” しない用途には使わない） ---- */
+function isObject(v) {
+  return v && typeof v === "object" && !Array.isArray(v);
+}
+
+/* ---- object → string 完全正規化 ---- */
 function pickLangText(v) {
   if (v == null) return "";
   if (typeof v === "string" || typeof v === "number") return String(v);
   if (Array.isArray(v)) return v.map(pickLangText).filter(Boolean).join(" ");
 
   if (isObject(v)) {
-    if (v.name) return pickLangText(v.name);
     if (v.full_name) return pickLangText(v.full_name);
     if (v.display_name) return pickLangText(v.display_name);
+    if (v.name) return pickLangText(v.name);
 
-    const cand = v.en ?? v.ja ?? v["rm:en"] ?? v["rm:ja"] ?? v.value ?? v.text ?? "";
+    const cand =
+      v.en ?? v.ja ?? v["rm:en"] ?? v["rm:ja"] ?? v.value ?? v.text ?? "";
     if (cand) return pickLangText(cand);
-
-    return "";
   }
   return "";
 }
@@ -74,7 +78,7 @@ function firstNonEmpty(...vals) {
 }
 
 /* =========================
- * 年
+ * Year
  * ========================= */
 function toYear(item) {
   const cands = [
@@ -99,33 +103,23 @@ function toYear(item) {
  * URL
  * ========================= */
 function toUrl(item) {
-  // researchmap は identifiers.doi が多い（配列のこともある）
-  const doi =
-    firstNonEmpty(item?.doi, item?.DOI, item?.["rm:doi"]) ||
-    firstNonEmpty(item?.identifiers?.doi);
-
+  const doi = firstNonEmpty(item?.doi, item?.DOI, item?.["rm:doi"]);
   if (doi) {
     const clean = doi.replace(/^https?:\/\/(dx\.)?doi\.org\//i, "");
     return `https://doi.org/${clean}`;
   }
-
-  // see_also に doi URL がある場合
-  const seeAlso = Array.isArray(item?.see_also) ? item.see_also : [];
-  const doiLink = seeAlso.find((x) => (x?.label || "").toLowerCase() === "doi")?.["@id"];
-  if (doiLink) return String(doiLink);
-
   return firstNonEmpty(item?.url, item?.URL, item?._links?.self?.href);
 }
 
 /* =========================
- * 著者（IEEE 形式）
+ * Authors (IEEE style)
  * ========================= */
 
 function formatAuthorName(raw) {
   const name = normalizeSpaces(pickLangText(raw));
   if (!name) return "";
 
-  // 日本語名はそのまま
+  // Japanese names: 그대로
   if (/[ぁ-んァ-ン一-龥]/.test(name)) return name;
 
   // "Family, Given Middle"
@@ -143,12 +137,10 @@ function formatAuthorName(raw) {
   const tokens = name.split(" ").filter(Boolean);
   if (tokens.length === 1) return tokens[0];
 
-  const family = tokens[tokens.length - 1]; // 姓（省略しない）
-  const givenTokens = tokens.slice(0, -1);
-
-  const initials = givenTokens
-    .map((w) => (w[0] ? w[0].toUpperCase() + "." : ""))
-    .filter(Boolean)
+  const family = tokens[tokens.length - 1];
+  const initials = tokens
+    .slice(0, -1)
+    .map((w) => w[0].toUpperCase() + ".")
     .join(" ");
 
   return normalizeSpaces(`${initials} ${family}`);
@@ -162,103 +154,50 @@ function joinAuthorsIEEE(list) {
   return `${a.slice(0, -1).join(", ")}, and ${a[a.length - 1]}`;
 }
 
-/**
- * ★ researchmap の authors 形式を “著者配列” に正規化する
- * 例:
- *   authors: { en: [ {name:"A"}, ... ] }
- *   authors: [ {name:"A"}, ... ]
- *   authors: { ja: [...] }
- *   author: "A; B; C"
- */
-function getAuthorList(v) {
-  if (!v) return [];
-
-  // すでに配列
-  if (Array.isArray(v)) return v;
-
-  // "A;B;C" のような文字列
-  if (typeof v === "string") {
-    const parts = v
-      .split(/\s*;\s*|\s*,\s*|\s+and\s+/i)
-      .map((s) => s.trim())
-      .filter(Boolean);
-    return parts;
-  }
-
-  // 言語キー付きオブジェクト（今回のサンプルがこれ）
-  if (isObject(v)) {
-    const cand =
-      (Array.isArray(v.en) && v.en) ||
-      (Array.isArray(v.ja) && v.ja) ||
-      (Array.isArray(v["rm:en"]) && v["rm:en"]) ||
-      (Array.isArray(v["rm:ja"]) && v["rm:ja"]) ||
-      null;
-
-    if (cand) return cand;
-
-    // オブジェクト単体が1著者のこともある
-    if (v.name || v.full_name || v.display_name || (v.family_name && v.given_name)) {
-      return [v];
-    }
-  }
-
-  return [];
-}
-
 function toAuthors(item) {
-  // あり得るキーを全部拾う
   const pools = [
     item?.authors,
     item?.author,
     item?.creators,
-    item?.creator,
     item?.contributors,
-    item?.contributor,
     item?.members,
-    item?.member,
     item?.["rm:authors"],
-    item?.["rm:author"],
-  ].filter((v) => v != null);
+  ].filter(Boolean);
 
-  // まず “著者配列” に展開できるものを探す
-  let list = [];
-  for (const p of pools) {
-    const got = getAuthorList(p);
-    if (got.length) {
-      list = got;
-      break;
-    }
+  const arr = pools.find((v) => Array.isArray(v) && v.length);
+
+  if (arr) {
+    const names = arr
+      .flatMap((a) => {
+        const s = firstNonEmpty(
+          a?.full_name,
+          a?.display_name,
+          a?.name,
+          a?.family_name && a?.given_name
+            ? `${a.given_name} ${a.family_name}`
+            : "",
+          a
+        );
+
+        if (typeof s === "string" && /;|\s+and\s+/i.test(s)) {
+          return s.split(/\s*;\s*|\s+and\s+/i).map((x) => x.trim());
+        }
+        return [s];
+      })
+      .map(formatAuthorName)
+      .filter(Boolean);
+
+    return joinAuthorsIEEE(names);
   }
-  if (!list.length) return "";
 
-  // 各要素から確実に “1人分の名前” を取り出す（潰して結合しない）
-  const names = list
-    .flatMap((a) => {
-      // 1要素に "A;B;C" のように入っている事故も救済（; / and のみ分割。カンマは "Family, Given" と衝突するので避ける）
-      const s = firstNonEmpty(
-        a?.full_name,
-        a?.display_name,
-        a?.name,
-        a?.["rm:display_name"],
-        a?.family_name && a?.given_name
-          ? `${pickLangText(a.given_name)} ${pickLangText(a.family_name)}`
-          : "",
-        a?.family && a?.given ? `${pickLangText(a.given)} ${pickLangText(a.family)}` : "",
-        a
-      );
+  const fallback = firstNonEmpty(
+    item?.author_name,
+    item?.authors_name,
+    item?.creator_name
+  );
+  if (fallback) return joinAuthorsIEEE([formatAuthorName(fallback)]);
 
-      if (typeof s === "string" && /;|\s+and\s+/i.test(s)) {
-        return s
-          .split(/\s*;\s*|\s+and\s+/i)
-          .map((x) => x.trim())
-          .filter(Boolean);
-      }
-      return [s];
-    })
-    .map(formatAuthorName)
-    .filter(Boolean);
-
-  return joinAuthorsIEEE(names);
+  return "";
 }
 
 /* =========================
@@ -278,7 +217,6 @@ function toJournalName(item) {
     item?.journal,
     item?.journal_name,
     item?.publication_name,
-    item?.publication_name?.en,
     item?.container_title,
     item?.["rm:journal"]
   );
@@ -296,7 +234,7 @@ function toVolNoPp(item) {
   const pr = firstNonEmpty(item?.page_range, item?.pages);
 
   let pp = "";
-  if (sp && ep) pp = `${sp}\u2013${ep}`;
+  if (sp && ep) pp = `${sp}–${ep}`;
   else if (pr) pp = pr;
 
   const parts = [];
@@ -308,54 +246,12 @@ function toVolNoPp(item) {
 }
 
 /* =========================
- * Journal-only 判定
+ * Journal-only filter
  * ========================= */
 function isJournalOnly(item) {
-  const j = toJournalName(item).toLowerCase();
-  const t = toTitle(item).toLowerCase();
-  const hay = `${j} | ${t}`;
-
-  const badPatterns = [
-    /\bproceedings\b/,
-    /\bproceedings of\b/,
-    /\bannual international conference\b/,
-    /\binternational conference\b/,
-    /\bconference\b/,
-    /\bsymposium\b/,
-    /\bworkshop\b/,
-    /\bmeeting\b/,
-    /\bcongress\b/,
-  ];
-  if (badPatterns.some((re) => re.test(hay))) return false;
-
-  const typeStr = [
-    item?.published_paper_type,
-    item?.paper_type,
-    item?.type,
-    item?.category,
-    item?.raw_type_fields?.published_paper_type,
-  ]
-    .map((v) => pickLangText(v).toLowerCase())
-    .filter(Boolean)
-    .join(" | ");
-
-  if (/(conference|proceeding|proceedings|symposium|workshop)/.test(typeStr)) return false;
-  if (/(book|chapter|in_book)/.test(typeStr)) return false;
-
-  if (typeStr.includes("journal")) return true;
-
-  const journalHint = [
-    item?.is_international_journal,
-    item?.international_journal,
-    item?.raw_type_fields?.is_international_journal,
-    item?.referee,
-    item?.raw_type_fields?.referee,
-  ]
-    .map((v) => pickLangText(v).toLowerCase())
-    .join(" ");
-
-  if (journalHint.includes("true") || journalHint.includes("1")) return true;
-
+  const hay = `${toJournalName(item)} ${toTitle(item)}`.toLowerCase();
+  if (/(conference|proceedings|symposium|workshop|meeting|congress)/.test(hay))
+    return false;
   return Boolean(toJournalName(item));
 }
 
@@ -368,14 +264,6 @@ async function fetchJson(url) {
   return await res.json();
 }
 
-function normalizeItems(json) {
-  if (Array.isArray(json)) return { items: json, next: null };
-  return {
-    items: Array.isArray(json.items) ? json.items : [],
-    next: json?._links?.next?.href || null,
-  };
-}
-
 async function fetchAllCategory(cat) {
   let url = `https://api.researchmap.jp/${RESEARCHMAP_PERMALINK}/${cat}?format=json&limit=1000&start=1`;
   const all = [];
@@ -383,7 +271,7 @@ async function fetchAllCategory(cat) {
 
   for (let i = 0; i < 50; i++) {
     const json = await fetchJson(url);
-    const { items, next } = normalizeItems(json);
+    const items = Array.isArray(json.items) ? json.items : json;
 
     for (const it of items) {
       const id = it?.["rm:id"] || it?.id;
@@ -391,16 +279,36 @@ async function fetchAllCategory(cat) {
       if (id) seen.add(id);
       all.push(it);
     }
+
+    const next = json?._links?.next?.href;
     if (!next) break;
-    url = next.startsWith("http") ? next : `https://api.researchmap.jp${next}`;
+    url = next.startsWith("http")
+      ? next
+      : `https://api.researchmap.jp${next}`;
   }
   return all;
 }
 
 /* =========================
- * HTML
+ * HTML generation
  * ========================= */
 function buildJournalHtml({ updatedAt, items }) {
+  // ---- cumulative numbering (oldest = 1)
+  const key = (it) =>
+    it?.["rm:id"] ||
+    it?.id ||
+    `${toYear(it)}|${toTitle(it)}`;
+
+  const asc = [...items].sort((a, b) =>
+    `${toYear(a)}|${toTitle(a)}`.localeCompare(
+      `${toYear(b)}|${toTitle(b)}`
+    )
+  );
+
+  const indexMap = new Map();
+  asc.forEach((it, i) => indexMap.set(key(it), i + 1));
+
+  // ---- group by year
   const byYear = new Map();
   for (const it of items) {
     const y = toYear(it);
@@ -408,53 +316,50 @@ function buildJournalHtml({ updatedAt, items }) {
     byYear.get(y).push(it);
   }
 
-  const years = [...byYear.keys()].sort((a, b) => {
-    if (a === "----") return 1;
-    if (b === "----") return -1;
-    return Number(b) - Number(a);
-  });
-
-  let idx = 1;
+  const years = [...byYear.keys()].sort((a, b) => Number(b) - Number(a));
 
   const blocks = years
     .map((y) => {
-      const list = byYear.get(y);
+      const list = byYear
+        .get(y)
+        .sort((a, b) =>
+          `${toYear(b)}|${toTitle(b)}`.localeCompare(
+            `${toYear(a)}|${toTitle(a)}`
+          )
+        );
+
       const lis = list
         .map((it) => {
-          const authors = toAuthors(it);
-          const title = toTitle(it);
-          const journal = toJournalName(it);
-          const vnp = toVolNoPp(it);
-          const year = toYear(it);
-          const url = toUrl(it);
-
           const cite = [
-            authors && `${escHtml(authors)},`,
-            title && `“${escHtml(title)},”`,
-            journal && `<i>${escHtml(journal)}</i>,`,
-            vnp && `${escHtml(vnp)},`,
-            year !== "----" ? `${year}.` : ".",
+            toAuthors(it) && `${escHtml(toAuthors(it))},`,
+            toTitle(it) && `“${escHtml(toTitle(it))},”`,
+            toJournalName(it) &&
+              `<i>${escHtml(toJournalName(it))}</i>,`,
+            toVolNoPp(it) && `${escHtml(toVolNoPp(it))},`,
+            `${toYear(it)}.`,
           ]
             .filter(Boolean)
             .join(" ");
 
           return `
-          <li class="paper">
-            <div class="box">
-              <span class="num">${idx++}.</span>
-              <div class="cite">${cite}${
-                url ? ` <a href="${escHtml(url)}" target="_blank">[link]</a>` : ""
-              }</div>
-            </div>
-          </li>`;
+<li class="paper">
+  <div class="box">
+    <span class="num">${indexMap.get(key(it))}.</span>
+    <div class="cite">${cite}${
+            toUrl(it)
+              ? ` <a href="${escHtml(toUrl(it))}" target="_blank">[link]</a>`
+              : ""
+          }</div>
+  </div>
+</li>`;
         })
         .join("");
 
       return `
-      <section>
-        <h2>${y} <span class="badge">${list.length}</span></h2>
-        <ol>${lis}</ol>
-      </section>`;
+<section>
+  <h2>${y} <span class="badge">${list.length}</span></h2>
+  <ol>${lis}</ol>
+</section>`;
     })
     .join("");
 
@@ -514,12 +419,12 @@ async function main() {
   ensureDir(path.dirname(OUT_JOURNAL_HTML));
   fs.writeFileSync(
     OUT_JOURNAL_HTML,
-    buildJournalHtml({ updatedAt: updatedAt.slice(0, 10), items: journals })
+    buildJournalHtml({
+      updatedAt: updatedAt.slice(0, 10),
+      items: journals,
+    })
   );
 
-  // ログ（Actions で追える）
-  console.log("OUT_COUNTS_JSON =", path.resolve(OUT_COUNTS_JSON));
-  console.log("OUT_JOURNAL_HTML =", path.resolve(OUT_JOURNAL_HTML));
   console.log("Done.");
 }
 
