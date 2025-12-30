@@ -17,24 +17,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
-      - name: Generate counts and pages
+      - name: Update counts/pages from researchmap
         env:
-          RESEARCHMAP_PERMALINK: read0134502
+          RESEARCHMAP_PERMALINK: ${{ secrets.RESEARCHMAP_PERMALINK }}
+          RESEARCHMAP_API_KEY: ${{ secrets.RESEARCHMAP_API_KEY }}
           OUT_COUNTS: data/counts.json
-          OUT_REPORT: data/unclassified_papers.json
           OUT_JOURNAL_HTML: publications/journal-papers.html
-          OUT_INTL_CONF_HTML: publications/conference-proceeding-papers.html
-          OUT_BOOK_CHAPTERS_HTML: publications/book-chapters.html
+          OUT_REVIEW_HTML: publications/review-articles.html
         run: |
-          pwd
-          ls -la
           node scripts/update_counts.js
-          ls -la publications || true
 
       - name: Commit & push if changed
         run: |
@@ -47,6 +43,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add data/counts.json data/unclassified_papers.json publications/*.html
+          git add data/counts.json publications/*.html
           git commit -m "chore: update researchmap counts/pages (daily)"
           git push
