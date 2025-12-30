@@ -378,6 +378,7 @@ async function fetchAllCategory(cat) {
  * HTML
  * ========================= */
 function buildJournalHtml({ updatedAt, items }) {
+  // 1) year ごとにまとめる
   const byYear = new Map();
   for (const it of items) {
     const y = toYear(it);
@@ -385,19 +386,88 @@ function buildJournalHtml({ updatedAt, items }) {
     byYear.get(y).push(it);
   }
 
+  // 2) 並び替え用キー（できるだけ日付まで使う）
+  function itemKey(it) {
+    const yStr = toYear(it);
+    const y = yStr === "----" ? 0 : Number(yStr);
+
+    const dateStr = firstNonEmpty(
+      it?.publication_date,
+      it?.published_date,
+      it?.published_at,
+      it?.date,
+      it?.issued,
+      it?.issued_date,
+      it?.["rm:publication_date"],
+      it?.["rm:published_date"],
+      it?.created_at,
+      it?.updated_at
+    );
+
+    let m = 0, d = 0;
+    if (typeof dateStr === "string") {
+      const mm = dateStr.match(/(19|20)\d{2}[-/](\d{1,2})(?:[-/](\d{1,2}))?/);
+      if (mm) {
+        m = Number(mm[2] || 0);
+        d = Number(mm[3] || 0);
+      }
+    }
+
+    const title = (toTitle(it) || "").toLowerCase();
+    const id = String(it?.["rm:id"] || it?.id || "");
+
+    return { y, m, d, title, id };
+  }
+
+  function cmpKeyAsc(a, b) {
+    if (a.y !== b.y) return a.y - b.y;
+    if (a.m !== b.m) return a.m - b.m;
+    if (a.d !== b.d) return a.d - b.d;
+    if (a.title !== b.title) return a.title < b.title ? -1 : 1;
+    if (a.id !== b.id) return a.id < b.id ? -1 : 1;
+    return 0;
+  }
+  function cmpKeyDesc(a, b) {
+    return -cmpKeyAsc(a, b);
+  }
+
+  // 3) 通し番号：古いものから 1,2,3,...（表示順とは独立）
+  const numMap = new Map(); // key -> number
+  const flat = items
+    .map((it) => {
+      const key = String(it?.["rm:id"] || it?.id || `${toYear(it)}|${toAuthors(it)}|${toTitle(it)}`);
+      return { key, it, k: itemKey(it) };
+    })
+    .sort((a, b) => cmpKeyAsc(a.k, b.k));
+
+  let serial = 1;
+  for (const row of flat) {
+    if (!numMap.has(row.key)) numMap.set(row.key, serial++);
+  }
+
+  // 4) 表示：新しいものから（年も、年内も新しい順）
   const years = [...byYear.keys()].sort((a, b) => {
     if (a === "----") return 1;
     if (b === "----") return -1;
     return Number(b) - Number(a);
   });
 
-  let idx = 1;
-
   const blocks = years
     .map((y) => {
       const list = byYear.get(y);
-      const lis = list
+
+      // 年内も新しい順
+      const sorted = [...list].sort((a, b) => {
+        const ka = itemKey(a);
+        const kb = itemKey(b);
+        return cmpKeyDesc(ka, kb);
+      });
+
+      const lis = sorted
         .map((it) => {
+          const key = String(it?.["rm:id"] || it?.id || `${toYear(it)}|${toAuthors(it)}|${toTitle(it)}`);
+          const n = numMap.get(key) ?? 0;
+
           const authors = toAuthors(it);
           const title = toTitle(it);
           const journal = toJournalName(it);
@@ -418,47 +488,42 @@ function buildJournalHtml({ updatedAt, items }) {
           return `
           <li class="paper">
             <div class="box">
-              <span class="num">${idx++}.</span>
+              <span class="num">${n}.</span>
               <div class="cite">${cite}${
             url ? ` <a href="${escHtml(url)}" target="_blank">[link]</a>` : ""
           }</div>
             </div>
           </li>`;
         })
-        .join("");
+        .join("\n");
 
       return `
-      <section>
-        <h2>${y} <span class="badge">${list.length}</span></h2>
-        <ol>${lis}</ol>
-      </section>`;
+<section class="year-block">
+  <h2>${escHtml(y)}</h2>
+  <ol class="paper-list">
+${lis}
+  </ol>
+</section>`;
     })
-    .join("");
+    .join("\n");
 
   return `<!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="utf-8"/>
-<title>Journal Papers</title>
-<style>
-body{font-family:Segoe UI,Noto Sans JP,sans-serif;background:#f3f6fb;margin:0}
-header{background:#1e3a8a;color:#fff;padding:40px}
-h1{margin:0;font-size:48px}
-.wrap{max-width:1200px;margin:0 auto;padding:30px}
-.box{background:#fff;border-radius:16px;padding:16px;display:grid;grid-template-columns:40px 1fr;gap:12px;margin:12px 0}
-.num{font-weight:800;color:#1e3a8a}
-.badge{background:#1e3a8a;color:#fff;padding:6px 12px;border-radius:999px}
-</style>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Journal Papers</title>
+  <link rel="stylesheet" href="../style.css"/>
 </head>
 <body>
-<header>
-<a href="../index.html#recent-ja" style="color:#fff">← Publications に戻る</a>
-<h1>Journal Papers</h1>
-<p>論文誌（Journal papers only）</p>
+<header class="site-header">
+  <a href="../index.html#recent-ja" style="color:#fff">← Publications に戻る</a>
+  <h1>Journal Papers</h1>
+  <p>論文誌（Journal papers only）</p>
 </header>
 <div class="wrap">
-<p><b>Updated:</b> ${updatedAt} &nbsp; <b>Items:</b> ${items.length}</p>
-${blocks}
+  <p><b>Updated:</b> ${updatedAt} &nbsp; <b>Items:</b> ${items.length}</p>
+  ${blocks}
 </div>
 </body>
 </html>`;
