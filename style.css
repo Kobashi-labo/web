@@ -12,14 +12,22 @@ body {
   background-attachment: fixed;
 }
 
-/* ===== Header (match index header tone) ===== */
+/* ===== Header (match index header tone + title scale) ===== */
 .site-header{
   background: rgba(30, 58, 138, 0.95);
   backdrop-filter: blur(10px);
   color: #fff;
-  padding: 1.6rem 0;
+  padding: 2rem 0; /* 1.6rem → 2rem（トップ寄せ） */
   box-shadow: 0 8px 32px rgba(0,0,0,0.2);
   border-bottom: 3px solid rgba(255,255,255,0.1);
+}
+
+/* ヘッダー内の横幅をカード(.wrap)と揃える */
+.site-header > *{
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 2rem;
 }
 
 .site-header a{
@@ -31,14 +39,17 @@ body {
 .site-header a:hover{ opacity:1; text-decoration:underline; }
 
 .site-header h1{
-  font-size: 2.2rem;
-  margin: 0.4rem 0 0.2rem;
+  font-size: 2.5rem; /* 2.2rem → 2.5rem（トップの見出し感） */
+  margin: 0.2rem 0 0.5rem;
   font-weight: 800;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.25);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
+
 .site-header p{
+  font-size: 1.15rem; /* サブタイトルもトップ寄せ */
   opacity: 0.95;
   font-weight: 300;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
 }
 
 /* ===== Page container (white “card” like top sections) ===== */
@@ -68,14 +79,14 @@ body {
   margin: 1.2rem 0 0.6rem 0;
 }
 
-/* ===== Publications (A: hanging indent, tuned smaller) ===== */
+/* ===== Publications (IEEE-style hanging indent) ===== */
 .pub-list{ margin-top: 0.2rem; }
 
 .pub-item{
   margin: 0.55rem 0;
   line-height: 1.75;
-  padding-left: 1.6em;   /* ← ここを小さくして右ズレ防止 */
-  text-indent: -1.6em;   /* ← padding-left と同じ値 */
+  padding-left: 1.3em;   /* 1.6em → 1.3em（右寄りを軽減） */
+  text-indent: -1.3em;   /* 同じ値 */
 }
 
 .pub-num{
@@ -86,17 +97,17 @@ body {
 
 .pub-cite i{ font-style: italic; }
 
-/* link: topページのボタン/カードに寄せて少しだけ上品に */
-pub-cite a{
+/* link: 控えめピル（※先頭の . を忘れずに） */
+.pub-cite a{
   display: inline-block;
   margin-left: 0.35em;
-  padding: 0.05em 0.45em;   /* 小さく */
+  padding: 0.05em 0.45em;
   border-radius: 999px;
   text-decoration: none;
   font-weight: 700;
-  font-size: 0.9em;         /* 少し小さく */
+  font-size: 0.9em;
   color: #1e3a8a;
-  background: rgba(59,130,246,0.08);  /* 薄く */
+  background: rgba(59,130,246,0.08);
 }
 .pub-cite a:hover{
   background: rgba(59,130,246,0.14);
@@ -104,15 +115,19 @@ pub-cite a{
 
 /* ===== Responsive ===== */
 @media (max-width: 768px){
-  .site-header{ padding: 1.2rem 0; }
-  .site-header h1{ font-size: 1.7rem; }
+  .site-header{ padding: 1.4rem 0; }
+  .site-header > *{ padding: 0 1.2rem; }
+  .site-header h1{ font-size: 1.9rem; }
+  .site-header p{ font-size: 1.0rem; }
+
   .wrap{
     margin: 1.2rem auto;
     padding: 1.4rem 1.2rem;
     border-radius: 18px;
   }
+
   .pub-item{
-    padding-left: 1.3em;
-    text-indent: -1.3em;
+    padding-left: 1.1em;
+    text-indent: -1.1em;
   }
 }
