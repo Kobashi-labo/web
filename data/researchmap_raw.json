@@ -1,6 +1,6 @@
 {
   "permalink": "read0134502",
-  "fetchedAt": "2025-12-30T06:18:54.234Z",
+  "fetchedAt": "2025-12-30T06:21:35.745Z",
   "total": 312,
   "items": [
     {
@@ -25792,10 +25792,10 @@
       "rm:created": "2020-05-06T00:28:13Z",
       "rm:modifier_id": "6000003807",
       "rm:modifier_type": "myself",
-      "rm:modified": "2025-12-30T03:07:39Z",
+      "rm:modified": "2025-12-30T06:21:13Z",
       "paper_title": {
-        "en": "FIG application for 3D medical imagings",
-        "ja": "ファジイインフォメーショングラニュレーションの３次元医用画像処理への応用"
+        "ja": "ファジイインフォメーショングラニュレーションの３次元医用画像処理への応用",
+        "en": "FIG application for 3D medical imagings"
       },
       "authors": {
         "ja": [
@@ -25828,13 +25828,13 @@
         ]
       },
       "publisher": {
-        "en": "The Japanese Society of Medical Imaging Technology",
-        "ja": "日本医用画像工学会"
+        "ja": "日本医用画像工学会",
+        "en": "The Japanese Society of Medical Imaging Technology"
       },
       "publication_date": "2000-04",
       "publication_name": {
-        "en": "Medical Imaging Technology",
-        "ja": "Medical Imaging Technology"
+        "ja": "Medical Imaging Technology",
+        "en": "Medical Imaging Technology"
       },
       "volume": "18",
       "number": "5",
@@ -25845,22 +25845,28 @@
       ],
       "referee": false,
       "invited": true,
+      "published_paper_type": "scientific_journal",
       "rm:is_open_access": false,
       "identifiers": {
-        "cinii_na_id": [
-          "10005112085"
-        ],
-        "cinii_nc_id": [
-          "AN10061428"
-        ],
         "doi": [
           "10.11409/mit.18.681"
         ],
         "issn": [
           "0288-450X"
+        ],
+        "cinii_na_id": [
+          "10005112085"
+        ],
+        "cinii_nc_id": [
+          "AN10061428"
         ]
       },
       "see_also": [
+        {
+          "label": "doi",
+          "@id": "https://doi.org/10.11409/mit.18.681",
+          "is_downloadable": false
+        },
         {
           "label": "cinii_articles",
           "@id": "http://ci.nii.ac.jp/naid/10005112085",
@@ -25872,14 +25878,9 @@
           "is_downloadable": false
         },
         {
-          "label": "doi",
-          "@id": "https://doi.org/10.11409/mit.18.681",
-          "is_downloadable": false
-        },
-        {
           "@id": "http://search.jamas.or.jp/link/ui/2001081013",
-          "is_downloadable": false,
-          "label": "url"
+          "label": "url",
+          "is_downloadable": false
         }
       ]
     },
