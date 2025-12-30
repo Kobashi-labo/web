@@ -423,9 +423,12 @@ function isJournalPaper(item) {
 }
 
 function isReviewArticle(item) {
-  const invitedVal =
+  // 1) invited 判定：bool系 + 文字列系（招待/Invited）
+  const invitedBool =
     item?.invited ??
+    item?.["rm:invited"] ??
     item?.is_invited ??
+    item?.["rm:is_invited"] ??
     item?.invited_paper ??
     item?.is_invited_paper ??
     item?.raw_type_fields?.invited ??
@@ -433,16 +436,34 @@ function isReviewArticle(item) {
     item?.raw_type_fields?.invited_paper ??
     item?.raw_type_fields?.is_invited_paper;
 
+  const invitedTypeStr = normalizeSpaces(
+    [
+      item?.published_paper_type,
+      item?.["rm:published_paper_type"],
+      item?.paper_type,
+      item?.type,
+      item?.raw_type_fields?.published_paper_type,
+    ]
+      .map((v) => pickLangText(v))
+      .join(" ")
+  ).toLowerCase();
+
+  const isInvited =
+    truthy01(invitedBool) ||
+    /invited|招待/.test(invitedTypeStr);
+
+  // 2) referee 判定：true だけを査読あり扱い
   const refereeVal =
     item?.referee ??
+    item?.["rm:referee"] ??
     item?.raw_type_fields?.referee;
 
-  const isInvited = truthy01(invitedVal);
   const isRefereed = truthy01(refereeVal);
 
-  // invited=true AND referee is NOT true
+  // invited=true かつ referee が true ではない
   return isInvited && !isRefereed;
 }
+
 
 // =========================
 // HTML (no ul/ol)
