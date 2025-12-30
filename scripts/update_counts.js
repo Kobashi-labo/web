@@ -216,15 +216,7 @@ function htmlPage({ title, updatedAtISO, items, permalink }) {
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>${escapeHtml(title)}</title>
-  <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans"; margin: 24px; line-height: 1.45; }
-    h1 { margin: 0 0 8px; }
-    .meta { color: #666; font-size: 0.95rem; margin-bottom: 18px; }
-    .paper-item { margin: 0 0 14px; }
-    .paper-number { font-weight: 700; margin-right: 6px; }
-    .rm-link { text-decoration: none; margin-left: 6px; }
-    .rm-link:hover { text-decoration: underline; }
-  </style>
+  <link rel="stylesheet" href="../style.css">
 </head>
 <body>
   <h1>${escapeHtml(title)}</h1>
