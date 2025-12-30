@@ -179,18 +179,31 @@ function getAuthorsArray(item) {
  * Keep family name as-is; other parts as initials
  * Example: "Shoichi NISHIO" -> "S. NISHIO"
  */
+
 function formatOneAuthor(name) {
   const s = String(name || "").trim();
   if (!s) return "";
+
+  // If name contains Japanese characters and no ASCII letters, do NOT abbreviate
+  const hasJP = /[\u3040-\u30FF\u3400-\u9FFF]/.test(s);
+  const hasASCII = /[A-Za-z]/.test(s);
+  if (hasJP && !hasASCII) {
+    return s;
+  }
+
   const parts = s.split(/\s+/).filter(Boolean);
   if (parts.length === 1) return parts[0];
+
+  // family name is last token
   const family = parts[parts.length - 1];
   const initials = parts
     .slice(0, -1)
     .map((p) => (p ? p[0].toUpperCase() + "." : ""))
     .join(" ");
+
   return (initials ? initials + " " : "") + family;
 }
+
 
 function formatAuthors(item) {
   const authors = getAuthorsArray(item)
