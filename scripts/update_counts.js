@@ -28,6 +28,10 @@ const OUT_JOURNAL_HTML = process.env.OUT_JOURNAL_HTML
   ? path.resolve(process.env.OUT_JOURNAL_HTML)
   : path.join("publications", "journal-papers.html");
 
+const OUT_REVIEW_HTML = process.env.OUT_REVIEW_HTML
+  ? path.resolve(process.env.OUT_REVIEW_HTML)
+  : path.join("publications", "review-articles.html");
+
 // =========================
 // utils
 // =========================
@@ -405,10 +409,35 @@ function isJournalPaper(item) {
   return !!toJournalName(item);
 }
 
+
+// =========================
+// Review / Expository (Invited & Non-refereed)
+// =========================
+
+function isReviewArticle(item) {
+  // Definition:
+  // "Invited" AND "Non-refereed" => Review / Expository article
+  const refereeStr = normalizeSpaces(
+    pickLangText(item?.referee ?? item?.raw_type_fields?.referee).toLowerCase()
+  );
+  const invitedStr = normalizeSpaces(
+    pickLangText(
+      item?.invited ?? item?.is_invited ?? item?.raw_type_fields?.invited
+    ).toLowerCase()
+  );
+
+  const isRefereed =
+    refereeStr === "true" || refereeStr === "1" || refereeStr === "yes";
+  const isInvited =
+    invitedStr === "true" || invitedStr === "1" || invitedStr === "yes";
+
+  return !isRefereed && isInvited;
+}
+
 // =========================
 // HTML (no ul/ol)
 // =========================
-function buildJournalHtml({ updatedAt, items }) {
+function buildJournalHtml({ updatedAt, items, pageTitle = "Journal Papers", pageDesc = "論文誌（Journal papers only）" }) {
   // group by year
   const byYear = new Map();
   for (const it of items) {
@@ -527,14 +556,14 @@ ${rows}
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Journal Papers</title>
+  <title>${escHtml(pageTitle)}</title>
   <link rel="stylesheet" href="../style.css"/>
 </head>
 <body>
 <header class="site-header">
   <a href="../index.html#recent-ja" style="color:#fff">← Publications に戻る</a>
-  <h1>Journal Papers</h1>
-  <p>論文誌（Journal papers only）</p>
+  <h1>${escHtml(pageTitle)}</h1>
+  <p>${escHtml(pageDesc)}</p>
 </header>
 <div class="wrap">
   <p><b>Updated:</b> ${updatedAt} &nbsp; <b>Items:</b> ${items.length}</p>
@@ -560,12 +589,15 @@ async function main() {
 
   const published = await fetchAllItems(base);
   const journals = published.filter(isJournalPaper);
+  const reviews = published.filter(isReviewArticle);
 
   console.log("RESEARCHMAP_PERMALINK =", RESEARCHMAP_PERMALINK);
   console.log("published total =", published.length);
   console.log("journal =", journals.length);
+  console.log("reviews =", reviews.length);
   console.log("OUT_COUNTS_JSON =", OUT_COUNTS_JSON);
   console.log("OUT_JOURNAL_HTML =", OUT_JOURNAL_HTML);
+  console.log("OUT_REVIEW_HTML =", OUT_REVIEW_HTML);
 
   ensureDir(path.dirname(OUT_COUNTS_JSON));
   fs.writeFileSync(
@@ -576,6 +608,7 @@ async function main() {
         updatedAt,
         papers_total: published.length,
         journal: journals.length,
+        reviews: reviews.length,
       },
       null,
       2
@@ -586,6 +619,17 @@ async function main() {
   fs.writeFileSync(
     OUT_JOURNAL_HTML,
     buildJournalHtml({ updatedAt: updatedAt.slice(0, 10), items: journals })
+  );
+
+  ensureDir(path.dirname(OUT_REVIEW_HTML));
+  fs.writeFileSync(
+    OUT_REVIEW_HTML,
+    buildJournalHtml({
+      updatedAt: updatedAt.slice(0, 10),
+      items: reviews,
+      pageTitle: "Review Articles",
+      pageDesc: "解説記事（Invited, non-refereed）",
+    })
   );
 }
 
