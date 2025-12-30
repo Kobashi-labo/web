@@ -54,6 +54,10 @@ const OUT_PRES_HTML = process.env.OUT_PRES_HTML
   ? path.resolve(process.env.OUT_PRES_HTML)
   : path.join("publications", "oral-presentations.html");
 
+const OUT_INVITED_HTML = process.env.OUT_INVITED_HTML
+  ? path.resolve(process.env.OUT_INVITED_HTML)
+  : path.join("publications", "invited-talks.html");
+
 // ---------------------
 // utils
 // ---------------------
@@ -209,7 +213,7 @@ function formatAuthors(item) {
   const authors = getAuthorsArray(item)
     .map((a) => (typeof a === "string" ? a : a?.name || a?.en || a?.ja || ""))
     .filter(Boolean);
-  return authors.map(formatOneAuthor).join("; ");
+  return authors.map(formatOneAuthor).join(", ");
 }
 
 // ---------------------
@@ -268,7 +272,7 @@ function formatPresentationAuthors(item) {
     .map(pickPersonName)
     .filter(Boolean);
   if (!people.length) return ""; // presentations can be event-only
-  return people.map(formatOneAuthor).join("; ");
+  return people.map(formatOneAuthor).join(", ");
 }
 
 
@@ -376,6 +380,39 @@ function isConferenceProceedings(item) {
   return s.includes("conference") || s.includes("proceedings");
 }
 
+function isInvitedPresentation(item) {
+  // robust heuristics for researchmap presentations
+  const v1 = item?.invited;
+  if (v1 === true || v1 === "true" || v1 === 1) return true;
+
+  const t = String(
+    item?.presentation_type ||
+      item?.presentation_kind ||
+      item?.type ||
+      item?.raw_type_fields?.presentation_type ||
+      item?.raw_type_fields?.type ||
+      ""
+  ).toLowerCase();
+
+  if (t.includes("invited")) return true;
+
+  // sometimes a free text flag exists
+  const note = String(item?.note || item?.remarks || item?.comment || "").toLowerCase();
+  if (note.includes("invited")) return true;
+
+  // Japanese hints
+  const j = String(item?.invited_talk || item?.招待 || item?.招待講演 || "").toLowerCase();
+  if (j && j !== "false") return true;
+
+  const title = pickPresentationTitle(item);
+  if (/[招待]/.test(title) && /講演|発表/.test(title)) {
+    // weak hint; keep conservative
+    return true;
+  }
+  return false;
+}
+
+
 // ---------------------
 // HTML builders (match style.css)
 // ---------------------
@@ -428,10 +465,17 @@ function buildPaperCiteLine(p, permalink) {
   return base;
 }
 
+
 function buildPresentationCiteLine(p, permalink) {
   const base = `${escapeHtml(p.authors)}. <i>${escapeHtml(
     p.title
   )}</i>, ${escapeHtml(p.venue)} (${escapeHtml(p.year)}).`;
+
+  if (p.doi_url) {
+    return `${base} <a href="${escapeHtml(
+      p.doi_url
+    )}" target="_blank" rel="noopener">DOI</a>`;
+  }
 
   const rm = researchmapPresentationLink(permalink, p.id);
   if (rm) {
@@ -439,6 +483,7 @@ function buildPresentationCiteLine(p, permalink) {
   }
   return base;
 }
+
 
 function htmlPage({ title, updatedAtISO, items, permalink, kind }) {
   const citeFn =
@@ -502,6 +547,7 @@ function toNumberedPaperList(items) {
   const numbered = sorted.map((item, idx) => ({
     id: String(item?.["rm:id"] || item?.id || ""),
     doi_url: pickDoiUrl(item),
+    doi_url: pickDoiUrl(item),
     no: idx + 1,
     year: pickPaperYear(item),
     title: pickPaperTitle(item),
@@ -524,6 +570,7 @@ function toNumberedPresentationList(items) {
 
   const numbered = sorted.map((item, idx) => ({
     id: String(item?.["rm:id"] || item?.id || ""),
+    doi_url: pickDoiUrl(item),
     no: idx + 1,
     year: pickPresentationYear(item),
     title: pickPresentationTitle(item),
@@ -548,7 +595,11 @@ async function main() {
 
   const journal = toNumberedPaperList(journalRaw);
   const conf = toNumberedPaperList(confRaw);
-  const pres = toNumberedPresentationList(allPresentations);
+  const invitedRaw = allPresentations.filter(isInvitedPresentation);
+  const oralRaw = allPresentations.filter((it) => !isInvitedPresentation(it));
+
+  const pres = toNumberedPresentationList(oralRaw);
+  const invited = toNumberedPresentationList(invitedRaw);
 
   const updatedAtISO = new Date().toISOString();
 
@@ -559,6 +610,7 @@ async function main() {
     journal_paper_count: journal.length,
     conference_paper_count: conf.length,
     presentations_count: pres.length,
+    invited_presentations_count: invited.length,
     papers_total: journal.length + conf.length,
     unclassified_count: allPapers.length - journalRaw.length - confRaw.length,
   };
@@ -569,6 +621,7 @@ async function main() {
   ensureDir(path.dirname(OUT_JOURNAL_HTML));
   ensureDir(path.dirname(OUT_CONF_HTML));
   ensureDir(path.dirname(OUT_PRES_HTML));
+  ensureDir(path.dirname(OUT_INVITED_HTML));
 
   fs.writeFileSync(
     OUT_JOURNAL_HTML,
@@ -606,13 +659,27 @@ async function main() {
     "utf-8"
   );
 
+
+  fs.writeFileSync(
+    OUT_INVITED_HTML,
+    htmlPage({
+      title: "Invited Talks",
+      updatedAtISO,
+      items: invited,
+      permalink: RESEARCHMAP_PERMALINK,
+      kind: "presentation",
+    }),
+    "utf-8"
+  );
+
   console.log("✅ Updated:");
   console.log(" -", OUT_COUNTS_JSON);
   console.log(" -", OUT_JOURNAL_HTML);
   console.log(" -", OUT_CONF_HTML);
   console.log(" -", OUT_PRES_HTML);
+  console.log(" -", OUT_INVITED_HTML);
   console.log(
-    `Counts: journal=${journal.length}, conference=${conf.length}, presentations=${pres.length}, unclassified=${counts.unclassified_count}`
+    `Counts: journal=${journal.length}, conference=${conf.length}, presentations=${pres.length}, invited=${invited.length}, unclassified=${counts.unclassified_count}`
   );
 }
 
