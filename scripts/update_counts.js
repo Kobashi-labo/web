@@ -110,12 +110,23 @@ function firstNonEmpty(...vals) {
 // DOI extraction/normalization
 // ---------------------
 function pickDoiUrl(item) {
+  // Prefer DOI URL if provided in see_also (label: "doi")
+  const seeAlso = item?.see_also;
+  if (Array.isArray(seeAlso)) {
+    const doiLink = seeAlso.find(
+      (x) => String(x?.label || "").toLowerCase() === "doi" && x?.["@id"]
+    );
+    if (doiLink?.["@id"]) return String(doiLink["@id"]);
+  }
+
+  // Direct DOI fields
   const doiDirect = firstNonEmpty(item?.doi, item?.DOI, item?.["rm:doi"]);
   if (doiDirect) {
-    const clean = doiDirect.replace(/^https?:\/\/(dx\.)?doi\.org\//i, "");
+    const clean = String(doiDirect).replace(/^https?:\/\/(dx\.)?doi\.org\//i, "");
     return `https://doi.org/${clean}`;
   }
 
+  // identifiers.doi
   const doiArr = item?.identifiers?.doi;
   if (Array.isArray(doiArr) && doiArr.length) {
     const clean = String(doiArr[0]).replace(/^https?:\/\/(dx\.)?doi\.org\//i, "");
@@ -124,12 +135,6 @@ function pickDoiUrl(item) {
   if (typeof doiArr === "string" && doiArr.trim()) {
     const clean = doiArr.trim().replace(/^https?:\/\/(dx\.)?doi\.org\//i, "");
     return `https://doi.org/${clean}`;
-  }
-
-  const seeAlso = item?.see_also;
-  if (Array.isArray(seeAlso)) {
-    const doiLink = seeAlso.find((x) => x?.label === "doi" && x?.["@id"]);
-    if (doiLink?.["@id"]) return String(doiLink["@id"]);
   }
 
   return "";
@@ -288,7 +293,10 @@ function pickVolume(item) {
     item?.journal_vol,
     item?.conference_volume,
     item?.publication_volume,
-    item?.published_volume
+    item?.published_volume,
+    item?.raw_type_fields?.volume,
+    item?.raw_type_fields?.vol,
+    item?.raw_type_fields?.journal_volume
   );
 }
 
@@ -301,7 +309,11 @@ function pickNumber(item) {
     item?.journal_no,
     item?.journal_issue,
     item?.publication_number,
-    item?.published_number
+    item?.published_number,
+    item?.raw_type_fields?.number,
+    item?.raw_type_fields?.no,
+    item?.raw_type_fields?.issue,
+    item?.raw_type_fields?.journal_number
   );
 }
 
@@ -315,9 +327,31 @@ function normalizePages(p) {
 }
 
 function pickPages(item) {
-  const start = firstNonEmpty(item?.start_page, item?.page_start, item?.first_page);
-  const end = firstNonEmpty(item?.end_page, item?.page_end, item?.last_page);
-  if (start && end) return normalizePages(`${start}-${end}`);
+  const start = firstNonEmpty(
+    item?.starting_page,
+    item?.start_page,
+    item?.page_start,
+    item?.first_page,
+    item?.startingPage,
+    item?.raw_type_fields?.starting_page,
+    item?.raw_type_fields?.start_page
+  );
+
+  const end = firstNonEmpty(
+    item?.ending_page,
+    item?.end_page,
+    item?.page_end,
+    item?.last_page,
+    item?.endingPage,
+    item?.raw_type_fields?.ending_page,
+    item?.raw_type_fields?.end_page
+  );
+
+  const endClean = normalizeSpaces(end);
+  // Some records use "+" meaning "and following" → don't render pp.
+  if (start && endClean && endClean !== "+") {
+    return normalizePages(`${start}-${endClean}`);
+  }
 
   return normalizePages(
     firstNonEmpty(
@@ -325,7 +359,9 @@ function pickPages(item) {
       item?.page,
       item?.page_range,
       item?.pagination,
-      item?.article_number
+      item?.article_number,
+      item?.raw_type_fields?.pages,
+      item?.raw_type_fields?.page
     )
   );
 }
