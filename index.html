@@ -847,22 +847,27 @@
 
 
   async function loadCounts() {
-    const res = await fetch("data/counts.json", { cache: "no-cache" });
-    if (!res.ok) throw new Error("counts.json not found");
-    const d = await res.json();
-
-    // updatedAt 表示
-    setUpdatedAt(d.updatedAt);
-
-    // counts.json のキーに合わせて表示
-    // ※ update_counts.js 側で book_chapters を作る想定
-    setCount("journal", d.journal ?? d.journal_count ?? 0);
-    setCount("intl_conf", d.intl_conf ?? d.intl_conf_count ?? 0);
-    setCount("book_chapters", d.book_chapters ?? d.book_chapters_count ?? 0);
-
-    setCount("presentations", d.presentations_total ?? d.presentations ?? 0);
-    setCount("papers", d.papers_total ?? d.papers ?? 0);
-  }
+      const res = await fetch("data/counts.json", { cache: "no-cache" });
+      if (!res.ok) throw new Error("counts.json not found");
+      const d = await res.json();
+    
+      // updatedAt 表示
+      setUpdatedAt(d.updatedAt);
+    
+      // ✅ counts.json（数だけ版）のキーに合わせる
+      const journal = Number(d.journal_paper_count ?? 0);
+      const conf = Number(d.conference_paper_count ?? 0);
+    
+      // HTML は data-rm-count="journal" と "intl_conf" のまま使う
+      setCount("journal", journal);
+      setCount("intl_conf", conf);
+    
+      // 「論文総数（査読付き）」は journal + conference として表示
+      setCount("papers", journal + conf);
+    
+      // presentations は counts.json に無いので、ここでは触らない
+      // → 下の fallback（researchmap API）で入る
+    }
 
   // ---- fallback: researchmap API ----
   async function fetchJson(url) {
@@ -905,14 +910,14 @@
   }
 
   async function updateResearchmapCountsFallback() {
-    const [papers, presentations] = await Promise.all([
-      fetchAllCategory("published_papers"),
-      fetchAllCategory("presentations"),
-    ]);
-
-    setCount("papers", papers.length);
-    setCount("presentations", presentations.length);
-  }
+      const [papers, presentations] = await Promise.all([
+        fetchAllCategory("published_papers"),
+        fetchAllCategory("presentations"),
+      ]);
+    
+      setCount("papers", papers.length);
+      setCount("presentations", presentations.length);
+    }
 
   document.addEventListener("DOMContentLoaded", () => {
     loadCounts().catch(err => {
@@ -925,10 +930,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
