@@ -643,15 +643,14 @@ function toNumberedPaperList(items, pubKind) {
   const numbered = sorted.map((item, idx) => ({
     id: String(item?.["rm:id"] || item?.id || ""),
     doi_url: pickDoiUrl(item),
-    doi_url: pickDoiUrl(item),
-    pub_kind: pubKind || \"paper\",
+    pub_kind: pubKind || "paper",
     volume: pickVolume(item),
     number: pickNumber(item),
     pages: pickPages(item),
     no: idx + 1,
     year: pickPaperYear(item),
     title: pickPaperTitle(item),
-    authors: formatPresentationAuthors(item),
+    authors: formatAuthors(item),
     venue: pickPaperVenue(item),
   }));
 
