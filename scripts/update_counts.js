@@ -1,26 +1,31 @@
 /**
- * scripts/update_counts.js (fixed)
+ * scripts/update_counts.js
  *
- * Requirements (kept from previous working version)
+ * Generates:
+ * - data/counts.json
+ * - publications/journal-papers.html
+ * - publications/conference-proceedings.html
+ *
+ * Requirements (from user)
  * 1. Include ALL authors
  * 2. Keep family name as-is; other parts as initials
- * 3. Serial number: global, oldest = 1,2,3...
+ * 3. Serial number: per-page global, oldest = 1,2,3...
  * 4. Display: newest first
- *
- * Additions
- * - Review Articles: invited=true AND referee is NOT true (false/null/empty all treated as not true)
- * - Save raw researchmap data to data/researchmap_raw.json (or OUT_RAW_JSON)
  *
  * NOTE:
  * - Avoid <ul>/<ol> to prevent bullets/double numbering.
+ *
+ * ENV:
+ * - RESEARCHMAP_PERMALINK   (e.g., "read0134502")
+ * - RESEARCHMAP_API_KEY     (optional; if set, appended as api_key=)
+ * - OUT_COUNTS              (optional; default "data/counts.json")
+ * - OUT_JOURNAL_HTML        (optional; default "publications/journal-papers.html")
+ * - OUT_CONF_HTML           (optional; default "publications/conference-proceedings.html")
  */
 
 const fs = require("fs");
 const path = require("path");
 
-// =========================
-// ENV
-// =========================
 const RESEARCHMAP_PERMALINK = process.env.RESEARCHMAP_PERMALINK || "";
 const RESEARCHMAP_API_KEY = process.env.RESEARCHMAP_API_KEY || "";
 
@@ -32,661 +37,312 @@ const OUT_JOURNAL_HTML = process.env.OUT_JOURNAL_HTML
   ? path.resolve(process.env.OUT_JOURNAL_HTML)
   : path.join("publications", "journal-papers.html");
 
-const OUT_REVIEW_HTML = process.env.OUT_REVIEW_HTML
-  ? path.resolve(process.env.OUT_REVIEW_HTML)
-  : path.join("publications", "review-articles.html");
+const OUT_CONF_HTML = process.env.OUT_CONF_HTML
+  ? path.resolve(process.env.OUT_CONF_HTML)
+  : path.join("publications", "conference-proceedings.html");
 
-const OUT_RAW_JSON = process.env.OUT_RAW_JSON
-  ? path.resolve(process.env.OUT_RAW_JSON)
-  : path.join("data", "researchmap_raw.json");
-
-// =========================
+// ---------------------
 // utils
-// =========================
+// ---------------------
 function ensureDir(dir) {
-  fs.mkdirSync(dir, { recursive: true });
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 }
 
-function sleep(ms) {
-  return new Promise((r) => setTimeout(r, ms));
-}
-
-function normalizeSpaces(s) {
-  return String(s ?? "")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function pickLangText(v) {
-  if (v == null) return "";
-  if (typeof v === "boolean") return v ? "true" : "false";
-  if (typeof v === "string" || typeof v === "number") return String(v);
-  if (Array.isArray(v)) return "";
-
-  if (typeof v === "object") {
-    // most common language wrappers
-    if (v.ja && !Array.isArray(v.ja)) return String(v.ja);
-    if (v.en && !Array.isArray(v.en)) return String(v.en);
-    if (v["rm:ja"] && !Array.isArray(v["rm:ja"])) return String(v["rm:ja"]);
-    if (v["rm:en"] && !Array.isArray(v["rm:en"])) return String(v["rm:en"]);
-
-    // nested
-    if (v.name) return pickLangText(v.name);
-    if (v.full_name) return pickLangText(v.full_name);
-    if (v.display_name) return pickLangText(v.display_name);
-
-    return "";
-  }
-  return "";
-}
-
-function firstNonEmpty(...vals) {
-  for (const v of vals) {
-    const s = normalizeSpaces(pickLangText(v));
-    if (s) return s;
-  }
-  return "";
-}
-
-function escHtml(s) {
-  return String(s ?? "")
+function escapeHtml(str) {
+  return String(str ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+    .replace(/'/g, "&#039;");
 }
 
-function truthy01(v) {
-  const s = normalizeSpaces(pickLangText(v)).toLowerCase();
-  return s === "true" || s === "1" || s === "yes";
+function pickTitle(item) {
+  const t = item?.paper_title || item?.title || {};
+  // prefer English if present, else Japanese, else any string
+  if (typeof t === "string") return t;
+  return t.en || t.ja || Object.values(t)[0] || "";
 }
 
-// =========================
-// fetch
-// =========================
-async function fetchJson(url) {
-  const res = await fetch(url, {
-    headers: {
-      Accept: "application/json",
-      ...(RESEARCHMAP_API_KEY ? { "X-API-KEY": RESEARCHMAP_API_KEY } : {}),
-    },
-  });
-  if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(`fetch failed: ${res.status} ${res.statusText}\n${text}`);
-  }
-  return res.json();
+function pickVenue(item) {
+  const v =
+    item?.publication_name ||
+    item?.journal_name ||
+    item?.conference_name ||
+    item?.journal ||
+    item?.conference ||
+    {};
+  if (typeof v === "string") return v;
+  return v.en || v.ja || Object.values(v)[0] || "";
 }
 
-function normalizeItems(json) {
-  const items = json?.items ?? json?.data ?? json ?? [];
-  const next = json?.next ?? json?._links?.next?.href ?? null;
-  return { items: Array.isArray(items) ? items : [], next };
+function pickYear(item) {
+  // many records have publication_date like "2024-03-01"
+  const d = item?.publication_date || item?.rm_publication_date || item?.year;
+  if (!d) return "";
+  const s = String(d);
+  const m = s.match(/^(\d{4})/);
+  return m ? m[1] : s;
 }
 
-async function fetchAllItems(baseUrl) {
-  const all = [];
-  const seen = new Set();
-  let url = baseUrl;
-
-  for (let i = 0; i < 50; i++) {
-    const json = await fetchJson(url);
-    const { items, next } = normalizeItems(json);
-
-    for (const it of items) {
-      const id = it?.["rm:id"] || it?.id;
-      if (id && seen.has(id)) continue;
-      if (id) seen.add(id);
-      all.push(it);
-    }
-    if (!next) break;
-    url = next.startsWith("http") ? next : `https://api.researchmap.jp${next}`;
-    await sleep(200);
-  }
-  return all;
-}
-
-// =========================
-// mapping
-// =========================
-function toYear(item) {
-  const cands = [
-    item?.year,
-    item?.published_year,
-    item?.publication_year,
-    item?.["rm:published_year"],
-    item?.["rm:publication_year"],
-    item?.published_at,
-    item?.publication_date,
-    item?.date,
-    item?.issued,
-    item?.issued_date,
-  ].map((v) => pickLangText(v));
-
-  for (const c of cands) {
-    const m = c.match(/(19|20)\d{2}/);
-    if (m) return m[0];
-  }
-  return "----";
-}
-
-function toUrl(item) {
-  // direct
-  const doiDirect = firstNonEmpty(item?.doi, item?.DOI, item?.["rm:doi"]);
-  if (doiDirect) {
-    const clean = doiDirect.replace(/^https?:\/\/(dx\.)?doi\.org\//i, "");
-    return `https://doi.org/${clean}`;
-  }
-
-  // identifiers.doi (array or string)
-  const doiArr = item?.identifiers?.doi;
-  if (Array.isArray(doiArr) && doiArr.length) {
-    const clean = String(doiArr[0]).replace(/^https?:\/\/(dx\.)?doi\.org\//i, "");
-    return `https://doi.org/${clean}`;
-  }
-  if (typeof doiArr === "string" && doiArr.trim()) {
-    const clean = doiArr.trim().replace(/^https?:\/\/(dx\.)?doi\.org\//i, "");
-    return `https://doi.org/${clean}`;
-  }
-
-  // see_also doi
-  const seeAlso = item?.see_also;
-  if (Array.isArray(seeAlso)) {
-    const doiLink = seeAlso.find((x) => x?.label === "doi" && x?.["@id"]);
-    if (doiLink?.["@id"]) return String(doiLink["@id"]);
-  }
-
-  return firstNonEmpty(item?.url, item?.URL, item?._links?.self?.href);
-}
-
-function toTitle(item) {
-  return firstNonEmpty(item?.title, item?.paper_title, item?.["rm:title"]);
-}
-
-function toJournalName(item) {
-  return firstNonEmpty(
-    item?.journal,
-    item?.journal_title,
-    item?.journal_name,
-    item?.publication_name,
-    item?.["rm:journal"],
-    item?.["rm:journal_title"]
-  );
-}
-
-function toVolNoPp(item) {
-  const vol = firstNonEmpty(item?.volume, item?.vol, item?.["rm:volume"]);
-  const no = firstNonEmpty(item?.number, item?.issue, item?.no, item?.["rm:number"]);
-
-  const start = firstNonEmpty(item?.starting_page, item?.start_page, item?.first_page);
-  const end = firstNonEmpty(item?.ending_page, item?.end_page, item?.last_page);
-
-  let pp = firstNonEmpty(item?.page, item?.pages, item?.pp, item?.["rm:page"]);
-  if (!pp && start && end) pp = `${start}–${end}`;
-  if (!pp && start && !end) pp = `${start}`;
-
-  const parts = [];
-  if (vol) parts.push(`vol. ${vol}`);
-  if (no) parts.push(`no. ${no}`);
-  if (pp) {
-    const clean = normalizeSpaces(pp).replace(/^pp?\.\s*/i, "");
-    parts.push(`pp. ${clean}`);
-  }
-  return parts.join(", ");
-}
-
-// =========================
-// Authors (NO deep recursion; avoid [object Object])
-// =========================
-function formatAuthorName(raw) {
-  const name = normalizeSpaces(pickLangText(raw));
-  if (!name) return "";
-
-  // Japanese -> 그대로
-  if (/[ぁ-んァ-ン一-龥]/.test(name)) return name;
-
-  // "Family, Given Middle"
-  if (name.includes(",")) {
-    const [family, given] = name.split(",").map(normalizeSpaces);
-    const initials = given
-      .split(" ")
-      .filter(Boolean)
-      .map((w) => w[0].toUpperCase() + ".")
-      .join(" ");
-    return normalizeSpaces(`${initials} ${family}`);
-  }
-
-  // "Given Middle Family"
-  const tokens = name.split(" ").filter(Boolean);
-  if (tokens.length === 1) return tokens[0];
-
-  const family = tokens[tokens.length - 1];
-  const givenTokens = tokens.slice(0, -1);
-  const initials = givenTokens
-    .map((w) => (w[0] ? w[0].toUpperCase() + "." : ""))
-    .filter(Boolean)
-    .join(" ");
-
-  return normalizeSpaces(`${initials} ${family}`);
-}
-
-function joinAuthorsIEEE(list) {
-  const a = list.filter(Boolean);
-  if (a.length === 0) return "";
-  if (a.length === 1) return a[0];
-  if (a.length === 2) return `${a[0]} and ${a[1]}`;
-  return `${a.slice(0, -1).join(", ")}, and ${a[a.length - 1]}`;
-}
-
-function extractAuthorArray(v) {
-  // v can be:
-  // - [ {name: ...}, ... ]
-  // - [ "A B", ... ]
-  // - { en: [..], ja: [..] }
-  // - "A;B;C"
-  if (v == null) return [];
-
-  if (typeof v === "string") {
-    return v
-      .split(/\s*;\s*|\s+and\s+/i)
-      .map((x) => x.trim())
-      .filter(Boolean);
-  }
-
-  if (Array.isArray(v)) return v;
-
-  if (typeof v === "object") {
-    const arr =
-      (Array.isArray(v.ja) && v.ja) ||
-      (Array.isArray(v.en) && v.en) ||
-      (Array.isArray(v["rm:ja"]) && v["rm:ja"]) ||
-      (Array.isArray(v["rm:en"]) && v["rm:en"]) ||
-      null;
-
-    if (arr) return arr;
-
-    return [];
-  }
-
+function getAuthorsArray(item) {
+  // researchmap typical: authors: { ja: [{name:..}, ...], en: [...] }
+  const a = item?.authors;
+  if (!a) return [];
+  if (Array.isArray(a)) return a;
+  if (a.en && Array.isArray(a.en)) return a.en;
+  if (a.ja && Array.isArray(a.ja)) return a.ja;
+  // sometimes: { "ja": ["name1","name2"] }
+  if (a.en && Array.isArray(a.en)) return a.en;
+  if (a.ja && Array.isArray(a.ja)) return a.ja;
   return [];
 }
 
-function normalizeAuthorElem(a) {
-  if (a == null) return "";
-  if (typeof a === "string") return a;
+/**
+ * Keep family name as-is; other parts as initials
+ * Examples:
+ * - "Shoichi NISHIO" -> "S. NISHIO"
+ * - "Belayat HOSSAIN" -> "B. HOSSAIN"
+ * - "Syoji KOBASHI" -> "S. KOBASHI"
+ * - "Naomi YAGI" -> "N. YAGI"
+ */
+function formatOneAuthor(name) {
+  const s = String(name || "").trim();
+  if (!s) return "";
 
-  if (typeof a === "object") {
-    // common patterns
-    const s = firstNonEmpty(a?.name, a?.full_name, a?.display_name);
-    if (s) return s;
+  // Split by whitespace
+  const parts = s.split(/\s+/).filter(Boolean);
+  if (parts.length === 1) return parts[0];
 
-    // sometimes {name:{en:".."}} etc
-    const s2 = pickLangText(a?.name);
-    if (s2) return s2;
+  // family name is the last token (keep as-is)
+  const family = parts[parts.length - 1];
 
-    // given/family split
-    const fam = firstNonEmpty(a?.family_name, a?.family, a?.lastname, a?.last_name, a?.surname);
-    const giv = firstNonEmpty(a?.given_name, a?.given, a?.firstname, a?.first_name, a?.forename);
-    if (fam && giv) return `${giv} ${fam}`;
-
-    return "";
-  }
-
-  return "";
-}
-
-function toAuthors(item) {
-  const sources = [
-    item?.authors,
-    item?.author,
-    item?.creators,
-    item?.creator,
-    item?.contributors,
-    item?.contributor,
-    item?.members,
-    item?.member,
-    item?.["rm:authors"],
-    item?.["rm:author"],
-    item?.["rm:creators"],
-    item?.["rm:contributors"],
-    item?.["rm:members"],
-  ].filter((v) => v != null);
-
-  const rawList = [];
-  for (const src of sources) {
-    const arr = extractAuthorArray(src);
-    for (const el of arr) rawList.push(el);
-  }
-
-  const formatted = rawList
-    .map(normalizeAuthorElem)
-    .flatMap((s) => {
-      if (!s) return [];
-      // string that contains multiple authors
-      if (typeof s === "string" && /;|\s+and\s+/i.test(s)) {
-        return s
-          .split(/\s*;\s*|\s+and\s+/i)
-          .map((x) => x.trim())
-          .filter(Boolean);
-      }
-      return [s];
-    })
-    .map(formatAuthorName)
-    .filter(Boolean);
-
-  // de-dup
-  const seen = new Set();
-  const uniq = formatted.filter((s) => {
-    const k = s.toLowerCase();
-    if (seen.has(k)) return false;
-    seen.add(k);
-    return true;
-  });
-
-  return joinAuthorsIEEE(uniq);
-}
-
-// =========================
-// filter
-// =========================
-function isJournalPaper(item) {
-  const typeStr = normalizeSpaces(
-    [
-      item?.published_paper_type,
-      item?.paper_type,
-      item?.type,
-      item?.raw_type_fields?.published_paper_type,
-    ]
-      .map((v) => pickLangText(v).toLowerCase())
-      .join(" ")
-  );
-
-  if (/(conference|proceedings)/.test(typeStr)) return false;
-  if (/(book|chapter|in_book)/.test(typeStr)) return false;
-
-  if (typeStr.includes("journal")) return true;
-
-  const journalHint = [
-    item?.is_international_journal,
-    item?.international_journal,
-    item?.raw_type_fields?.is_international_journal,
-    item?.referee,
-    item?.raw_type_fields?.referee,
-  ]
-    .map((v) => pickLangText(v).toLowerCase())
+  // given/middle names -> initials
+  const initials = parts
+    .slice(0, -1)
+    .map((p) => (p ? p[0].toUpperCase() + "." : ""))
     .join(" ");
 
-  if (journalHint.includes("true") || journalHint.includes("1")) return true;
-
-  // last resort: has journal name
-  return !!toJournalName(item);
+  return (initials ? initials + " " : "") + family;
 }
 
-function isReviewArticle(item) {
-  // 1) invited 判定：bool系 + 文字列系（招待/Invited）
-  const invitedBool =
-    item?.invited ??
-    item?.["rm:invited"] ??
-    item?.is_invited ??
-    item?.["rm:is_invited"] ??
-    item?.invited_paper ??
-    item?.is_invited_paper ??
-    item?.raw_type_fields?.invited ??
-    item?.raw_type_fields?.is_invited ??
-    item?.raw_type_fields?.invited_paper ??
-    item?.raw_type_fields?.is_invited_paper;
+function formatAuthors(item) {
+  const authors = getAuthorsArray(item)
+    .map((a) => (typeof a === "string" ? a : a?.name || a?.en || a?.ja || ""))
+    .filter(Boolean);
 
-  const invitedTypeStr = normalizeSpaces(
-    [
-      item?.published_paper_type,
-      item?.["rm:published_paper_type"],
-      item?.paper_type,
-      item?.type,
-      item?.raw_type_fields?.published_paper_type,
-    ]
-      .map((v) => pickLangText(v))
-      .join(" ")
-  ).toLowerCase();
-
-  const isInvited =
-    truthy01(invitedBool) ||
-    /invited|招待/.test(invitedTypeStr);
-
-  // 2) referee 判定：true だけを査読あり扱い
-  const refereeVal =
-    item?.referee ??
-    item?.["rm:referee"] ??
-    item?.raw_type_fields?.referee;
-
-  const isRefereed = truthy01(refereeVal);
-
-  // invited=true かつ referee が true ではない
-  return isInvited && !isRefereed;
+  return authors.map(formatOneAuthor).join("; ");
 }
 
-
-// =========================
-// HTML (no ul/ol)
-// =========================
-function buildPapersHtml({ updatedAt, items, pageTitle, pageDesc }) {
-  // group by year
-  const byYear = new Map();
-  for (const it of items) {
-    const y = toYear(it);
-    if (!byYear.has(y)) byYear.set(y, []);
-    byYear.get(y).push(it);
-  }
-
-  // sort key
-  function itemKey(it) {
-    const yStr = toYear(it);
-    const y = yStr === "----" ? 0 : Number(yStr);
-
-    const dateStr = firstNonEmpty(
-      it?.publication_date,
-      it?.published_date,
-      it?.published_at,
-      it?.date,
-      it?.issued,
-      it?.issued_date,
-      it?.["rm:publication_date"],
-      it?.["rm:published_date"],
-      it?.created_at,
-      it?.updated_at
-    );
-
-    let m = 0, d = 0;
-    if (typeof dateStr === "string") {
-      const mm = dateStr.match(/(19|20)\d{2}[-/](\d{1,2})(?:[-/](\d{1,2}))?/);
-      if (mm) {
-        m = Number(mm[2] || 0);
-        d = Number(mm[3] || 0);
-      }
-    }
-
-    const title = (toTitle(it) || "").toLowerCase();
-    const id = String(it?.["rm:id"] || it?.id || "");
-    return { y, m, d, title, id };
-  }
-
-  function cmpAsc(a, b) {
-    if (a.y !== b.y) return a.y - b.y;
-    if (a.m !== b.m) return a.m - b.m;
-    if (a.d !== b.d) return a.d - b.d;
-    if (a.title !== b.title) return a.title < b.title ? -1 : 1;
-    if (a.id !== b.id) return a.id < b.id ? -1 : 1;
-    return 0;
-  }
-  function cmpDesc(a, b) {
-    return -cmpAsc(a, b);
-  }
-
-  // serial: oldest -> newest (global)
-  const numMap = new Map();
-  const flat = items
-    .map((it) => {
-      const key = String(it?.["rm:id"] || it?.id || `${toYear(it)}|${toTitle(it)}`);
-      return { key, it, k: itemKey(it) };
-    })
-    .sort((a, b) => cmpAsc(a.k, b.k));
-
-  let serial = 1;
-  for (const row of flat) {
-    if (!numMap.has(row.key)) numMap.set(row.key, serial++);
-  }
-
-  // display: newest first (year desc, within year desc)
-  const years = [...byYear.keys()].sort((a, b) => {
-    if (a === "----") return 1;
-    if (b === "----") return -1;
-    return Number(b) - Number(a);
-  });
-
-  const blocks = years
-    .map((y) => {
-      const list = byYear.get(y) || [];
-      const sorted = [...list].sort((a, b) => cmpDesc(itemKey(a), itemKey(b)));
-
-      const rows = sorted
-        .map((it) => {
-          const key = String(it?.["rm:id"] || it?.id || `${toYear(it)}|${toTitle(it)}`);
-          const n = numMap.get(key) ?? 0;
-
-          const authors = toAuthors(it);
-          const title = toTitle(it);
-          const journal = toJournalName(it);
-          const vnp = toVolNoPp(it);
-          const year = toYear(it);
-          const url = toUrl(it);
-
-          const citeParts = [];
-          if (authors) citeParts.push(`${escHtml(authors)},`);
-          if (title) citeParts.push(`“${escHtml(title)},”`);
-          if (journal) citeParts.push(`<i>${escHtml(journal)}</i>,`);
-          if (vnp) citeParts.push(`${escHtml(vnp)},`);
-          citeParts.push(year !== "----" ? `${year}.` : ".");
-          const cite = citeParts.join(" ");
-
-          return `<div class="pub-item"><span class="pub-num">${n}.</span> <span class="pub-cite">${cite}${url ? `&nbsp;<a href="${escHtml(url)}" target="_blank">[link]</a>` : ""}</span></div>`;
-        })
-        .join("\n");
-
-      return `
-<section class="year-block">
-  <h2>${escHtml(y)}</h2>
-  <div class="pub-list">
-${rows}
-  </div>
-</section>`;
-    })
-    .join("\n");
-
-  return `<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>${escHtml(pageTitle)}</title>
-  <link rel="stylesheet" href="../style.css"/>
-</head>
-<body>
-<header class="site-header">
-  <a href="../index.html#recent-ja" style="color:#fff">← Publications に戻る</a>
-  <h1>${escHtml(pageTitle)}</h1>
-  <p>${escHtml(pageDesc)}</p>
-</header>
-<div class="wrap">
-  <p><b>Updated:</b> ${updatedAt} &nbsp; <b>Items:</b> ${items.length}</p>
-  ${blocks}
-</div>
-</body>
-</html>`;
-}
-
-// =========================
-// main
-// =========================
-async function main() {
+// ---------------------
+// researchmap fetch
+// ---------------------
+async function fetchAllPublishedPapers() {
   if (!RESEARCHMAP_PERMALINK) {
-    throw new Error("RESEARCHMAP_PERMALINK is empty");
+    throw new Error("RESEARCHMAP_PERMALINK is empty. Set env var.");
   }
 
   const base = `https://api.researchmap.jp/${encodeURIComponent(
     RESEARCHMAP_PERMALINK
-  )}/published_papers?per_page=200`;
+  )}/published_papers`;
 
-  const updatedAt = new Date().toISOString();
+  const limit = 1000; // spec maximum
+  let start = 1; // spec default is 1 (see docs/examples)
+  let all = [];
 
-  const published = await fetchAllItems(base);
+  while (true) {
+    const u = new URL(base);
+    u.searchParams.set("limit", String(limit));
+    u.searchParams.set("start", String(start));
+    // Prefer JSON (most endpoints default to json)
+    u.searchParams.set("format", "json");
+    if (RESEARCHMAP_API_KEY) u.searchParams.set("api_key", RESEARCHMAP_API_KEY);
 
-  // Save raw fetched data (debug / future-proof)
-  ensureDir(path.dirname(OUT_RAW_JSON));
-  fs.writeFileSync(
-    OUT_RAW_JSON,
-    JSON.stringify(
-      {
-        permalink: RESEARCHMAP_PERMALINK,
-        fetchedAt: updatedAt,
-        total: published.length,
-        items: published,
-      },
-      null,
-      2
-    )
-  );
+    const res = await fetch(u.toString(), {
+      headers: { "User-Agent": "Kobashi-labo/web update_counts.js" },
+    });
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      throw new Error(
+        `researchmap API error: ${res.status} ${res.statusText}\n${body}`
+      );
+    }
 
-  const reviews = published.filter(isReviewArticle);
-  const journals = published
-    .filter(isJournalPaper)
-    .filter((it) => !isReviewArticle(it)); // avoid double count
+    const data = await res.json();
+    const items = Array.isArray(data?.items) ? data.items : [];
 
-  console.log("RESEARCHMAP_PERMALINK =", RESEARCHMAP_PERMALINK);
-  console.log("published total =", published.length);
-  console.log("journal =", journals.length);
-  console.log("reviews =", reviews.length);
-  console.log("OUT_COUNTS_JSON =", OUT_COUNTS_JSON);
-  console.log("OUT_JOURNAL_HTML =", OUT_JOURNAL_HTML);
-  console.log("OUT_REVIEW_HTML =", OUT_REVIEW_HTML);
-  console.log("OUT_RAW_JSON =", OUT_RAW_JSON);
+    all = all.concat(items);
 
-  ensureDir(path.dirname(OUT_COUNTS_JSON));
-  fs.writeFileSync(
-    OUT_COUNTS_JSON,
-    JSON.stringify(
-      {
-        permalink: RESEARCHMAP_PERMALINK,
-        updatedAt,
-        papers_total: published.length,
-        journal: journals.length,
-        reviews: reviews.length,
-      },
-      null,
-      2
-    )
-  );
+    if (items.length < limit) break;
+    start += limit;
+  }
 
-  ensureDir(path.dirname(OUT_JOURNAL_HTML));
-  fs.writeFileSync(
-    OUT_JOURNAL_HTML,
-    buildPapersHtml({
-      updatedAt: updatedAt.slice(0, 10),
-      items: journals,
-      pageTitle: "Journal Papers",
-      pageDesc: "論文誌（Journal papers only）",
-    })
-  );
-
-  ensureDir(path.dirname(OUT_REVIEW_HTML));
-  fs.writeFileSync(
-    OUT_REVIEW_HTML,
-    buildPapersHtml({
-      updatedAt: updatedAt.slice(0, 10),
-      items: reviews,
-      pageTitle: "Review Articles",
-      pageDesc: "解説記事（Invited & non-refereed）",
-    })
-  );
+  return all;
 }
 
-main().catch(console.error);
+// ---------------------
+// classification
+// ---------------------
+function isJournal(item) {
+  const t =
+    item?.published_paper_type ||
+    item?.raw_type_fields?.published_paper_type ||
+    "";
+  // Most common value: "scientific_journal"
+  return String(t).toLowerCase().includes("scientific_journal");
+}
+
+function isConferenceProceedings(item) {
+  const t =
+    item?.published_paper_type ||
+    item?.raw_type_fields?.published_paper_type ||
+    "";
+  const s = String(t).toLowerCase();
+  // Handle typical values like "international_conference_proceedings"
+  return s.includes("conference") || s.includes("proceedings");
+}
+
+// ---------------------
+// HTML builders
+// ---------------------
+function htmlPage({ title, updatedAtISO, items, permalink, pageId }) {
+  // items already in display order (newest first) and have `no` (oldest=1)
+  const rows = items
+    .map((p) => {
+      const title = escapeHtml(p.title);
+      const authors = escapeHtml(p.authors);
+      const venue = escapeHtml(p.venue);
+      const year = escapeHtml(p.year);
+      const rmLink = p.id
+        ? `https://researchmap.jp/${encodeURIComponent(permalink)}/published_papers/${encodeURIComponent(
+            p.id
+          )}`
+        : "";
+      const linkHtml = rmLink
+        ? ` <a class="rm-link" href="${rmLink}" target="_blank" rel="noopener">[researchmap]</a>`
+        : "";
+      return `
+      <div class="paper-item">
+        <span class="paper-number">[${p.no}]</span>
+        <span class="paper-authors">${authors}</span><br/>
+        <span class="paper-title"><strong>${title}</strong></span>${linkHtml}<br/>
+        <span class="paper-venue">${venue}</span>
+        <span class="paper-year"> (${year})</span>
+      </div>`;
+    })
+    .join("\n");
+
+  return `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>${escapeHtml(title)}</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; margin: 24px; line-height: 1.45; }
+    h1 { margin: 0 0 8px; }
+    .meta { color: #666; font-size: 0.95rem; margin-bottom: 18px; }
+    .paper-item { margin: 0 0 14px; }
+    .paper-number { font-weight: 700; margin-right: 6px; }
+    .rm-link { text-decoration: none; margin-left: 6px; }
+    .rm-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <h1>${escapeHtml(title)}</h1>
+  <div class="meta">Last updated: ${escapeHtml(updatedAtISO)}</div>
+  <div id="${escapeHtml(pageId)}">
+${rows || "    <div>(No items found)</div>"}
+  </div>
+</body>
+</html>`;
+}
+
+function toNumberedDisplayList(items) {
+  // oldest first -> assign no, then reverse for display newest first
+  const sorted = [...items].sort((a, b) => {
+    const ya = Number(pickYear(a) || 0);
+    const yb = Number(pickYear(b) || 0);
+    if (ya !== yb) return ya - yb;
+    // stable fallback: by id string
+    return String(a?.rm_id || a?.["rm:id"] || a?.id || "").localeCompare(
+      String(b?.rm_id || b?.["rm:id"] || b?.id || "")
+    );
+  });
+
+  const numbered = sorted.map((item, idx) => ({
+    id: String(item?.["rm:id"] || item?.id || item?.rm_id || ""),
+    no: idx + 1,
+    year: pickYear(item),
+    title: pickTitle(item),
+    authors: formatAuthors(item),
+    venue: pickVenue(item),
+  }));
+
+  return numbered.reverse();
+}
+
+// ---------------------
+// main
+// ---------------------
+async function main() {
+  const all = await fetchAllPublishedPapers();
+
+  const journalRaw = all.filter(isJournal);
+  const confRaw = all.filter((it) => !isJournal(it) && isConferenceProceedings(it));
+
+  const journal = toNumberedDisplayList(journalRaw);
+  const conf = toNumberedDisplayList(confRaw);
+
+  const updatedAtISO = new Date().toISOString();
+
+  const counts = {
+    permalink: RESEARCHMAP_PERMALINK,
+    updatedAt: updatedAtISO,
+    journal_paper_count: journal.length,
+    conference_paper_count: conf.length,
+    journal_papers: journal,
+    conference_papers: conf,
+    // For debugging / future tuning
+    unclassified_count: all.length - journalRaw.length - confRaw.length,
+  };
+
+  // write JSON
+  ensureDir(path.dirname(OUT_COUNTS_JSON));
+  fs.writeFileSync(OUT_COUNTS_JSON, JSON.stringify(counts, null, 2), "utf-8");
+
+  // write HTML pages
+  ensureDir(path.dirname(OUT_JOURNAL_HTML));
+  ensureDir(path.dirname(OUT_CONF_HTML));
+
+  const journalHtml = htmlPage({
+    title: "Journal Papers",
+    updatedAtISO,
+    items: journal,
+    permalink: RESEARCHMAP_PERMALINK,
+    pageId: "journal-papers",
+  });
+
+  const confHtml = htmlPage({
+    title: "Conference Proceeding Papers",
+    updatedAtISO,
+    items: conf,
+    permalink: RESEARCHMAP_PERMALINK,
+    pageId: "conference-proceedings",
+  });
+
+  fs.writeFileSync(OUT_JOURNAL_HTML, journalHtml, "utf-8");
+  fs.writeFileSync(OUT_CONF_HTML, confHtml, "utf-8");
+
+  console.log("✅ Updated:");
+  console.log(" -", OUT_COUNTS_JSON);
+  console.log(" -", OUT_JOURNAL_HTML);
+  console.log(" -", OUT_CONF_HTML);
+  console.log(`Counts: journal=${journal.length}, conference=${conf.length}, unclassified=${counts.unclassified_count}`);
+}
+
+main().catch((e) => {
+  console.error("❌ update_counts.js failed");
+  console.error(e);
+  process.exit(1);
+});
