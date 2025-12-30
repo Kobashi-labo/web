@@ -87,19 +87,19 @@ body {
 .pub-cite i{ font-style: italic; }
 
 /* link: topページのボタン/カードに寄せて少しだけ上品に */
-.pub-cite a{
+pub-cite a{
   display: inline-block;
   margin-left: 0.35em;
-  padding: 0.18em 0.55em;
+  padding: 0.05em 0.45em;   /* 小さく */
   border-radius: 999px;
   text-decoration: none;
   font-weight: 700;
+  font-size: 0.9em;         /* 少し小さく */
   color: #1e3a8a;
-  background: rgba(59,130,246,0.12);
+  background: rgba(59,130,246,0.08);  /* 薄く */
 }
 .pub-cite a:hover{
-  background: rgba(59,130,246,0.18);
-  text-decoration: none;
+  background: rgba(59,130,246,0.14);
 }
 
 /* ===== Responsive ===== */
