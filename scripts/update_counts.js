@@ -276,6 +276,60 @@ function formatPresentationAuthors(item) {
 }
 
 
+
+// ---------------------
+// bibliographic fields (vol/no/pages) – robust
+// ---------------------
+function pickVolume(item) {
+  return firstNonEmpty(
+    item?.volume,
+    item?.vol,
+    item?.journal_volume,
+    item?.journal_vol,
+    item?.conference_volume,
+    item?.publication_volume,
+    item?.published_volume
+  );
+}
+
+function pickNumber(item) {
+  return firstNonEmpty(
+    item?.number,
+    item?.no,
+    item?.issue,
+    item?.journal_number,
+    item?.journal_no,
+    item?.journal_issue,
+    item?.publication_number,
+    item?.published_number
+  );
+}
+
+function normalizePages(p) {
+  const s = normalizeSpaces(p);
+  if (!s) return "";
+  // normalize common separators to en dash
+  return s
+    .replace(/pp?\.\s*/i, "")
+    .replace(/\s*[-–—]\s*/g, "–");
+}
+
+function pickPages(item) {
+  const start = firstNonEmpty(item?.start_page, item?.page_start, item?.first_page);
+  const end = firstNonEmpty(item?.end_page, item?.page_end, item?.last_page);
+  if (start && end) return normalizePages(`${start}-${end}`);
+
+  return normalizePages(
+    firstNonEmpty(
+      item?.pages,
+      item?.page,
+      item?.page_range,
+      item?.pagination,
+      item?.article_number
+    )
+  );
+}
+
 // ---------------------
 // presentations helpers
 // ---------------------
@@ -446,10 +500,33 @@ function researchmapPresentationLink(permalink, id) {
   return `https://researchmap.jp/${encodeURIComponent(permalink)}/presentations/${encodeURIComponent(id)}`;
 }
 
+
 function buildPaperCiteLine(p, permalink) {
-  const base = `${escapeHtml(p.authors)}. <i>${escapeHtml(
-    p.title
-  )}</i>, ${escapeHtml(p.venue)} (${escapeHtml(p.year)}).`;
+  const authors = escapeHtml(p.authors);
+  const title = escapeHtml(p.title);
+  const venue = escapeHtml(p.venue);
+  const year = escapeHtml(p.year);
+
+  const vol = normalizeSpaces(p.volume);
+  const no = normalizeSpaces(p.number);
+  const pages = normalizePages(p.pages);
+
+  const parts = [];
+
+  // IEEE (approx): Authors, "Title," Venue, vol. x, no. y, pp. a–b, year.
+  // Conference papers (approx): Authors, "Title," in Proc. Conf, pp. a–b, year.
+  if (p.pub_kind === "conference") {
+    parts.push(`${authors}, &quot;${title},&quot; in <i>Proc. ${venue}</i>`);
+  } else {
+    parts.push(`${authors}, &quot;${title},&quot; <i>${venue}</i>`);
+    if (vol) parts.push(`vol. ${escapeHtml(vol)}`);
+    if (no) parts.push(`no. ${escapeHtml(no)}`);
+  }
+
+  if (pages) parts.push(`pp. ${escapeHtml(pages)}`);
+  if (year) parts.push(year);
+
+  const base = parts.join(", ") + ".";
 
   if (p.doi_url) {
     return `${base} <a href="${escapeHtml(
@@ -466,10 +543,28 @@ function buildPaperCiteLine(p, permalink) {
 }
 
 
+
+
 function buildPresentationCiteLine(p, permalink) {
-  const base = `${escapeHtml(p.authors)}. <i>${escapeHtml(
-    p.title
-  )}</i>, ${escapeHtml(p.venue)} (${escapeHtml(p.year)}).`;
+  const authors = escapeHtml(p.authors);
+  const title = escapeHtml(p.title);
+  const venue = escapeHtml(p.venue);
+  const year = escapeHtml(p.year);
+
+  const vol = normalizeSpaces(p.volume);
+  const no = normalizeSpaces(p.number);
+  const pages = normalizePages(p.pages);
+
+  const parts = [];
+  // Presentations: Authors, "Title," Venue, (optional) vol./no./pp., year.
+  if (authors) parts.push(authors);
+  parts.push(`&quot;${title},&quot; <i>${venue}</i>`);
+  if (vol) parts.push(`vol. ${escapeHtml(vol)}`);
+  if (no) parts.push(`no. ${escapeHtml(no)}`);
+  if (pages) parts.push(`pp. ${escapeHtml(pages)}`);
+  if (year) parts.push(year);
+
+  const base = parts.join(", ") + ".";
 
   if (p.doi_url) {
     return `${base} <a href="${escapeHtml(
@@ -483,6 +578,7 @@ function buildPresentationCiteLine(p, permalink) {
   }
   return base;
 }
+
 
 
 function htmlPage({ title, updatedAtISO, items, permalink, kind }) {
@@ -533,7 +629,7 @@ ${blocks || "    <p>(No items found)</p>"}
 </html>`;
 }
 
-function toNumberedPaperList(items) {
+function toNumberedPaperList(items, pubKind) {
   // oldest first for numbering
   const sorted = [...items].sort((a, b) => {
     const ya = Number(pickPaperYear(a) || 0);
@@ -548,6 +644,10 @@ function toNumberedPaperList(items) {
     id: String(item?.["rm:id"] || item?.id || ""),
     doi_url: pickDoiUrl(item),
     doi_url: pickDoiUrl(item),
+    pub_kind: pubKind || \"paper\",
+    volume: pickVolume(item),
+    number: pickNumber(item),
+    pages: pickPages(item),
     no: idx + 1,
     year: pickPaperYear(item),
     title: pickPaperTitle(item),
@@ -571,6 +671,9 @@ function toNumberedPresentationList(items) {
   const numbered = sorted.map((item, idx) => ({
     id: String(item?.["rm:id"] || item?.id || ""),
     doi_url: pickDoiUrl(item),
+    volume: pickVolume(item),
+    number: pickNumber(item),
+    pages: pickPages(item),
     no: idx + 1,
     year: pickPresentationYear(item),
     title: pickPresentationTitle(item),
@@ -593,8 +696,8 @@ async function main() {
   const journalRaw = allPapers.filter(isJournal);
   const confRaw = allPapers.filter((it) => !isJournal(it) && isConferenceProceedings(it));
 
-  const journal = toNumberedPaperList(journalRaw);
-  const conf = toNumberedPaperList(confRaw);
+  const journal = toNumberedPaperList(journalRaw, "journal");
+  const conf = toNumberedPaperList(confRaw, "conference");
   const invitedRaw = allPresentations.filter(isInvitedPresentation);
   const oralRaw = allPresentations.filter((it) => !isInvitedPresentation(it));
 
