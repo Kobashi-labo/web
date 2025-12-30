@@ -48,18 +48,30 @@ function normalizeSpaces(s) {
 function pickLangText(v) {
   if (v == null) return "";
   if (typeof v === "string" || typeof v === "number") return String(v);
+
+  // Arrays are not directly stringified (prevents "[object Object]")
+  if (Array.isArray(v)) return "";
+
   if (typeof v === "object") {
-    if (v.ja) return String(v.ja);
-    if (v.en) return String(v.en);
-    if (v["rm:ja"]) return String(v["rm:ja"]);
-    if (v["rm:en"]) return String(v["rm:en"]);
+    // If language fields exist but are arrays, ignore here and let caller handle arrays.
+    if (v.ja && !Array.isArray(v.ja)) return String(v.ja);
+    if (v.en && !Array.isArray(v.en)) return String(v.en);
+    if (v["rm:ja"] && !Array.isArray(v["rm:ja"])) return String(v["rm:ja"]);
+    if (v["rm:en"] && !Array.isArray(v["rm:en"])) return String(v["rm:en"]);
+
     if (v.name) return pickLangText(v.name);
     if (v.full_name) return pickLangText(v.full_name);
     if (v.display_name) return pickLangText(v.display_name);
-    const cand = v.en ?? v.ja ?? v["rm:en"] ?? v["rm:ja"];
+
+    const cand = (v.en && !Array.isArray(v.en) ? v.en : null) ??
+                 (v.ja && !Array.isArray(v.ja) ? v.ja : null) ??
+                 (v["rm:en"] && !Array.isArray(v["rm:en"]) ? v["rm:en"] : null) ??
+                 (v["rm:ja"] && !Array.isArray(v["rm:ja"]) ? v["rm:ja"] : null);
     if (cand) return String(cand);
+
+    return "";
   }
-  return String(v);
+  return "";
 }
 
 function firstNonEmpty(...vals) {
@@ -151,11 +163,32 @@ function toYear(item) {
 }
 
 function toUrl(item) {
-  const doi = firstNonEmpty(item?.doi, item?.DOI, item?.["rm:doi"]);
-  if (doi) {
-    const clean = doi.replace(/^https?:\/\/(dx\.)?doi\.org\//i, "");
+  // 1) direct doi fields (if any)
+  const doiDirect = firstNonEmpty(item?.doi, item?.DOI, item?.["rm:doi"]);
+  if (doiDirect) {
+    const clean = doiDirect.replace(/^https?:\/\/(dx\.)?doi\.org\//i, "");
     return `https://doi.org/${clean}`;
   }
+
+  // 2) identifiers.doi (researchmap often provides doi as an array)
+  const doiArr = item?.identifiers?.doi;
+  if (Array.isArray(doiArr) && doiArr.length) {
+    const clean = String(doiArr[0]).replace(/^https?:\/\/(dx\.)?doi\.org\//i, "");
+    return `https://doi.org/${clean}`;
+  }
+  if (typeof doiArr === "string" && doiArr.trim()) {
+    const clean = doiArr.trim().replace(/^https?:\/\/(dx\.)?doi\.org\//i, "");
+    return `https://doi.org/${clean}`;
+  }
+
+  // 3) see_also: doi
+  const seeAlso = item?.see_also;
+  if (Array.isArray(seeAlso)) {
+    const doiLink = seeAlso.find((x) => x?.label === "doi" && x?.["@id"]);
+    if (doiLink?.["@id"]) return String(doiLink["@id"]);
+  }
+
+  // 4) fallback
   return firstNonEmpty(item?.url, item?.URL, item?._links?.self?.href);
 }
 
@@ -177,7 +210,14 @@ function toJournalName(item) {
 function toVolNoPp(item) {
   const vol = firstNonEmpty(item?.volume, item?.vol, item?.["rm:volume"]);
   const no = firstNonEmpty(item?.number, item?.issue, item?.no, item?.["rm:number"]);
-  const pp = firstNonEmpty(item?.page, item?.pages, item?.pp, item?.["rm:page"]);
+
+  // pages (researchmap often uses starting_page / ending_page)
+  const start = firstNonEmpty(item?.starting_page, item?.start_page, item?.first_page);
+  const end = firstNonEmpty(item?.ending_page, item?.end_page, item?.last_page);
+
+  let pp = firstNonEmpty(item?.page, item?.pages, item?.pp, item?.["rm:page"]);
+  if (!pp && start && end) pp = `${start}–${end}`;
+  if (!pp && start && !end) pp = `${start}`;
 
   const parts = [];
   if (vol) parts.push(`vol. ${vol}`);
@@ -195,6 +235,7 @@ function toVolNoPp(item) {
 function formatAuthorName(raw) {
   const name = normalizeSpaces(pickLangText(raw));
   if (!name) return "";
+  if (name.toLowerCase() === "[object object]") return "";
 
   // Japanese names: keep as-is
   if (/[ぁ-んァ-ン一-龥]/.test(name)) return name;
@@ -241,6 +282,7 @@ function extractAuthorsDeep(obj) {
   function pushName(v) {
     const s = normalizeSpaces(pickLangText(v));
     if (!s) return;
+    if (s.toLowerCase() === "[object object]") return;
     // Ignore very long non-name blobs
     if (s.length > 120) return;
     // Heuristic: looks like a name (has space/comma or Japanese chars)
@@ -318,6 +360,21 @@ function extractAuthorsDeep(obj) {
 }
 
 function toAuthors(item) {
+  // Special case: researchmap "authors" often comes as { en: [ {name: ...}, ... ] }
+  const authObj = item?.authors;
+  if (authObj && typeof authObj === "object" && !Array.isArray(authObj)) {
+    const pickArr = (k) => (Array.isArray(authObj?.[k]) ? authObj[k] : null);
+    const arr = pickArr("ja") || pickArr("en") || pickArr("rm:ja") || pickArr("rm:en");
+    if (arr) {
+      const names = arr
+        .map((a) => firstNonEmpty(a?.name, a?.full_name, a?.display_name, a))
+        .map(formatAuthorName)
+        .filter(Boolean);
+      const joined = joinAuthorsIEEE(names);
+      if (joined) return joined;
+    }
+  }
+
   // 1) Try known top-level pools first
   const pools = [
     item?.authors,
