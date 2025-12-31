@@ -6,7 +6,7 @@
   <title>教授紹介 | 小橋研究室</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    .lang-switch { display:flex; gap:0.5rem; margin-top:1rem; }
+    .lang-switch { display:flex; gap:0.5rem; margin-top:1rem; flex-wrap:wrap; }
     .lang-btn{
       padding:0.5rem 1rem; border:none; border-radius:999px;
       background:rgba(255,255,255,0.15); color:#fff; cursor:pointer; font-weight:700;
@@ -31,25 +31,205 @@
     }
     .section p, .section li{ color:#555; line-height:1.8; }
     .section ul{ padding-left: 1.2rem; }
+    .home-link { color:#fff; text-decoration:none; font-weight:700; opacity:0.95; }
+    .home-link:hover { text-decoration:underline; opacity:1; }
+
+    /* Ensure anchor jump doesn't hide behind header (if style.css uses sticky/fixed header) */
+    .anchor-pad { scroll-margin-top: 120px; }
+  
+    /* Visual timeline */
+    .timeline {
+      position: relative;
+      margin: 1.2rem 0 0.2rem;
+      padding-left: 1.8rem;
+    }
+    .timeline:before {
+      content: "";
+      position: absolute;
+      left: 0.65rem;
+      top: 0.2rem;
+      bottom: 0.2rem;
+      width: 3px;
+      background: linear-gradient(to bottom, rgba(30,58,138,0.25), rgba(59,130,246,0.6));
+      border-radius: 999px;
+    }
+    .timeline-item {
+      position: relative;
+      padding: 0.2rem 0 1.1rem 0;
+    }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-dot {
+      position: absolute;
+      left: 0.38rem;
+      top: 0.25rem;
+      width: 0.6rem;
+      height: 0.6rem;
+      border-radius: 999px;
+      background: #1e3a8a;
+      box-shadow: 0 0 0 6px rgba(30,58,138,0.12);
+    }
+    .timeline-date {
+      font-weight: 800;
+      color: #1e3a8a;
+      margin-bottom: 0.25rem;
+    }
+    .timeline-desc {
+      color: #555;
+      line-height: 1.8;
+    }
+    .timeline-sub {
+      color: #666;
+      font-size: 0.95rem;
+      margin-top: 0.25rem;
+      line-height: 1.7;
+    }
+
+  
+    .summary-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:1rem;
+      margin-top:1.2rem;
+    }
+    .summary-card{
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 18px;
+      padding: 1rem 1.1rem;
+      color:#fff;
+      backdrop-filter: blur(10px);
+    }
+    .summary-card h3{
+      margin:0 0 0.4rem;
+      font-size:1.05rem;
+      font-weight:900;
+    }
+    .summary-card ul{ margin:0.2rem 0 0; padding-left:1.1rem; }
+    .summary-card li{ line-height:1.6; }
+    @media (max-width: 720px){
+      .summary-grid{ grid-template-columns:1fr; }
+    }
+
+  
+    .award-badge{
+      display:inline-block;
+      font-weight:800;
+      font-size:0.85rem;
+      padding:0.18rem 0.55rem;
+      border-radius:999px;
+      background: rgba(30,58,138,0.10);
+      color:#1e3a8a;
+      margin-left:0.4rem;
+    }
+
+  
+    /* One-line role summary */
+    .role-summary{
+      margin: 1.1rem 0 0.2rem;
+      padding: 0.75rem 1rem;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.95);
+      line-height: 1.7;
+      backdrop-filter: blur(10px);
+    }
+    .role-summary strong{ font-weight: 900; }
+
+    /* Minimal, cool timeline (no big circles) */
+    .timeline{
+      position: relative;
+      margin: 1.2rem 0 0.4rem;
+      padding-left: 1.2rem;
+    }
+    .timeline::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:0.2rem;
+      bottom:0.2rem;
+      width:2px;
+      background:#dbeafe;
+      border-radius:999px;
+    }
+    .timeline-item{
+      position: relative;
+      padding: 0.15rem 0 1.05rem 0;
+    }
+    .timeline-item:last-child{ padding-bottom:0; }
+
+    /* Hide dot */
+    .timeline-dot{ display:none !important; }
+
+    /* Monospace date for alignment */
+    .timeline-date{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color:#1e3a8a;
+      font-size: 1.02rem;
+      margin-bottom: 0.25rem;
+    }
+    .timeline-desc{ color:#444; line-height:1.8; }
+
+    /* Current highlight */
+    .timeline-item.current .timeline-date{ color:#0f2a6b; }
+    .timeline-item.current .timeline-desc{ color:#111; }
+
+    /* Concurrent tone-down */
+    .timeline-item.concurrent .timeline-date{ color:#64748b; }
+    .timeline-item.concurrent .timeline-desc{ color:#666; }
+    .timeline-item .tag{
+      font-size:0.85rem;
+      color:#64748b;
+      margin-left:0.4rem;
+      font-weight:700;
+    }
+
+    /* Section subheading for CV-like structure */
+    .subhead{
+      margin-top: 1.2rem;
+      font-weight: 900;
+      color:#1e3a8a;
+    }
+
   </style>
 </head>
 <body>
   <header class="site-header">
     <div>
-      <a href="index.html">← Home</a>
+      <a class="home-link" href="index.html">← Home</a>
       <h1>教授紹介 / Professor</h1>
-      <p>小橋 章司（Shoji KOBASHI）</p>
-      <div class="lang-switch">
-        <button class="lang-btn active" onclick="switchLang('ja', event)">日本語</button>
-        <button class="lang-btn" onclick="switchLang('en', event)">English</button>
+      <p>小橋 昌司（Syoji KOBASHI）</p>
+      <div class="lang-switch" aria-label="Language switch">
+        <button class="lang-btn active" data-lang="ja" onclick="switchLang('ja', event)">日本語</button>
+        <button class="lang-btn" data-lang="en" onclick="switchLang('en', event)">English</button>
       </div>
     </div>
   </header>
 
   <main class="wrap">
 
+    <!-- Anchor targets for index.html links: professor.html#ja / professor.html#en -->
+    <div id="ja" class="anchor-pad"></div>
     <div class="lang-content active" id="content-ja">
-      <section class="section">
+
+
+<p class="role-summary" aria-label="Current roles summary (Japanese)">
+  <strong>現在の主要役職：</strong>
+  兵庫県立大学 先端医療工学研究所 所長／国立循環器病研究センター 特任部長／兵庫県立大学 大学院工学研究科 教授
+</p>
+
+<div class="summary-card">
+    <h3>現在の兼任</h3>
+    <ul>
+      <li>医産学連携研究推進本部・先端医工学研究センター長（2021–）</li>
+      <li>兵庫県立工業技術センター 技術開発指導員（2018–）</li>
+    </ul>
+  </div>
+</div>
+
+<section class="section">
         <h2>概要</h2>
         <p>
           兵庫県立大学 先端医療工学研究所（/ 工学研究科）に所属し、医用画像処理、コンピュータ支援診断（CAD）、
@@ -68,31 +248,120 @@
 
       <section class="section">
         <h2>経歴</h2>
-        <p>
-          ※ アップロードいただいた略歴（Word）を基に、公開用の表記に整えた経歴をここへ反映できます。
-          （必要に応じて「所属」「役職」「期間」を統一表記します）
-        </p>
-      </section>
+
+<h3 class="subhead">主要職歴</h3>
+<div class="timeline" aria-label="Primary appointments (Japanese)">
+  <div class="timeline-item"><div class="timeline-date">2000年4月–9月</div><div class="timeline-desc">旧郵政省 通信総合研究所 情報通信ブレークスルー基礎研究21 柳田プロジェクト 特別研究員</div></div>
+  <div class="timeline-item"><div class="timeline-date">2000年10月–2005年3月</div><div class="timeline-desc">姫路工業大学 大学院工学研究科 助手</div></div>
+  <div class="timeline-item"><div class="timeline-date">2005年4月–2017年3月</div><div class="timeline-desc">兵庫県立大学 大学院工学研究科 准教授</div></div>
+  <div class="timeline-item"><div class="timeline-date">2017年3月–現在</div><div class="timeline-desc">兵庫県立大学 大学院工学研究科 教授</div></div>
+  <div class="timeline-item current"><div class="timeline-date">2021年8月–現在</div><div class="timeline-desc">国立循環器病研究センター 脳卒中・次世代医療研究部 特任部長 <span class="tag">(Cross-appointment)</span></div></div>
+  <div class="timeline-item current"><div class="timeline-date">2022年4月–現在</div><div class="timeline-desc">兵庫県立大学 工学 先端医療工学研究所 所長 <span class="tag">(兼務)</span></div></div>
+</div>
+
+<h3 class="subhead">兼任</h3>
+<div class="timeline" aria-label="Concurrent appointments (Japanese)">
+  <div class="timeline-item concurrent"><div class="timeline-date">2010年4月–2017年3月</div><div class="timeline-desc">大阪大学 免疫学フロンティア研究センター 招聘准教授 <span class="tag">(兼任)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">2011年8月–2012年8月</div><div class="timeline-desc">米国ペンシルバニア大学 放射線科 客員研究員 <span class="tag">(兼任)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">2014年4月–2019年3月</div><div class="timeline-desc">相愛大学 非常勤講師 <span class="tag">(兼任)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">2014年3月–2020年3月</div><div class="timeline-desc">石川病院 客員主任研究員 <span class="tag">(兼任)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">2016年4月–2017年3月</div><div class="timeline-desc">兵庫県立大学 先端医工学研究センター 先端医療情報部門長（姫路駅前サテライトラボ担当） <span class="tag">(兼任)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">2017年4月–2021年3月</div><div class="timeline-desc">兵庫県立大学 工学研究科 先端医工学研究センター長 <span class="tag">(兼任)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">2018年1月–現在</div><div class="timeline-desc">兵庫県立工業技術センター 技術開発指導員 <span class="tag">(兼任)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">2018年4月–2020年3月</div><div class="timeline-desc">兵庫県立大学 姫路工学学術情報館長 <span class="tag">(兼任)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">2018年4月–2021年3月</div><div class="timeline-desc">兵庫県立大学 工学研究科長補佐 <span class="tag">(兼任)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">2021年4月–現在</div><div class="timeline-desc">兵庫県立大学 産学連携・研究推進機構 医産学連携研究推進本部・先端医工学研究センター長 <span class="tag">(兼任)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">2021年4月–2022年3月</div><div class="timeline-desc">兵庫県立大学 先端医療工学研究所（仮称）設置準備室 <span class="tag">(兼任)</span></div></div>
+</div>
+
+</section>
 
       <section class="section">
         <h2>Biography（日本語）</h2>
-        <p>
-          ※ アップロードいただいた日本語略歴・英語Biographyをもとに、Web向けに1〜2段落で要約した文章をここへ配置できます。
-        </p>
+        <p>1995年姫路工業大学卒，修士(1997)，博士(工学)(2000)．同年4月郵政省通信総合研究所特別研究員，同年10月姫路工業大学(現兵庫県立大学)助手，2005年准教授，2017年同教授．2017年より先端医工学研究センター長，2022年より兵庫県立大学先端医療工学研究所長．2022年より国立循環器病研究センター脳卒中・循環器病次世代医療研究部長を兼務．2011年よりペンシルバニア大学放射線科客員研究員(1年間)．人工知能を用いた医用画像解析に関する研究に従事．原著論文は100編以上，査読あり国際会議論論文は約400件．2009年IEEE Franklin V. Taylor Memorial Awardなど多くの国際賞を受賞．IEEE SMCS副会長補佐，日本知能情報ファジィ学会理事，日本医用画像工学会理事，バイオメディカル・ファジィ・システム学会理事・同英文誌編集委員長，日本臨床バイオメカニクス学会評議員，IEEE SMC Japan Chapter Chair，IEEE SMC2018 Publication Chair，SMC2019 Area Program Chair，WAC2024 General Co-Chair，SCIS&amp;ISIS2024 Local Chairなどを歴任，IEEE Senior Member，日本生体医工学会，電子情報通信学会などの会員．</p>
       </section>
 
-      <section class="section">
+
+<section class="section">
+  <h2>受賞・学会活動 / 編集・委員</h2>
+  <ul>
+    <li>IEEE Senior Member</li>
+    <li>学会会員：日本生体医工学会、電子情報通信学会 ほか</li>
+    <li>学会運営：Local Chair（2024）などを歴任</li>
+    <li>編集：Autosoft Journal Editor-at-Large（記載に基づく）</li>
+  </ul>
+  <p style="color:#666; margin-top:0.8rem;">
+    ※ 役職名・担当年・委員会名などは、公開可能な範囲で追記できます。
+  </p>
+</section>
+
+
+<section class="section">
+  <h2>受賞歴（年表）</h2>
+  <div class="timeline" aria-label="Awards timeline (Japanese)">
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2024</div><div class="timeline-desc">Distinguished Editor Award, Journal of Advanced Computational Intelligence and Intelligent Informatics（国外）</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2023</div><div class="timeline-desc">貢献賞，日本知能情報ファジィ学会（国内）</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2022</div><div class="timeline-desc">貢献賞，多値論理研究会（国内）</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2021</div><div class="timeline-desc">工学研究科貢献賞，兵庫県立大学工学研究科（国内）</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2020</div><div class="timeline-desc">永年表彰，兵庫県立大学（国内）</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2019</div><div class="timeline-desc">産業技術賞，システム制御情報学会（国内）</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2018</div><div class="timeline-desc">Lifetime Achievement, World Automation Congress／Outstanding Contribution Award, ICIEV&amp;ICIVPR（国外）</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2017</div><div class="timeline-desc">JSAI Incentive Award（国外）／研究会優秀賞，人工知能学会（国内）／Best Presentation Award, ISIS2017（国外）</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2015</div><div class="timeline-desc">貢献賞，日本知能情報ファジィ学会（国内）</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2014</div><div class="timeline-desc">Best Paper Award, ICIEV（国外）</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2013</div><div class="timeline-desc">Best Session Award, ISIS2013（国外）</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2012</div><div class="timeline-desc">Distinguished contribution award, WAC2012（国外）</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2011</div><div class="timeline-desc">Best Referee Award, IEEE SoSE（国外）／貢献賞，日本知能情報ファジィ学会（国内）</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2010</div><div class="timeline-desc">Best Presentation Award, SCIS&amp;ISIS2010／Best Paper Awards (WAC/ISCIIA等)（国外）</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2009</div><div class="timeline-desc">Franklin V. Taylor Memorial Award (Best Paper), IEEE SMC 2009／Best Paper Award, ISIS 2009（国外）</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2006</div><div class="timeline-desc">Session Best Presentation Award, ISCIIA 2006（国外）</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2005</div><div class="timeline-desc">Outstanding Paper Award, ISIS 2005（国外）</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2003</div><div class="timeline-desc">The Award of Highlighted Technical Paper, ANZIIS 2003（国外）／JpCOMPEmbs03（国内）</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2000</div><div class="timeline-desc">Joseph F. Engelberger Best Paper Award, WAC 2000（国外）</div></div>
+  </div>
+</section>
+
+
+<section class="section">
+  <h2>学会活動・編集・委員</h2>
+  <ul>
+    <li>IEEE Senior Member（2014–）</li>
+    <li>学会会員：IEEE（1994–）、IEICE（1994–）、日本生体医工学会（1996–）、BMFSA（1997–）、OHBM（2001–）、JAMIT（2001–）、日本臨床バイオメカニクス学会（2000–）、システム制御情報学会（2019–）</li>
+    <li>編集・委員：Journal of Advanced Computational Intelligence and Intelligent Informatics（Distinguished Editor Award 2024）ほか（公開可能な範囲で追記）</li>
+    <li>学会運営：Local Chair（2024）など（公開可能な範囲で追記）</li>
+  </ul>
+</section>
+
+<section class="section">
         <h2>リンク</h2>
         <ul>
           <li><a href="https://researchmap.jp/read0134502" target="_blank" rel="noopener">researchmap</a></li>
           <li><a href="https://nrid.nii.ac.jp/ja/nrid/1000000332966/" target="_blank" rel="noopener">NRID（科研費）</a></li>
           <li><a href="https://orcid.org/0000-0003-3659-4114" target="_blank" rel="noopener">ORCID</a></li>
         </ul>
-      </section>
+      
+</section>
     </div>
 
+    <div id="en" class="anchor-pad"></div>
     <div class="lang-content" id="content-en">
-      <section class="section">
+
+
+<p class="role-summary" aria-label="Current roles summary (English)">
+  <strong>Current major roles:</strong>
+  Director, Advanced Medical Engineering Research Institute (University of Hyogo) / Specially Appointed Director (NCVC) / Professor (Graduate School of Engineering, University of Hyogo)
+</p>
+
+<div class="summary-card">
+    <h3>Concurrent Appointments</h3>
+    <ul>
+      <li>Director, Medical-Industry-Academia Collaboration Promotion HQ / Advanced Medical Engineering Center (2021–)</li>
+      <li>Technical Development Advisor, Hyogo Prefectural Institute of Technology (2018–)</li>
+    </ul>
+  </div>
+</div>
+
+<section class="section">
         <h2>Profile</h2>
         <p>
           Shoji Kobashi is a professor at the University of Hyogo. His research interests include medical image processing,
@@ -111,19 +380,74 @@
 
       <section class="section">
         <h2>Employment</h2>
-        <p>
-          *We can populate this section from the uploaded CV/biography documents and format it for the website.
-        </p>
-      </section>
+
+<h3 class="subhead">Primary Appointments</h3>
+<div class="timeline" aria-label="Primary appointments (English)">
+  <div class="timeline-item"><div class="timeline-date">Apr 2000 – Sep 2000</div><div class="timeline-desc">Special Researcher, Communications Research Laboratory (Ministry of Posts and Telecommunications, Japan)</div></div>
+  <div class="timeline-item"><div class="timeline-date">Oct 2000 – Mar 2005</div><div class="timeline-desc">Assistant (Research Associate), Graduate School of Engineering, Himeji Institute of Technology</div></div>
+  <div class="timeline-item"><div class="timeline-date">Apr 2005 – Mar 2017</div><div class="timeline-desc">Associate Professor, Graduate School of Engineering, University of Hyogo</div></div>
+  <div class="timeline-item"><div class="timeline-date">Mar 2017 – Present</div><div class="timeline-desc">Professor, Graduate School of Engineering, University of Hyogo</div></div>
+  <div class="timeline-item current"><div class="timeline-date">Aug 2021 – Present</div><div class="timeline-desc">Specially Appointed Director, Department of Stroke and Next-generation Medicine Research, National Cerebral and Cardiovascular Center (NCVC) <span class="tag">(Cross-appointment)</span></div></div>
+  <div class="timeline-item current"><div class="timeline-date">Apr 2022 – Present</div><div class="timeline-desc">Director, Advanced Medical Engineering Research Institute, University of Hyogo <span class="tag">(Concurrent)</span></div></div>
+</div>
+
+<h3 class="subhead">Concurrent Appointments</h3>
+<div class="timeline" aria-label="Concurrent appointments (English)">
+  <div class="timeline-item concurrent"><div class="timeline-date">Apr 2010 – Mar 2017</div><div class="timeline-desc">Invited Associate Professor, Immunology Frontier Research Center (IFReC), Osaka University <span class="tag">(Concurrent)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">Aug 2011 – Aug 2012</div><div class="timeline-desc">Visiting Researcher, Department of Radiology, University of Pennsylvania, USA <span class="tag">(Concurrent)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">Apr 2014 – Mar 2019</div><div class="timeline-desc">Part-time Lecturer, Soai University <span class="tag">(Concurrent)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">Mar 2014 – Mar 2020</div><div class="timeline-desc">Visiting Chief Researcher, Ishikawa Hospital <span class="tag">(Concurrent)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">Apr 2016 – Mar 2017</div><div class="timeline-desc">Head, Advanced Medical Information Division, University of Hyogo (Himeji Station Satellite Lab) <span class="tag">(Concurrent)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">Apr 2017 – Mar 2021</div><div class="timeline-desc">Director, Advanced Medical Engineering Research Center, University of Hyogo <span class="tag">(Concurrent)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">Jan 2018 – Present</div><div class="timeline-desc">Technical Development Advisor, Hyogo Prefectural Institute of Technology <span class="tag">(Concurrent)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">Apr 2018 – Mar 2020</div><div class="timeline-desc">Director, Himeji Engineering Academic Information Library, University of Hyogo <span class="tag">(Concurrent)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">Apr 2018 – Mar 2021</div><div class="timeline-desc">Vice Dean, Graduate School of Engineering, University of Hyogo <span class="tag">(Concurrent)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">Apr 2021 – Present</div><div class="timeline-desc">Director, Medical-Industry-Academia Collaboration Promotion HQ / Advanced Medical Engineering Center, University of Hyogo <span class="tag">(Concurrent)</span></div></div>
+  <div class="timeline-item concurrent"><div class="timeline-date">Apr 2021 – Mar 2022</div><div class="timeline-desc">Member, Preparatory Office for Advanced Medical Engineering Research Institute, University of Hyogo <span class="tag">(Concurrent)</span></div></div>
+</div>
+
+</section>
 
       <section class="section">
         <h2>Biography</h2>
-        <p>
-          *We can place a concise (1–2 paragraphs) biography here based on the uploaded English biography document.
-        </p>
+        <p>Syoji Kobashi received Dr. of Engineering from Himeji Institute of Technology (2000). He is currently the director of Advanced Medical Engineering Research Institute since 2022, and a professor Graduate School of Engineering since 2018 at University of Hyogo, JAPAN. He is currently a professor. He is also the director of advanced medical engineering research institute of University of Hyogo since 2022 and the specially appointed director of national cerebral and cardiovascular center, JAPAN, since 2022. His research interests include artificial intelligence in medical engineering. He is the chair of IEEE SMC Japan chapter, the editor of International Journal of Biomedical Soft Computing and Human Sciences (IJBSCHS), the editor at large of autosoft journal, and a senior member of IEEE.</p>
       </section>
 
-      <section class="section">
+
+
+<section class="section">
+  <h2>Awards (Timeline)</h2>
+  <div class="timeline" aria-label="Awards timeline (English)">
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2024</div><div class="timeline-desc">Distinguished Editor Award, Journal of Advanced Computational Intelligence and Intelligent Informatics</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2023</div><div class="timeline-desc">Contribution Award, Japan Society for Fuzzy Theory and Intelligent Informatics</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2022</div><div class="timeline-desc">Contribution Award, Multi-Valued Logic Research Group</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2021</div><div class="timeline-desc">Graduate School Contribution Award, University of Hyogo</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2020</div><div class="timeline-desc">Long-service Award, University of Hyogo</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2019</div><div class="timeline-desc">Industrial Technology Award, ISCIE</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2018</div><div class="timeline-desc">Lifetime Achievement Award (World Automation Congress); Outstanding Contribution Award (ICIEV&amp;ICIVPR)</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2017</div><div class="timeline-desc">JSAI Incentive Award; Best Presentation Award (ISIS2017); Excellent Award (JSAI research group)</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2014</div><div class="timeline-desc">Best Paper Award (ICIEV)</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2011</div><div class="timeline-desc">Best Referee Award (IEEE SoSE)</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2009</div><div class="timeline-desc">Franklin V. Taylor Memorial Award (Best Paper), IEEE SMC 2009</div></div>
+    <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2000</div><div class="timeline-desc">Joseph F. Engelberger Best Paper Award, World Automation Congress</div></div>
+  </div>
+  <p style="color:#666; margin-top:0.8rem;">
+    *For brevity, some awards are grouped in the timeline. We can expand every item if desired.
+  </p>
+</section>
+
+
+<section class="section">
+  <h2>Professional Service & Memberships</h2>
+  <ul>
+    <li>Senior Member, IEEE (since 2014)</li>
+    <li>Memberships: IEEE (since 1994), IEICE (since 1994), JSMBE (since 1996), BMFSA (since 1997), OHBM (since 2001), JAMIT (since 2001), JS Clinical Biomechanics (since 2000), ISCIE (since 2019)</li>
+    <li>Editorial/committee activities: Journal of Advanced Computational Intelligence and Intelligent Informatics, etc. (add details as publicly available)</li>
+    <li>Conference organization: Local Chair (2024), etc.</li>
+  </ul>
+</section>
+
+<section class="section">
         <h2>Links</h2>
         <ul>
           <li><a href="https://researchmap.jp/read0134502" target="_blank" rel="noopener">researchmap</a></li>
@@ -136,13 +460,38 @@
   </main>
 
 <script>
-function switchLang(lang, ev) {
+function applyLang(lang, opts) {
   document.querySelectorAll('.lang-content').forEach(c => c.classList.remove('active'));
-  document.getElementById('content-' + lang).classList.add('active');
+  const target = document.getElementById('content-' + lang);
+  if (target) target.classList.add('active');
 
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  if (ev && ev.target) ev.target.classList.add('active');
+  const btn = document.querySelector('.lang-btn[data-lang="' + lang + '"]');
+  if (btn) btn.classList.add('active');
+
+  // keep URL hash in sync so index.html can link to the right language section
+  const desiredHash = (lang === 'en') ? '#en' : '#ja';
+  if (opts && opts.replaceHash) {
+    history.replaceState(null, '', desiredHash);
+  } else {
+    // Avoid adding too many history entries when user toggles
+    history.replaceState(null, '', desiredHash);
+  }
 }
+
+function switchLang(lang, ev) {
+  applyLang(lang, { replaceHash: true });
+  // Optionally scroll to the anchor of that language section
+  const a = document.getElementById(lang);
+  if (a) a.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// On load: respect #ja / #en
+document.addEventListener('DOMContentLoaded', () => {
+  const h = (location.hash || '').toLowerCase();
+  if (h === '#en') applyLang('en', { replaceHash: true });
+  else applyLang('ja', { replaceHash: true });
+});
 </script>
 </body>
 </html>
