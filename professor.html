@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>教授紹介 | 小橋研究室</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .lang-switch { display:flex; gap:0.5rem; margin-top:1rem; }
+    .lang-btn{
+      padding:0.5rem 1rem; border:none; border-radius:999px;
+      background:rgba(255,255,255,0.15); color:#fff; cursor:pointer; font-weight:700;
+    }
+    .lang-btn.active{ background:#fff; color:#1e3a8a; }
+    .lang-content{ display:none; }
+    .lang-content.active{ display:block; }
+    .section{
+      margin-top: 1.5rem;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 2.2rem 2rem;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .section h2{
+      color:#1e3a8a;
+      font-size:1.8rem;
+      margin-bottom:1rem;
+      font-weight:800;
+    }
+    .section p, .section li{ color:#555; line-height:1.8; }
+    .section ul{ padding-left: 1.2rem; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <a href="index.html">← Home</a>
+      <h1>教授紹介 / Professor</h1>
+      <p>小橋 章司（Shoji KOBASHI）</p>
+      <div class="lang-switch">
+        <button class="lang-btn active" onclick="switchLang('ja', event)">日本語</button>
+        <button class="lang-btn" onclick="switchLang('en', event)">English</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <div class="lang-content active" id="content-ja">
+      <section class="section">
+        <h2>概要</h2>
+        <p>
+          兵庫県立大学 先端医療工学研究所（/ 工学研究科）に所属し、医用画像処理、コンピュータ支援診断（CAD）、
+          深層学習・機械学習の医療応用を研究しています。
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>学歴</h2>
+        <ul>
+          <li>2000年3月　姫路工業大学大学院 工学研究科 生産工学専攻 博士課程 修了（博士（工学））</li>
+          <li>1997年3月　姫路工業大学大学院 工学研究科 電気系工学専攻 修士課程 修了（修士）</li>
+          <li>1995年3月　姫路工業大学 工学部 電子工学科 卒業</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>経歴</h2>
+        <p>
+          ※ アップロードいただいた略歴（Word）を基に、公開用の表記に整えた経歴をここへ反映できます。
+          （必要に応じて「所属」「役職」「期間」を統一表記します）
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>Biography（日本語）</h2>
+        <p>
+          ※ アップロードいただいた日本語略歴・英語Biographyをもとに、Web向けに1〜2段落で要約した文章をここへ配置できます。
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>リンク</h2>
+        <ul>
+          <li><a href="https://researchmap.jp/read0134502" target="_blank" rel="noopener">researchmap</a></li>
+          <li><a href="https://nrid.nii.ac.jp/ja/nrid/1000000332966/" target="_blank" rel="noopener">NRID（科研費）</a></li>
+          <li><a href="https://orcid.org/0000-0003-3659-4114" target="_blank" rel="noopener">ORCID</a></li>
+        </ul>
+      </section>
+    </div>
+
+    <div class="lang-content" id="content-en">
+      <section class="section">
+        <h2>Profile</h2>
+        <p>
+          Shoji Kobashi is a professor at the University of Hyogo. His research interests include medical image processing,
+          computer-aided diagnosis (CAD), and medical applications of deep learning and machine learning.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>Education</h2>
+        <ul>
+          <li>Mar 2000 — Ph.D. (Engineering), Graduate School of Engineering, Himeji Institute of Technology (Doctoral Program)</li>
+          <li>Mar 1997 — M.S., Graduate School of Engineering, Himeji Institute of Technology (Master’s Program)</li>
+          <li>Mar 1995 — B.E., Faculty of Engineering, Himeji Institute of Technology (Department of Electronics)</li>
+        </ul>
+      </section>
+
+      <section class="section">
+        <h2>Employment</h2>
+        <p>
+          *We can populate this section from the uploaded CV/biography documents and format it for the website.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>Biography</h2>
+        <p>
+          *We can place a concise (1–2 paragraphs) biography here based on the uploaded English biography document.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>Links</h2>
+        <ul>
+          <li><a href="https://researchmap.jp/read0134502" target="_blank" rel="noopener">researchmap</a></li>
+          <li><a href="https://nrid.nii.ac.jp/ja/nrid/1000000332966/" target="_blank" rel="noopener">NRID (KAKEN)</a></li>
+          <li><a href="https://orcid.org/0000-0003-3659-4114" target="_blank" rel="noopener">ORCID</a></li>
+        </ul>
+      </section>
+    </div>
+
+  </main>
+
+<script>
+function switchLang(lang, ev) {
+  document.querySelectorAll('.lang-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('content-' + lang).classList.add('active');
+
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  if (ev && ev.target) ev.target.classList.add('active');
+}
+</script>
+</body>
+</html>

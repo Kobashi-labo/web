@@ -491,7 +491,19 @@
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
-        @media (max-width: 768px) {
+                /* ===== Auto-generated lists (latest papers / projects) ===== */
+        .latest-list { display: grid; gap: 1rem; }
+        .latest-item {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 14px;
+            padding: 1.2rem 1.2rem;
+            border-left: 5px solid #3b82f6;
+        }
+        .latest-item .meta { color:#666; font-size:0.9rem; margin-bottom:0.4rem; }
+        .latest-item a { color:#1e3a8a; font-weight:700; text-decoration:none; }
+        .latest-item a:hover { text-decoration: underline; }
+
+@media (max-width: 768px) {
             .header-text h1 { font-size: 1.8rem; }
             .header-content { flex-direction: column; gap: 1.5rem; }
             .profile { grid-template-columns: 1fr; text-align: center; }
@@ -524,7 +536,8 @@
                 <!-- ★ここ：Publications を日本語化 -->
                 <a href="#recent-ja">研究業績</a>
                 <a href="#research-jp">研究分野</a>
-                <a href="#professor-jp">教授紹介</a>
+                <a href="#recent-research-jp">最近の研究</a>
+                <a href="professor.html">教授紹介</a>
                 <a href="#projects-jp">研究プロジェクト</a>
                 <a href="#contact-jp">お問い合わせ</a>
             </div>
@@ -602,7 +615,40 @@
                 </div>
             </div>
 
-            <!-- （中略：研究分野〜プロジェクトはそのまま） -->
+            <div class="section" id="research-jp">
+                <h2>研究分野</h2>
+                <div class="research-areas">
+                    <div class="research-card">
+                        <h3>医用画像処理</h3>
+                        <p>CT・MRI・超音波などの医用画像を対象とした解析、臓器・病変抽出、特徴量設計。</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>深層学習・機械学習</h3>
+                        <p>CNN・Transformer 等を用いた分類・検出・セグメンテーション、少量データ学習。</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>コンピュータ支援診断（CAD）</h3>
+                        <p>臨床医と連携し、診断・治療プロセスを支える知能化システムの研究開発。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" id="recent-research-jp">
+                <h2>最近の研究トピック</h2>
+                <p style="margin: 0 0 1rem; color:#666; font-size:0.95rem;">
+                    ※ researchmap の最新論文から自動生成（キーワード分類／表示件数：<span id="latest-n-ja">-</span>）
+                </p>
+                <div id="latest-topics-ja"></div>
+            </div>
+
+            <div class="section" id="projects-jp">
+                <h2>研究プロジェクト</h2>
+                <p style="margin: 0 0 1rem; color:#666; font-size:0.95rem;">
+                    ※ 科研費（KAKEN）情報から自動生成（
+                    <a href="https://nrid.nii.ac.jp/ja/nrid/1000000332966/" target="_blank" rel="noopener">NRID</a>）
+                </p>
+                <div id="kaken-projects-ja"></div>
+            </div>
 
             <div class="section">
                 <h2>研究実績</h2>
@@ -672,7 +718,8 @@
                 <a href="#about-en">About</a>
                 <a href="#recent-en">Publications</a>
                 <a href="#research-en">Research</a>
-                <a href="#professor-en">Professor</a>
+                <a href="#recent-research-en">Topics</a>
+                <a href="professor.html">Professor</a>
                 <a href="#projects-en">Projects</a>
                 <a href="#contact-en">Contact</a>
             </div>
@@ -738,7 +785,40 @@
                 </div>
             </div>
 
-            <!-- （中略：英語本文はそのまま） -->
+            <div class="section" id="research-en">
+                <h2>Research</h2>
+                <div class="research-areas">
+                    <div class="research-card">
+                        <h3>Medical Image Processing</h3>
+                        <p>Analysis of CT/MRI/ultrasound images, organ/lesion segmentation, and feature engineering.</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>Deep Learning & Machine Learning</h3>
+                        <p>Classification, detection, and segmentation with CNNs/Transformers; learning from limited data.</p>
+                    </div>
+                    <div class="research-card">
+                        <h3>Computer-Aided Diagnosis (CAD)</h3>
+                        <p>Developing intelligent systems with clinicians to support diagnosis and treatment workflows.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" id="recent-research-en">
+                <h2>Recent Research Topics</h2>
+                <p style="margin: 0 0 1rem; color:#666; font-size:0.95rem;">
+                    *Auto-generated from recent researchmap papers (keyword grouping, N=<span id="latest-n-en">-</span>)
+                </p>
+                <div id="latest-topics-en"></div>
+            </div>
+
+            <div class="section" id="projects-en">
+                <h2>Projects</h2>
+                <p style="margin: 0 0 1rem; color:#666; font-size:0.95rem;">
+                    *Auto-generated from KAKEN (
+                    <a href="https://nrid.nii.ac.jp/ja/nrid/1000000332966/" target="_blank" rel="noopener">NRID</a>)
+                </p>
+                <div id="kaken-projects-en"></div>
+            </div>
 
             <div class="section">
                 <h2>Research Achievements</h2>
@@ -925,13 +1005,220 @@
       setCount("presentations", presentations.length);
     }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  
+  // ============================
+  // Latest papers -> keyword grouped topics
+  // ============================
+  const LATEST_PAPERS_N = 12; // show up to N recent papers (then grouped)
+
+  const TOPIC_RULES = [
+    {
+      key: "hemorrhage",
+      label: { ja: "🧠 脳出血・脳画像解析", en: "🧠 Brain Hemorrhage & Neuroimaging" },
+      keywords: ["hemorrhage","ich","ivh","intracerebral","intraventricular","brain","cerebral","stroke","ct",
+                 "脳","出血","頭部","脳卒中","CT"]
+    },
+    {
+      key: "xai",
+      label: { ja: "🤖 説明可能AI（XAI）", en: "🤖 Explainable AI (XAI)" },
+      keywords: ["explainable","xai","interpret","interpretable","explanation","saliency","grad-cam","visualization",
+                 "説明","可視化","解釈","根拠"]
+    },
+    {
+      key: "medical",
+      label: { ja: "🩺 医用画像処理・診断支援", en: "🩺 Medical Image Processing & CAD" },
+      keywords: ["medical","image","imaging","diagnosis","cad","segmentation","detection","classification","ultrasound","mri",
+                 "医用","画像","診断","支援","抽出","分類"]
+    }
+  ];
+
+  function escapeHtml(s) {
+    return String(s)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function pickTitle(item, lang) {
+    const t = item?.paper_title || item?.title || {};
+    const primary = (typeof t === "object") ? t?.[lang] : null;
+    const fallback = (typeof t === "object") ? (t?.[lang === "ja" ? "en" : "ja"]) : null;
+    const plain = (typeof t === "string") ? t : null;
+    return primary || fallback || plain || "(no title)";
+  }
+
+  function pickYear(item) {
+    return item?.publication_year || item?.year || item?.published_year || "";
+  }
+
+  function pickDoi(item) {
+    const doi = item?.doi || item?.DOI || item?.identifier?.doi || "";
+    return (typeof doi === "string") ? doi.trim() : "";
+  }
+
+  function pickLink(item) {
+    const doi = pickDoi(item);
+    if (doi) return `https://doi.org/${encodeURIComponent(doi)}`;
+    const apiId = item?.["@id"] || "";
+    if (typeof apiId === "string" && apiId.startsWith("http")) return apiId;
+    const rid = item?.["rm:id"] || item?.id || "";
+    if (rid) return `https://api.researchmap.jp/${RESEARCHMAP_PERMALINK}/published_papers/${rid}`;
+    return null;
+  }
+
+  function classifyPaper(item) {
+    const titleJa = JSON.stringify(item?.paper_title?.ja || "");
+    const titleEn = JSON.stringify(item?.paper_title?.en || "");
+    const absJa = JSON.stringify(item?.abstract?.ja || "");
+    const absEn = JSON.stringify(item?.abstract?.en || "");
+    const text = (titleJa + " " + titleEn + " " + absJa + " " + absEn).toLowerCase();
+
+    for (const rule of TOPIC_RULES) {
+      if (rule.keywords.some(k => text.includes(String(k).toLowerCase()))) return rule.key;
+    }
+    return "medical";
+  }
+
+  function groupByTopic(items) {
+    const groups = {};
+    for (const rule of TOPIC_RULES) groups[rule.key] = [];
+    for (const it of items) {
+      const key = classifyPaper(it);
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(it);
+    }
+    return groups;
+  }
+
+  function renderTopics(targetId, items, lang) {
+    const root = document.getElementById(targetId);
+    if (!root) return;
+
+    if (!items || items.length === 0) {
+      root.innerHTML = `<p style="color:#666;">${lang === "ja" ? "最新論文を取得できませんでした。" : "Could not load recent papers."}</p>`;
+      return;
+    }
+
+    const groups = groupByTopic(items);
+    let out = "";
+
+    for (const rule of TOPIC_RULES) {
+      const list = groups[rule.key] || [];
+      if (list.length === 0) continue;
+
+      out += `<h3>${escapeHtml(rule.label[lang])}</h3>`;
+      out += `<div class="latest-list">`;
+
+      list.forEach((it, idx) => {
+        const title = pickTitle(it, lang);
+        const year = pickYear(it);
+        const link = pickLink(it);
+
+        const meta = `${String(idx + 1).padStart(2, "0")}${year ? " / " + escapeHtml(year) : ""}`;
+        const titleHtml = link
+          ? `<a href="${link}" target="_blank" rel="noopener">${escapeHtml(title)}</a>`
+          : `${escapeHtml(title)}`;
+
+        out += `
+          <div class="latest-item">
+            <div class="meta">${meta}</div>
+            <div>${titleHtml}</div>
+          </div>
+        `;
+      });
+
+      out += `</div>`;
+    }
+
+    root.innerHTML = out || `<p style="color:#666;">${lang === "ja" ? "該当トピックがありません。" : "No topics found."}</p>`;
+  }
+
+  async function loadLatestTopics() {
+    const limit = Math.min(1000, LATEST_PAPERS_N);
+    const url = `https://api.researchmap.jp/${RESEARCHMAP_PERMALINK}/published_papers?format=json&limit=${limit}&start=1`;
+    const json = await fetchJson(url);
+    const { items } = normalizeItems(json);
+    const latest = (items || []).slice(0, LATEST_PAPERS_N);
+
+    const jaN = document.getElementById("latest-n-ja");
+    const enN = document.getElementById("latest-n-en");
+    if (jaN) jaN.textContent = String(LATEST_PAPERS_N);
+    if (enN) enN.textContent = String(LATEST_PAPERS_N);
+
+    renderTopics("latest-topics-ja", latest, "ja");
+    renderTopics("latest-topics-en", latest, "en");
+  }
+
+  // ============================
+  // KAKEN projects (from data/kakenhi.json)
+  // ============================
+  async function loadKakenProjects() {
+    const res = await fetch("data/kakenhi.json", { cache: "no-cache" });
+    if (!res.ok) throw new Error("kakenhi.json not found");
+    const d = await res.json();
+    renderKaken("kaken-projects-ja", d.projects || [], "ja");
+    renderKaken("kaken-projects-en", d.projects || [], "en");
+  }
+
+  function renderKaken(targetId, projects, lang) {
+    const root = document.getElementById(targetId);
+    if (!root) return;
+
+    if (!Array.isArray(projects) || projects.length === 0) {
+      root.innerHTML = `<p style="color:#666;">${lang === "ja" ? "科研プロジェクト情報を準備中です。" : "KAKEN project data is being prepared."}</p>`;
+      return;
+    }
+
+    const nowY = new Date().getFullYear();
+    const sorted = [...projects].sort((a, b) => {
+      const aActive = (a.toYear || 0) >= nowY;
+      const bActive = (b.toYear || 0) >= nowY;
+      if (aActive !== bActive) return aActive ? -1 : 1;
+      return (b.fromYear || 0) - (a.fromYear || 0);
+    });
+
+    const html = sorted.map(p => {
+      const title = (lang === "ja" ? (p.titleJa || p.titleEn) : (p.titleEn || p.titleJa)) || "(no title)";
+      const period = (p.fromYear && p.toYear) ? `${p.fromYear}–${p.toYear}` : "";
+      const kakenNo = p.kakenNo ? `JP${p.kakenNo}` : "";
+      const inst = (p.collaborators || []).map(x => x.affiliation).filter(Boolean);
+      const uniqInst = [...new Set(inst)];
+
+      const kakenLink = p.kakenUrl
+        ? `<a href="${p.kakenUrl}" target="_blank" rel="noopener">${escapeHtml(kakenNo || p.kakenUrl)}</a>`
+        : escapeHtml(kakenNo);
+
+      return `
+        <div class="project-item">
+          <div class="project-title">${escapeHtml(title)}</div>
+          <div class="project-period">${escapeHtml(period)}</div>
+          <div style="margin-top:0.6rem; color:#555; line-height:1.7;">
+            <div><strong>${lang === "ja" ? "科研費" : "KAKENHI"}：</strong>${kakenLink}</div>
+            <div><strong>${lang === "ja" ? "共同研究先" : "Collaborators"}：</strong>
+              ${uniqInst.length ? uniqInst.map(escapeHtml).join(" / ") : (lang === "ja" ? "（記載なし）" : "(not listed)")}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    root.innerHTML = `<div class="project-list">${html}</div>`;
+  }
+
+
+document.addEventListener("DOMContentLoaded", () => {
     loadCounts().catch(err => {
       console.error(err);
       // counts.json が無い/壊れてる場合のみ API フォールバック
       updateResearchmapCountsFallback().catch(e => console.error(e));
     });
-  });
+  
+
+    loadLatestTopics().catch(e => console.error(e));
+    loadKakenProjects().catch(e => console.error(e));
+});
 </script>
 
 </body>
