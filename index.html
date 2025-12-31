@@ -512,6 +512,95 @@
             .hero, .section, .cta { padding: 2rem; }
             .research-areas, .publications-links, .info-grid { grid-template-columns: 1fr; }
         }
+    
+        /* ===== Fixed header + fixed nav (with dynamic offsets) ===== */
+        :root {
+            --header-h: 120px;
+            --nav-h: 60px;
+            --scroll-offset: 200px;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        nav.top-nav {
+            position: fixed;
+            top: var(--header-h);
+            left: 0;
+            width: 100%;
+        }
+
+        body {
+            padding-top: calc(var(--header-h) + var(--nav-h));
+        }
+
+        /* Make anchor scroll positions comfortable under fixed bars */
+        [id] { scroll-margin-top: calc(var(--scroll-offset) + 16px); }
+
+        /* Nav layout wrapper */
+        .nav-bar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 0; /* keep same width as .nav-content */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Scrollspy highlight */
+        .nav-content a.active-link {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-bottom-color: #3b82f6;
+        }
+
+        /* Compact mode (on scroll) */
+        body.compact header { padding: 1rem 0; }
+        body.compact .header-text h1 { font-size: 2.0rem; }
+        body.compact .subtitle { font-size: 1.0rem; }
+        body.compact nav.top-nav .nav-content a { padding: 0.9rem 1.2rem; }
+        body.compact .lang-switch { padding: 0.35rem; }
+
+        /* Hamburger (mobile) */
+        .nav-toggle {
+            display: none;
+            margin-left: 1rem;
+            margin-right: 0.75rem;
+            border: none;
+            background: rgba(30, 58, 138, 0.08);
+            color: #1e3a8a;
+            border-radius: 12px;
+            padding: 0.6rem 0.9rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .nav-bar { padding: 0 0.5rem; }
+            .nav-toggle { display: inline-flex; align-items: center; justify-content: center; }
+            nav.top-nav .nav-content.nav-links {
+                position: absolute;
+                top: calc(var(--nav-h));
+                left: 0;
+                width: 100%;
+                background: rgba(255,255,255,0.98);
+                backdrop-filter: blur(10px);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+                display: none;
+                flex-direction: column;
+                padding: 0.5rem 0;
+                border-bottom-left-radius: 16px;
+                border-bottom-right-radius: 16px;
+                max-height: 70vh;
+                overflow: auto;
+            }
+            nav.top-nav.nav-open .nav-content.nav-links { display: flex; }
+            nav.top-nav .nav-content a { width: 100%; }
+        }
+
     </style>
 </head>
 <body>
@@ -530,16 +619,19 @@
 
     <!-- Japanese Content -->
     <div class="lang-content active" id="content-ja">
-        <nav>
-            <div class="nav-content">
-                <a href="#about-ja">研究室について</a>
+        <nav class="top-nav" data-lang="ja">
+            <div class="nav-bar">
+                <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">☰</button>
+                <div class="nav-content nav-links">
+<a href="#about-ja">研究室について</a>
                 <!-- ★ここ：Publications を日本語化 -->
                 <a href="#recent-ja">研究業績</a>
                 <a href="#research-jp">研究分野</a>
                 <a href="#recent-research-jp">最近の研究</a>
-                <a href="professor.html">教授紹介</a>
+                <a href="professor.html#ja">教授紹介</a>
                 <a href="#projects-jp">研究プロジェクト</a>
                 <a href="#contact-jp">お問い合わせ</a>
+                </div>
             </div>
         </nav>
 
@@ -553,12 +645,6 @@
                 <h2>Publications - 研究業績</h2>
                 <p id="last-updated" style="margin: 0 0 1rem; color:#666; font-size:0.95rem;"></p>
                 <!-- ★ここ：固定値を data-rm-count に置き換え -->
-                <p style="margin-bottom: 1.5rem; color: #555;">
-                    詳細な業績リストは各リンク先をご覧ください。論文総数：
-                    <strong><span data-rm-count="papers">-</span></strong>編（査読付き）
-                    ／ 口頭発表：
-                    <strong><span data-rm-count="presentations">-</span></strong>件
-                </p>
 
                 <div class="publications-links">
                     <a href="publications/journal-papers.html" class="pub-link-card">
@@ -634,11 +720,96 @@
             </div>
 
             <div class="section" id="recent-research-jp">
-                <h2>最近の研究トピック</h2>
-                <p style="margin: 0 0 1rem; color:#666; font-size:0.95rem;">
-                    ※ researchmap の最新論文から自動生成（キーワード分類／表示件数：<span id="latest-n-ja">-</span>）
+                <h2>最近の研究トピック（過去10年の研究成果より）</h2>
+                <p style="color:#666; margin-bottom:1.2rem; font-size:0.95rem;">
+                    近年（概ね2016–2025）の論文をもとに、研究成果を5つのテーマに整理して紹介します。
+                    各テーマの「代表論文」は DOI に直接リンクしています。
                 </p>
-                <div id="latest-topics-ja"></div>
+
+                <h3>1. 脳卒中・脳画像：血腫拡大予測と脳MRIの高精度分類</h3>
+                <p>
+                    初期画像（CT/MRI）から臨床的に重要なイベント（例：血腫拡大）を予測したり、
+                    脳疾患の鑑別を支援する学習モデルを研究しています。
+                </p>
+                <p><strong>主な成果：</strong><br>
+                    ・臨床適用を意識した血腫拡大予測モデルの提案<br>
+                    ・注意機構（Attention）を活用した脳MRIの鑑別性能向上
+                </p>
+                <p><strong>代表論文（DOI）：</strong><br>
+                    <a href="https://doi.org/10.1161/JAHA.125.042387" target="_blank" rel="noopener">
+                        Clinically Applicable Machine Learning Approach to Predict Intracerebral Hematoma Expansion
+                    </a><br>
+                    <a href="https://doi.org/10.1109/SCISISIS61014.2024.10760152" target="_blank" rel="noopener">
+                        Differentiating Idiopathic Normal Pressure Hydrocephalus Using Multi-Head Attention CNN with Diversify-Loss in Brain MRI
+                    </a>
+                </p>
+
+                <h3>2. 整形外科×スポーツ医学：肘OCDの超音波CAD（早期発見支援）</h3>
+                <p>
+                    野球肘などスポーツ起因障害の早期発見を目的に、超音波画像を用いた病変検出・診断支援（CAD）を開発しています。
+                </p>
+                <p><strong>主な成果：</strong><br>
+                    ・超音波画像に対する病変検出を深層学習で実現し、臨床利用可能性を提示<br>
+                    ・局在推定と検出を組み合わせた実装指向のCADパイプラインを構築
+                </p>
+                <p><strong>代表論文（DOI）：</strong><br>
+                    <a href="https://doi.org/10.2106/JBJS.23.01164" target="_blank" rel="noopener">
+                        Deep Learning-Based Computer-Aided Diagnosis of Osteochondritis Dissecans of the Humeral Capitellum Using Ultrasound Images
+                    </a><br>
+                    <a href="https://doi.org/10.1007/s11548-023-03040-8" target="_blank" rel="noopener">
+                        Deep learning-based osteochondritis dissecans detection in ultrasound images with humeral capitellum localization
+                    </a>
+                </p>
+
+                <h3>3. 歯科パノラマX線：歯・補綴物・埋伏智歯の自動検出と分類</h3>
+                <p>
+                    パノラマX線画像から歯や補綴物を自動検出し、歯列の認識、埋伏智歯の分類など診療・教育・業務効率化に資する手法を研究しています。
+                </p>
+                <p><strong>主な成果：</strong><br>
+                    ・歯と補綴物の同時検出や、知識ベース併用による安定化<br>
+                    ・埋伏智歯の深さ/状態分類など、臨床ニーズに直結するタスクへの展開
+                </p>
+                <p><strong>代表論文（DOI）：</strong><br>
+                    <a href="https://doi.org/10.1038/s41598-020-75887-9" target="_blank" rel="noopener">
+                        Optimization technique combined with deep learning method for teeth recognition in dental panoramic radiographs
+                    </a><br>
+                    <a href="https://doi.org/10.1038/s41598-023-43591-z" target="_blank" rel="noopener">
+                        Teeth and prostheses detection in dental panoramic X-rays using a deep learning-based object detector and a priori knowledge-based algorithm
+                    </a><br>
+                    <a href="https://doi.org/10.1109/SCISISIS61014.2024.10759912" target="_blank" rel="noopener">
+                        Automated Detection and Classification of Mandibular Third Molar Impactions in Panoramic X-Rays
+                    </a>
+                </p>
+
+                <h3>4. 外傷・骨折画像診断：解剖学的知識×注意機構による高信頼な診断支援</h3>
+                <p>
+                    骨折の見落としを減らすため、解剖学的整合性を意識した特徴統合（Fusion）や注意機構を活用し、
+                    「見えにくいが重要」な所見も拾える診断支援モデルを研究しています。
+                </p>
+                <p><strong>主な成果：</strong><br>
+                    ・解剖学的な対応付けに基づく特徴融合で、外傷診断の頑健性を向上<br>
+                    ・臨床説明性（どこを根拠に判断したか）に繋がる設計を志向
+                </p>
+                <p><strong>代表論文（DOI）：</strong><br>
+                    <a href="https://doi.org/10.48550/arXiv.2509.13873" target="_blank" rel="noopener">
+                        Invisible Yet Detected: PelFANet with Attention-Guided Anatomical Fusion for Pelvic Fracture Diagnosis
+                    </a>
+                </p>
+
+                <h3>5. 治療アウトカム予測と説明可能AI：臨床データを用いた意思決定支援</h3>
+                <p>
+                    医療現場の意思決定を支えるため、治療成績（例：ESWLの治療結果など）を機械学習で予測し、
+                    さらにSHAP等を用いて「なぜそう予測したか」を説明する枠組みを研究しています。
+                </p>
+                <p><strong>主な成果：</strong><br>
+                    ・アウトカム予測モデルに説明可能性（SHAP）を組み込み、解釈性を向上<br>
+                    ・臨床導入を見据えた特徴量設計と評価
+                </p>
+                <p><strong>代表論文（DOI）：</strong><br>
+                    <a href="https://doi.org/10.24466/ijbschs.26.2_97" target="_blank" rel="noopener">
+                        Prediction of Ureter ESWL Outcome by Machine Learning and Model Interpretation Approach Using SHAP
+                    </a>
+                </p>
             </div>
 
             <div class="section" id="projects-jp">
@@ -713,15 +884,18 @@
 
     <!-- English Content -->
     <div class="lang-content" id="content-en">
-        <nav>
-            <div class="nav-content">
-                <a href="#about-en">About</a>
+        <nav class="top-nav" data-lang="en">
+            <div class="nav-bar">
+                <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false">☰</button>
+                <div class="nav-content nav-links">
+<a href="#about-en">About</a>
                 <a href="#recent-en">Publications</a>
                 <a href="#research-en">Research</a>
                 <a href="#recent-research-en">Topics</a>
-                <a href="professor.html">Professor</a>
+                <a href="professor.html#en">Professor</a>
                 <a href="#projects-en">Projects</a>
                 <a href="#contact-en">Contact</a>
+                </div>
             </div>
         </nav>
 
@@ -804,11 +978,93 @@
             </div>
 
             <div class="section" id="recent-research-en">
-                <h2>Recent Research Topics</h2>
-                <p style="margin: 0 0 1rem; color:#666; font-size:0.95rem;">
-                    *Auto-generated from recent researchmap papers (keyword grouping, N=<span id="latest-n-en">-</span>)
+                <h2>Recent Research Topics (selected outcomes from the last ~10 years)</h2>
+                <p style="color:#666; margin-bottom:1.2rem; font-size:0.95rem;">
+                    Based on publications mainly from 2016–2025, we summarize our recent outcomes into five research themes.
+                    “Representative papers” link directly to DOI pages.
                 </p>
-                <div id="latest-topics-en"></div>
+
+                <h3>1. Neuroimaging for stroke care: hematoma expansion prediction &amp; brain MRI classification</h3>
+                <p>
+                    We develop machine learning models for early risk prediction (e.g., hematoma expansion) and differential diagnosis using CT/MRI.
+                </p>
+                <p><strong>Key achievements:</strong><br>
+                    • Clinically oriented prediction models for hematoma expansion<br>
+                    • Improved discrimination using attention mechanisms in brain MRI
+                </p>
+                <p><strong>Representative papers (DOI):</strong><br>
+                    <a href="https://doi.org/10.1161/JAHA.125.042387" target="_blank" rel="noopener">
+                        Clinically Applicable Machine Learning Approach to Predict Intracerebral Hematoma Expansion
+                    </a><br>
+                    <a href="https://doi.org/10.1109/SCISISIS61014.2024.10760152" target="_blank" rel="noopener">
+                        Differentiating Idiopathic Normal Pressure Hydrocephalus Using Multi-Head Attention CNN with Diversify-Loss in Brain MRI
+                    </a>
+                </p>
+
+                <h3>2. Orthopedics &amp; sports medicine: ultrasound CAD for elbow osteochondritis dissecans (OCD)</h3>
+                <p>
+                    We study deep learning-based CAD to support early detection of sports-related disorders using ultrasound images.
+                </p>
+                <p><strong>Key achievements:</strong><br>
+                    • Deep learning detection pipelines suitable for clinical workflow<br>
+                    • Lesion localization + detection for practical CAD implementation
+                </p>
+                <p><strong>Representative papers (DOI):</strong><br>
+                    <a href="https://doi.org/10.2106/JBJS.23.01164" target="_blank" rel="noopener">
+                        Deep Learning-Based Computer-Aided Diagnosis of Osteochondritis Dissecans of the Humeral Capitellum Using Ultrasound Images
+                    </a><br>
+                    <a href="https://doi.org/10.1007/s11548-023-03040-8" target="_blank" rel="noopener">
+                        Deep learning-based osteochondritis dissecans detection in ultrasound images with humeral capitellum localization
+                    </a>
+                </p>
+
+                <h3>3. Dental panoramic X-rays: detection/classification of teeth, prostheses, and third molar impaction</h3>
+                <p>
+                    We develop automated detection and recognition methods for panoramic radiographs to support clinical tasks and improve efficiency.
+                </p>
+                <p><strong>Key achievements:</strong><br>
+                    • Robust teeth/prosthesis detection combining deep learning and prior knowledge<br>
+                    • Clinically relevant classification tasks such as third molar impaction
+                </p>
+                <p><strong>Representative papers (DOI):</strong><br>
+                    <a href="https://doi.org/10.1038/s41598-020-75887-9" target="_blank" rel="noopener">
+                        Optimization technique combined with deep learning method for teeth recognition in dental panoramic radiographs
+                    </a><br>
+                    <a href="https://doi.org/10.1038/s41598-023-43591-z" target="_blank" rel="noopener">
+                        Teeth and prostheses detection in dental panoramic X-rays using a deep learning-based object detector and a priori knowledge-based algorithm
+                    </a><br>
+                    <a href="https://doi.org/10.1109/SCISISIS61014.2024.10759912" target="_blank" rel="noopener">
+                        Automated Detection and Classification of Mandibular Third Molar Impactions in Panoramic X-Rays
+                    </a>
+                </p>
+
+                <h3>4. Trauma imaging: anatomy-aware fusion and attention for reliable fracture diagnosis</h3>
+                <p>
+                    We explore anatomy-guided feature fusion and attention mechanisms to improve robustness and reliability in fracture diagnosis.
+                </p>
+                <p><strong>Key achievements:</strong><br>
+                    • Anatomy-aware fusion for robust evidence aggregation<br>
+                    • Designs that support explainability (where the model “looks”)
+                </p>
+                <p><strong>Representative paper (DOI):</strong><br>
+                    <a href="https://doi.org/10.48550/arXiv.2509.13873" target="_blank" rel="noopener">
+                        Invisible Yet Detected: PelFANet with Attention-Guided Anatomical Fusion for Pelvic Fracture Diagnosis
+                    </a>
+                </p>
+
+                <h3>5. Outcome prediction &amp; explainable AI: decision support with clinical data</h3>
+                <p>
+                    We build outcome prediction models (e.g., ESWL treatment outcome) and incorporate explainability (e.g., SHAP) to support clinical decision-making.
+                </p>
+                <p><strong>Key achievements:</strong><br>
+                    • Explainability-enabled outcome prediction using SHAP<br>
+                    • Feature engineering and evaluation for practical deployment
+                </p>
+                <p><strong>Representative paper (DOI):</strong><br>
+                    <a href="https://doi.org/10.24466/ijbschs.26.2_97" target="_blank" rel="noopener">
+                        Prediction of Ureter ESWL Outcome by Machine Learning and Model Interpretation Approach Using SHAP
+                    </a>
+                </p>
             </div>
 
             <div class="section" id="projects-en">
@@ -899,6 +1155,12 @@
       document.getElementById('main-title').textContent = '小橋研究室 | Kobashi Laboratory';
     } else {
       document.getElementById('main-title').textContent = 'Kobashi Laboratory | 小橋研究室';
+
+    // update fixed bars + scrollspy when language changes
+    closeAllNavMenus();
+    updateFixedLayoutVars();
+    setupScrollSpy();
+
     }
   }
 
@@ -1208,16 +1470,134 @@
   }
 
 
+
+  // ============================
+  // Fixed header/nav offsets + compact mode + hamburger + scrollspy
+  // ============================
+  let __scrollSpyObserver = null;
+
+  function getActiveLang() {
+    return document.getElementById('content-ja')?.classList.contains('active') ? 'ja' : 'en';
+  }
+
+  function getActiveNav() {
+    const lang = getActiveLang();
+    return document.querySelector(`nav.top-nav[data-lang="${lang}"]`);
+  }
+
+  function updateFixedLayoutVars() {
+    const header = document.querySelector("header");
+    const nav = getActiveNav();
+    if (!header || !nav) return;
+
+    // Temporarily force display for measurement if hidden (rare)
+    const headerH = header.offsetHeight || 120;
+    const navH = nav.offsetHeight || 60;
+
+    document.documentElement.style.setProperty("--header-h", `${headerH}px`);
+    document.documentElement.style.setProperty("--nav-h", `${navH}px`);
+    document.documentElement.style.setProperty("--scroll-offset", `${headerH + navH}px`);
+  }
+
+  function setCompactMode() {
+    if (window.scrollY > 20) document.body.classList.add("compact");
+    else document.body.classList.remove("compact");
+    updateFixedLayoutVars();
+  }
+
+  function closeAllNavMenus() {
+    document.querySelectorAll("nav.top-nav").forEach(n => {
+      n.classList.remove("nav-open");
+      const btn = n.querySelector(".nav-toggle");
+      if (btn) btn.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  function setupHamburger() {
+    document.querySelectorAll("nav.top-nav").forEach(n => {
+      const btn = n.querySelector(".nav-toggle");
+      if (!btn) return;
+
+      // avoid double-binding
+      if (btn.__bound) return;
+      btn.__bound = true;
+
+      btn.addEventListener("click", () => {
+        const open = n.classList.toggle("nav-open");
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+
+      // close menu when clicking a link
+      n.querySelectorAll("a").forEach(a => {
+        a.addEventListener("click", () => closeAllNavMenus());
+      });
+    });
+  }
+
+  function clearActiveLinks() {
+    document.querySelectorAll("nav.top-nav a.active-link").forEach(a => a.classList.remove("active-link"));
+  }
+
+  function activateNavLinkById(id) {
+    const nav = getActiveNav();
+    if (!nav) return;
+    clearActiveLinks();
+    const link = nav.querySelector(`a[href="#${CSS.escape(id)}"]`);
+    if (link) link.classList.add("active-link");
+  }
+
+  function setupScrollSpy() {
+    if (__scrollSpyObserver) {
+      __scrollSpyObserver.disconnect();
+      __scrollSpyObserver = null;
+    }
+
+    const lang = getActiveLang();
+    const root = document.getElementById(`content-${lang}`);
+    const nav = getActiveNav();
+    if (!root || !nav) return;
+
+    // Only observe sections that have matching nav links
+    const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
+    const ids = links.map(a => a.getAttribute("href").slice(1)).filter(Boolean);
+    const targets = ids.map(id => root.querySelector(`#${CSS.escape(id)}`)).filter(Boolean);
+
+    if (targets.length === 0) return;
+
+    const offset = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--scroll-offset")) || 180;
+
+    __scrollSpyObserver = new IntersectionObserver((entries) => {
+      // pick the entry with largest intersection ratio among visible ones
+      const visible = entries.filter(e => e.isIntersecting).sort((a,b)=> (b.intersectionRatio - a.intersectionRatio));
+      if (visible.length > 0) {
+        activateNavLinkById(visible[0].target.id);
+      }
+    }, {
+      root: null,
+      // push the "active zone" below fixed bars
+      rootMargin: `-${Math.round(offset)}px 0px -55% 0px`,
+      threshold: [0.15, 0.35, 0.6]
+    });
+
+    targets.forEach(t => __scrollSpyObserver.observe(t));
+
+    // initial activation (top)
+    activateNavLinkById(targets[0].id);
+  }
+
 document.addEventListener("DOMContentLoaded", () => {
+    setupHamburger();
+    updateFixedLayoutVars();
+    setupScrollSpy();
+    setCompactMode();
+    window.addEventListener("scroll", setCompactMode, { passive: true });
+    window.addEventListener("resize", () => { updateFixedLayoutVars(); setupScrollSpy(); });
     loadCounts().catch(err => {
       console.error(err);
       // counts.json が無い/壊れてる場合のみ API フォールバック
       updateResearchmapCountsFallback().catch(e => console.error(e));
     });
-  
-
-    loadLatestTopics().catch(e => console.error(e));
-    loadKakenProjects().catch(e => console.error(e));
+loadKakenProjects().catch(e => console.error(e));
 });
 </script>
 
