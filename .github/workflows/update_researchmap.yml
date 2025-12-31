@@ -35,15 +35,13 @@ jobs:
 
       - name: Commit & push if changed
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
           if [ -n "$(git status --porcelain)" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-
-            git pull --rebase origin main
-
-            git add data/counts.json publications/*.html index.html
+            git add .
             git commit -m "Update researchmap counts and pages"
-            git push origin main
+            git push origin HEAD
           else
-            echo "No changes."
+            echo "No changes to commit"
           fi
