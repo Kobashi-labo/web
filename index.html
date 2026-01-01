@@ -1180,6 +1180,7 @@
 
       // ✅ counts.json（counts only）キーに合わせる
       const journal = Number(d.journal_paper_count ?? d.journal ?? 0);
+      const book_chapters = Number(d.book_chapters_count ?? d.book_chapters ?? 0);
       const conf = Number(d.conference_paper_count ?? d.intl_conf ?? 0);
       const presProvided = (d.presentations_count != null) || (d.presentations != null);
       const pres = Number(d.presentations_count ?? d.presentations ?? 0);
