@@ -5,6 +5,7 @@
  * - data/counts.json (counts ONLY, small)
  * - publications/journal-papers.html
  * - publications/conference-proceedings.html
+ * - publications/book-chapters.html
  * - publications/oral-presentations.html
  *
  * Styling:
@@ -29,6 +30,7 @@
  * - OUT_COUNTS              (optional; default "data/counts.json")
  * - OUT_JOURNAL_HTML        (optional; default "publications/journal-papers.html")
  * - OUT_CONF_HTML           (optional; default "publications/conference-proceedings.html")
+ * - OUT_BOOK_HTML           (optional; default "publications/book-chapters.html")
  * - OUT_PRES_HTML           (optional; default "publications/oral-presentations.html")
  */
 
@@ -49,6 +51,10 @@ const OUT_JOURNAL_HTML = process.env.OUT_JOURNAL_HTML
 const OUT_CONF_HTML = process.env.OUT_CONF_HTML
   ? path.resolve(process.env.OUT_CONF_HTML)
   : path.join("publications", "conference-proceedings.html");
+
+const OUT_BOOK_HTML = process.env.OUT_BOOK_HTML
+  ? path.resolve(process.env.OUT_BOOK_HTML)
+  : path.join("publications", "book-chapters.html");
 
 const OUT_PRES_HTML = process.env.OUT_PRES_HTML
   ? path.resolve(process.env.OUT_PRES_HTML)
@@ -453,6 +459,14 @@ async function fetchAllCategory(category) {
 // ---------------------
 // classification
 // ---------------------
+function isBookChapter(item) {
+  const t =
+    item?.published_paper_type ||
+    item?.raw_type_fields?.published_paper_type ||
+    "";
+  return String(t).toLowerCase() === "in_book";
+}
+
 function isJournal(item) {
   const t =
     item?.published_paper_type ||
@@ -728,11 +742,15 @@ async function main() {
     fetchAllCategory("presentations"),
   ]);
 
-  const journalRaw = allPapers.filter(isJournal);
-  const confRaw = allPapers.filter((it) => !isJournal(it) && isConferenceProceedings(it));
+  const bookRaw = allPapers.filter(isBookChapter);
+  const journalRaw = allPapers.filter((it) => !isBookChapter(it) && isJournal(it));
+  const confRaw = allPapers.filter(
+    (it) => !isBookChapter(it) && !isJournal(it) && isConferenceProceedings(it)
+  );
 
   const journal = toNumberedPaperList(journalRaw, "journal");
   const conf = toNumberedPaperList(confRaw, "conference");
+  const book = toNumberedPaperList(bookRaw, "book");
   const invitedRaw = allPresentations.filter(isInvitedPresentation);
   const oralRaw = allPresentations.filter((it) => !isInvitedPresentation(it));
 
@@ -747,10 +765,12 @@ async function main() {
     updatedAt: updatedAtISO,
     journal_paper_count: journal.length,
     conference_paper_count: conf.length,
+    book_chapter_count: book.length,
     presentations_count: pres.length,
     invited_presentations_count: invited.length,
-    papers_total: journal.length + conf.length,
-    unclassified_count: allPapers.length - journalRaw.length - confRaw.length,
+    papers_total: journal.length + conf.length + book.length,
+    unclassified_count:
+      allPapers.length - journalRaw.length - confRaw.length - bookRaw.length,
   };
 
   ensureDir(path.dirname(OUT_COUNTS_JSON));
@@ -758,6 +778,7 @@ async function main() {
 
   ensureDir(path.dirname(OUT_JOURNAL_HTML));
   ensureDir(path.dirname(OUT_CONF_HTML));
+  ensureDir(path.dirname(OUT_BOOK_HTML));
   ensureDir(path.dirname(OUT_PRES_HTML));
   ensureDir(path.dirname(OUT_INVITED_HTML));
 
@@ -784,6 +805,19 @@ async function main() {
     }),
     "utf-8"
   );
+
+  fs.writeFileSync(
+    OUT_BOOK_HTML,
+    htmlPage({
+      title: "Book Chapters",
+      updatedAtISO,
+      items: book,
+      permalink: RESEARCHMAP_PERMALINK,
+      kind: "paper",
+    }),
+    "utf-8"
+  );
+
 
   fs.writeFileSync(
     OUT_PRES_HTML,
@@ -814,10 +848,12 @@ async function main() {
   console.log(" -", OUT_COUNTS_JSON);
   console.log(" -", OUT_JOURNAL_HTML);
   console.log(" -", OUT_CONF_HTML);
+  console.log(" -", OUT_BOOK_HTML);
+  console.log(" -", OUT_BOOK_HTML);
   console.log(" -", OUT_PRES_HTML);
   console.log(" -", OUT_INVITED_HTML);
   console.log(
-    `Counts: journal=${journal.length}, conference=${conf.length}, presentations=${pres.length}, invited=${invited.length}, unclassified=${counts.unclassified_count}`
+    `Counts: journal=${journal.length}, conference=${conf.length}, book=${book.length}, presentations=${pres.length}, invited=${invited.length}, unclassified=${counts.unclassified_count}`
   );
 }
 
