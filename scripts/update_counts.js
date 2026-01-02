@@ -6,7 +6,9 @@
  * - publications/journal-papers.html
  * - publications/conference-proceedings.html
  * - publications/book-chapters.html
+ * - publications/review-articles.html
  * - publications/oral-presentations.html
+ * - publications/invited-talks.html
  *
  * Styling:
  * - Uses ../style.css (shared)
@@ -31,7 +33,9 @@
  * - OUT_JOURNAL_HTML        (optional; default "publications/journal-papers.html")
  * - OUT_CONF_HTML           (optional; default "publications/conference-proceedings.html")
  * - OUT_BOOK_HTML           (optional; default "publications/book-chapters.html")
+ * - OUT_REVIEW_HTML         (optional; default "publications/review-articles.html")
  * - OUT_PRES_HTML           (optional; default "publications/oral-presentations.html")
+ * - OUT_INVITED_HTML        (optional; default "publications/invited-talks.html")
  */
 
 const fs = require("fs");
@@ -55,6 +59,10 @@ const OUT_CONF_HTML = process.env.OUT_CONF_HTML
 const OUT_BOOK_HTML = process.env.OUT_BOOK_HTML
   ? path.resolve(process.env.OUT_BOOK_HTML)
   : path.join("publications", "book-chapters.html");
+
+const OUT_REVIEW_HTML = process.env.OUT_REVIEW_HTML
+  ? path.resolve(process.env.OUT_REVIEW_HTML)
+  : path.join("publications", "review-articles.html");
 
 const OUT_PRES_HTML = process.env.OUT_PRES_HTML
   ? path.resolve(process.env.OUT_PRES_HTML)
@@ -194,7 +202,6 @@ function getAuthorsArray(item) {
  * Keep family name as-is; other parts as initials
  * Example: "Shoichi NISHIO" -> "S. NISHIO"
  */
-
 function formatOneAuthor(name) {
   const s = String(name || "").trim();
   if (!s) return "";
@@ -219,7 +226,6 @@ function formatOneAuthor(name) {
   return (initials ? initials + " " : "") + family;
 }
 
-
 function formatAuthors(item) {
   const authors = getAuthorsArray(item)
     .map((a) => (typeof a === "string" ? a : a?.name || a?.en || a?.ja || ""))
@@ -229,8 +235,6 @@ function formatAuthors(item) {
 
 // ---------------------
 // presentations: authors (robust)
-// researchmap presentations may use fields like presenters/speakers/contributors.
-// We try several candidates and fall back gracefully.
 // ---------------------
 function getPresentationPeopleArray(item) {
   const cands = [
@@ -247,12 +251,10 @@ function getPresentationPeopleArray(item) {
     if (!c) continue;
     if (Array.isArray(c)) return c;
     if (typeof c === "object") {
-      // language keyed arrays or nested
       if (Array.isArray(c.en)) return c.en;
       if (Array.isArray(c.ja)) return c.ja;
       if (Array.isArray(c["rm:en"])) return c["rm:en"];
       if (Array.isArray(c["rm:ja"])) return c["rm:ja"];
-      // sometimes single person object
       if (c.name || c.full_name || c.display_name) return [c];
     }
     if (typeof c === "string") return [c];
@@ -279,14 +281,10 @@ function pickPersonName(p) {
 }
 
 function formatPresentationAuthors(item) {
-  const people = getPresentationPeopleArray(item)
-    .map(pickPersonName)
-    .filter(Boolean);
-  if (!people.length) return ""; // presentations can be event-only
+  const people = getPresentationPeopleArray(item).map(pickPersonName).filter(Boolean);
+  if (!people.length) return "";
   return people.map(formatOneAuthor).join(", ");
 }
-
-
 
 // ---------------------
 // bibliographic fields (vol/no/pages) – robust
@@ -326,10 +324,7 @@ function pickNumber(item) {
 function normalizePages(p) {
   const s = normalizeSpaces(p);
   if (!s) return "";
-  // normalize common separators to en dash
-  return s
-    .replace(/pp?\.\s*/i, "")
-    .replace(/\s*[-–—]\s*/g, "–");
+  return s.replace(/pp?\.\s*/i, "").replace(/\s*[-–—]\s*/g, "–");
 }
 
 function pickPages(item) {
@@ -354,7 +349,6 @@ function pickPages(item) {
   );
 
   const endClean = normalizeSpaces(end);
-  // Some records use "+" meaning "and following" → don't render pp.
   if (start && endClean && endClean !== "+") {
     return normalizePages(`${start}-${endClean}`);
   }
@@ -401,7 +395,6 @@ function pickPresentationVenue(item) {
 }
 
 function pickPresentationYear(item) {
-  // try common date-ish fields
   const d =
     item?.publication_date ||
     item?.presented_date ||
@@ -457,35 +450,65 @@ async function fetchAllCategory(category) {
 }
 
 // ---------------------
-// classification
+// classification (UPDATED)
 // ---------------------
+function pickPublishedPaperTypeLower(item) {
+  const t =
+    item?.published_paper_type ||
+    item?.raw_type_fields?.published_paper_type ||
+    "";
+  return String(t || "").toLowerCase().trim();
+}
+
+// (1) book chapter: in_book
 function isBookChapter(item) {
-  const t =
-    item?.published_paper_type ||
-    item?.raw_type_fields?.published_paper_type ||
-    "";
-  return String(t).toLowerCase() === "in_book";
+  return pickPublishedPaperTypeLower(item) === "in_book";
 }
 
+// referee flag (robust): treat missing/unknown as "not explicitly non-refereed"
+function isExplicitlyNonRefereed(item) {
+  const v = item?.referee ?? item?.raw_type_fields?.referee;
+  if (v === true || v === "true" || v === 1 || v === "1") return false;
+  if (v === false || v === "false" || v === 0 || v === "0") return true;
+
+  // Sometimes "有"/"無" etc.
+  const s = String(v ?? "").trim().toLowerCase();
+  if (s === "no" || s === "none" || s === "n") return true;
+  if (s === "yes" || s === "y") return false;
+  if (s.includes("無")) return true;
+  if (s.includes("有")) return false;
+
+  // If unknown/empty, don't force into review_articles
+  return false;
+}
+
+// (2) review_articles: non-refereed + type is scientific_journal OR international_conference_proceedings
+function isReviewArticle(item) {
+  if (!isExplicitlyNonRefereed(item)) return false;
+  const t = pickPublishedPaperTypeLower(item);
+  return t === "scientific_journal" || t === "international_conference_proceedings";
+}
+
+// journal papers (after excluding book/review)
 function isJournal(item) {
-  const t =
-    item?.published_paper_type ||
-    item?.raw_type_fields?.published_paper_type ||
-    "";
-  return String(t).toLowerCase().includes("scientific_journal");
+  const t = pickPublishedPaperTypeLower(item);
+  // keep broad enough for subtypes
+  return t.includes("scientific_journal");
 }
 
+// conference proceedings (after excluding book/review/journal)
 function isConferenceProceedings(item) {
-  const t =
-    item?.published_paper_type ||
-    item?.raw_type_fields?.published_paper_type ||
-    "";
-  const s = String(t).toLowerCase();
-  return s.includes("conference") || s.includes("proceedings");
+  const t = pickPublishedPaperTypeLower(item);
+  // handle exact + broader legacy strings
+  return (
+    t === "international_conference_proceedings" ||
+    t.includes("international_conference") ||
+    t.includes("conference") ||
+    t.includes("proceedings")
+  );
 }
 
 function isInvitedPresentation(item) {
-  // robust heuristics for researchmap presentations
   const v1 = item?.invited;
   if (v1 === true || v1 === "true" || v1 === 1) return true;
 
@@ -500,22 +523,18 @@ function isInvitedPresentation(item) {
 
   if (t.includes("invited")) return true;
 
-  // sometimes a free text flag exists
   const note = String(item?.note || item?.remarks || item?.comment || "").toLowerCase();
   if (note.includes("invited")) return true;
 
-  // Japanese hints
   const j = String(item?.invited_talk || item?.招待 || item?.招待講演 || "").toLowerCase();
   if (j && j !== "false") return true;
 
   const title = pickPresentationTitle(item);
   if (/[招待]/.test(title) && /講演|発表/.test(title)) {
-    // weak hint; keep conservative
     return true;
   }
   return false;
 }
-
 
 // ---------------------
 // HTML builders (match style.css)
@@ -542,14 +561,17 @@ function groupByYearDesc(items) {
 
 function researchmapPaperLink(permalink, id) {
   if (!id) return "";
-  return `https://researchmap.jp/${encodeURIComponent(permalink)}/published_papers/${encodeURIComponent(id)}`;
+  return `https://researchmap.jp/${encodeURIComponent(permalink)}/published_papers/${encodeURIComponent(
+    id
+  )}`;
 }
 
 function researchmapPresentationLink(permalink, id) {
   if (!id) return "";
-  return `https://researchmap.jp/${encodeURIComponent(permalink)}/presentations/${encodeURIComponent(id)}`;
+  return `https://researchmap.jp/${encodeURIComponent(permalink)}/presentations/${encodeURIComponent(
+    id
+  )}`;
 }
-
 
 function buildPaperCiteLine(p, permalink) {
   const authors = escapeHtml(p.authors);
@@ -563,8 +585,7 @@ function buildPaperCiteLine(p, permalink) {
 
   const parts = [];
 
-  // IEEE (approx): Authors, "Title," Venue, vol. x, no. y, pp. a–b, year.
-  // Conference papers (approx): Authors, "Title," in Proc. Conf, pp. a–b, year.
+  // If p.pub_kind is "conference" → conference style, else journal-ish
   if (p.pub_kind === "conference") {
     parts.push(`${authors}, &quot;${title},&quot; in <i>Proc. ${venue}</i>`);
   } else {
@@ -579,9 +600,7 @@ function buildPaperCiteLine(p, permalink) {
   const base = parts.join(", ") + ".";
 
   if (p.doi_url) {
-    return `${base} <a href="${escapeHtml(
-      p.doi_url
-    )}" target="_blank" rel="noopener">DOI</a>`;
+    return `${base} <a href="${escapeHtml(p.doi_url)}" target="_blank" rel="noopener">DOI</a>`;
   }
 
   const rm = researchmapPaperLink(permalink, p.id);
@@ -591,9 +610,6 @@ function buildPaperCiteLine(p, permalink) {
 
   return base;
 }
-
-
-
 
 function buildPresentationCiteLine(p, permalink) {
   const authors = escapeHtml(p.authors);
@@ -606,7 +622,6 @@ function buildPresentationCiteLine(p, permalink) {
   const pages = normalizePages(p.pages);
 
   const parts = [];
-  // Presentations: Authors, "Title," Venue, (optional) vol./no./pp., year.
   if (authors) parts.push(authors);
   parts.push(`&quot;${title},&quot; <i>${venue}</i>`);
   if (vol) parts.push(`vol. ${escapeHtml(vol)}`);
@@ -617,9 +632,7 @@ function buildPresentationCiteLine(p, permalink) {
   const base = parts.join(", ") + ".";
 
   if (p.doi_url) {
-    return `${base} <a href="${escapeHtml(
-      p.doi_url
-    )}" target="_blank" rel="noopener">DOI</a>`;
+    return `${base} <a href="${escapeHtml(p.doi_url)}" target="_blank" rel="noopener">DOI</a>`;
   }
 
   const rm = researchmapPresentationLink(permalink, p.id);
@@ -629,11 +642,8 @@ function buildPresentationCiteLine(p, permalink) {
   return base;
 }
 
-
-
 function htmlPage({ title, updatedAtISO, items, permalink, kind }) {
-  const citeFn =
-    kind === "presentation" ? buildPresentationCiteLine : buildPaperCiteLine;
+  const citeFn = kind === "presentation" ? buildPresentationCiteLine : buildPaperCiteLine;
 
   const blocks = groupByYearDesc(items)
     .map(
@@ -679,30 +689,31 @@ ${blocks || "    <p>(No items found)</p>"}
 </html>`;
 }
 
-function toNumberedPaperList(items, pubKind) {
+function toNumberedPaperList(items, pubKindOrFn) {
   // oldest first for numbering
   const sorted = [...items].sort((a, b) => {
     const ya = Number(pickPaperYear(a) || 0);
     const yb = Number(pickPaperYear(b) || 0);
     if (ya !== yb) return ya - yb;
-    return String(a?.["rm:id"] || a?.id || "").localeCompare(
-      String(b?.["rm:id"] || b?.id || "")
-    );
+    return String(a?.["rm:id"] || a?.id || "").localeCompare(String(b?.["rm:id"] || b?.id || ""));
   });
 
-  const numbered = sorted.map((item, idx) => ({
-    id: String(item?.["rm:id"] || item?.id || ""),
-    doi_url: pickDoiUrl(item),
-    pub_kind: pubKind || "paper",
-    volume: pickVolume(item),
-    number: pickNumber(item),
-    pages: pickPages(item),
-    no: idx + 1,
-    year: pickPaperYear(item),
-    title: pickPaperTitle(item),
-    authors: formatAuthors(item),
-    venue: pickPaperVenue(item),
-  }));
+  const numbered = sorted.map((item, idx) => {
+    const kind = typeof pubKindOrFn === "function" ? pubKindOrFn(item) : pubKindOrFn || "paper";
+    return {
+      id: String(item?.["rm:id"] || item?.id || ""),
+      doi_url: pickDoiUrl(item),
+      pub_kind: kind,
+      volume: pickVolume(item),
+      number: pickNumber(item),
+      pages: pickPages(item),
+      no: idx + 1,
+      year: pickPaperYear(item),
+      title: pickPaperTitle(item),
+      authors: formatAuthors(item),
+      venue: pickPaperVenue(item),
+    };
+  });
 
   return numbered.reverse(); // newest first display
 }
@@ -712,9 +723,7 @@ function toNumberedPresentationList(items) {
     const ya = Number(pickPresentationYear(a) || 0);
     const yb = Number(pickPresentationYear(b) || 0);
     if (ya !== yb) return ya - yb;
-    return String(a?.["rm:id"] || a?.id || "").localeCompare(
-      String(b?.["rm:id"] || b?.id || "")
-    );
+    return String(a?.["rm:id"] || a?.id || "").localeCompare(String(b?.["rm:id"] || b?.id || ""));
   });
 
   const numbered = sorted.map((item, idx) => ({
@@ -742,15 +751,26 @@ async function main() {
     fetchAllCategory("presentations"),
   ]);
 
+  // (3) Do the special classifications FIRST: book_chapters & review_articles
   const bookRaw = allPapers.filter(isBookChapter);
-  const journalRaw = allPapers.filter((it) => !isBookChapter(it) && isJournal(it));
-  const confRaw = allPapers.filter(
-    (it) => !isBookChapter(it) && !isJournal(it) && isConferenceProceedings(it)
-  );
+  const reviewRaw = allPapers.filter((it) => !isBookChapter(it) && isReviewArticle(it));
+
+  // Remaining papers after removing book + review
+  const remaining = allPapers.filter((it) => !isBookChapter(it) && !isReviewArticle(it));
+
+  // Then classify the remainder into journal / conference
+  const journalRaw = remaining.filter(isJournal);
+  const confRaw = remaining.filter((it) => !isJournal(it) && isConferenceProceedings(it));
 
   const journal = toNumberedPaperList(journalRaw, "journal");
   const conf = toNumberedPaperList(confRaw, "conference");
   const book = toNumberedPaperList(bookRaw, "book");
+
+  // For review_articles, keep citation style based on underlying type
+  const review = toNumberedPaperList(reviewRaw, (it) =>
+    isConferenceProceedings(it) ? "conference" : "journal"
+  );
+
   const invitedRaw = allPresentations.filter(isInvitedPresentation);
   const oralRaw = allPresentations.filter((it) => !isInvitedPresentation(it));
 
@@ -766,11 +786,12 @@ async function main() {
     journal_paper_count: journal.length,
     conference_paper_count: conf.length,
     book_chapter_count: book.length,
+    review_article_count: review.length,
     presentations_count: pres.length,
     invited_presentations_count: invited.length,
-    papers_total: journal.length + conf.length + book.length,
+    papers_total: journal.length + conf.length + book.length + review.length,
     unclassified_count:
-      allPapers.length - journalRaw.length - confRaw.length - bookRaw.length,
+      allPapers.length - journalRaw.length - confRaw.length - bookRaw.length - reviewRaw.length,
   };
 
   ensureDir(path.dirname(OUT_COUNTS_JSON));
@@ -779,6 +800,7 @@ async function main() {
   ensureDir(path.dirname(OUT_JOURNAL_HTML));
   ensureDir(path.dirname(OUT_CONF_HTML));
   ensureDir(path.dirname(OUT_BOOK_HTML));
+  ensureDir(path.dirname(OUT_REVIEW_HTML));
   ensureDir(path.dirname(OUT_PRES_HTML));
   ensureDir(path.dirname(OUT_INVITED_HTML));
 
@@ -818,6 +840,17 @@ async function main() {
     "utf-8"
   );
 
+  fs.writeFileSync(
+    OUT_REVIEW_HTML,
+    htmlPage({
+      title: "Review Articles (Non-refereed)",
+      updatedAtISO,
+      items: review,
+      permalink: RESEARCHMAP_PERMALINK,
+      kind: "paper",
+    }),
+    "utf-8"
+  );
 
   fs.writeFileSync(
     OUT_PRES_HTML,
@@ -830,7 +863,6 @@ async function main() {
     }),
     "utf-8"
   );
-
 
   fs.writeFileSync(
     OUT_INVITED_HTML,
@@ -849,11 +881,11 @@ async function main() {
   console.log(" -", OUT_JOURNAL_HTML);
   console.log(" -", OUT_CONF_HTML);
   console.log(" -", OUT_BOOK_HTML);
-  console.log(" -", OUT_BOOK_HTML);
+  console.log(" -", OUT_REVIEW_HTML);
   console.log(" -", OUT_PRES_HTML);
   console.log(" -", OUT_INVITED_HTML);
   console.log(
-    `Counts: journal=${journal.length}, conference=${conf.length}, book=${book.length}, presentations=${pres.length}, invited=${invited.length}, unclassified=${counts.unclassified_count}`
+    `Counts: journal=${journal.length}, conference=${conf.length}, book=${book.length}, review=${review.length}, presentations=${pres.length}, invited=${invited.length}, unclassified=${counts.unclassified_count}`
   );
 }
 
