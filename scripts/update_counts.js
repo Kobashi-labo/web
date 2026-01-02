@@ -483,11 +483,22 @@ function isExplicitlyNonRefereed(item) {
 }
 
 // (2) review_articles: non-refereed + type is scientific_journal OR international_conference_proceedings
+function isTruthy(v) {
+  return v === true || v === "true" || v === 1 || v === "1";
+}
+
+// (2) review_articles: non-refereed + (type is scientific_journal OR international_conference_proceedings OR invited:true)
 function isReviewArticle(item) {
   if (!isExplicitlyNonRefereed(item)) return false;
+
+  // ✅ invited:true を最優先で review_articles 扱いにする
+  const invited = item?.invited ?? item?.raw_type_fields?.invited;
+  if (isTruthy(invited)) return true;
+
   const t = pickPublishedPaperTypeLower(item);
   return t === "scientific_journal" || t === "international_conference_proceedings";
 }
+
 
 // journal papers (after excluding book/review)
 function isJournal(item) {
