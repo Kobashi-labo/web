@@ -34,7 +34,8 @@
  * - OUT_CONF_HTML           (optional; default "publications/conference-proceedings.html")
  * - OUT_BOOK_HTML           (optional; default "publications/book-chapters.html")
  * - OUT_REVIEW_HTML         (optional; default "publications/review-articles.html")
- * - OUT_PRES_HTML           (optional; default "publications/oral-presentations.html")
+ * - OUT_PRES_DOMESTIC_HTML  (optional; default "publications/oral-presentations-domestic.html")
+ * - OUT_PRES_INTL_HTML      (optional; default "publications/oral-presentations-international.html")
  * - OUT_INVITED_HTML        (optional; default "publications/invited-talks.html")
  */
 
@@ -64,9 +65,13 @@ const OUT_REVIEW_HTML = process.env.OUT_REVIEW_HTML
   ? path.resolve(process.env.OUT_REVIEW_HTML)
   : path.join("publications", "review-articles.html");
 
-const OUT_PRES_HTML = process.env.OUT_PRES_HTML
-  ? path.resolve(process.env.OUT_PRES_HTML)
-  : path.join("publications", "oral-presentations.html");
+const OUT_PRES_DOMESTIC_HTML = process.env.OUT_PRES_DOMESTIC_HTML
+  ? path.resolve(process.env.OUT_PRES_DOMESTIC_HTML)
+  : path.join("publications", "oral-presentations-domestic.html");
+
+const OUT_PRES_INTL_HTML = process.env.OUT_PRES_INTL_HTML
+  ? path.resolve(process.env.OUT_PRES_INTL_HTML)
+  : path.join("publications", "oral-presentations-international.html");
 
 const OUT_INVITED_HTML = process.env.OUT_INVITED_HTML
   ? path.resolve(process.env.OUT_INVITED_HTML)
@@ -830,7 +835,8 @@ async function main() {
   ensureDir(path.dirname(OUT_CONF_HTML));
   ensureDir(path.dirname(OUT_BOOK_HTML));
   ensureDir(path.dirname(OUT_REVIEW_HTML));
-  ensureDir(path.dirname(OUT_PRES_HTML));
+  ensureDir(path.dirname(OUT_PRES_DOMESTIC_HTML));
+  ensureDir(path.dirname(OUT_PRES_INTL_HTML));
   ensureDir(path.dirname(OUT_INVITED_HTML));
 
   fs.writeFileSync(
@@ -882,7 +888,7 @@ async function main() {
   );
 
   fs.writeFileSync(
-    path.join("publications", "oral-presentations-domestic.html"),
+    OUT_PRES_DOMESTIC_HTML,
     htmlPage({
       title: "Oral Presentations (Domestic)",
       updatedAtISO,
@@ -894,7 +900,7 @@ async function main() {
   );
 
   fs.writeFileSync(
-    path.join("publications", "oral-presentations-international.html"),
+    OUT_PRES_INTL_HTML,
     htmlPage({
       title: "Oral Presentations (International Conference)",
       updatedAtISO,
@@ -923,10 +929,11 @@ async function main() {
   console.log(" -", OUT_CONF_HTML);
   console.log(" -", OUT_BOOK_HTML);
   console.log(" -", OUT_REVIEW_HTML);
-  console.log(" -", OUT_PRES_HTML);
+  console.log(" -", OUT_PRES_DOMESTIC_HTML);
+  console.log(" -", OUT_PRES_INTL_HTML);
   console.log(" -", OUT_INVITED_HTML);
   console.log(
-    `Counts: journal=${journal.length}, conference=${conf.length}, book=${book.length}, review=${review.length}, presentations=${pres.length}, invited=${invited.length}, unclassified=${counts.unclassified_count}`
+    `Counts: journal=${journal.length}, conference=${conf.length}, book=${book.length}, review=${review.length}, presentations=${presDomestic.length + presInternational.length}, invited=${invited.length}, unclassified=${counts.unclassified_count}`
   );
 }
 
