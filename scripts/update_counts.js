@@ -529,11 +529,21 @@ function isConferenceProceedings(item) {
 // Oral presentation sub-classification
 // ---------------------
 function isInternationalPresentation(item) {
+  // Priority 0: explicit flag from researchmap
+  const explicit =
+    item?.is_international_presentation ??
+    item?.raw_type_fields?.is_international_presentation;
+
+  if (explicit === true || explicit === "true" || explicit === 1 || explicit === "1") return true;
+  if (explicit === false || explicit === "false" || explicit === 0 || explicit === "0") return false;
+
+  // Priority 1 (ONLY rule you want):
+  // published_paper_type === international_conference_proceedings
   const t =
     item?.published_paper_type ||
     item?.raw_type_fields?.published_paper_type ||
     "";
-  return String(t).toLowerCase() === "international_conference_proceedings";
+  return String(t).toLowerCase().trim() === "international_conference_proceedings";
 }
 
 function isInvitedPresentation(item) {
