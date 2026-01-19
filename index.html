@@ -648,6 +648,17 @@
                     
                     </a>
 
+                    
+                    <a href="publications/oral-presentations-domestic.html" class="pub-link-card">
+                        <h3>🗣️ Oral Presentations (Domestic)</h3>
+                        <p>国内会議口頭発表（<span data-rm-count="presentations_domestic">-</span>件）</p>
+                    </a>
+
+                    <a href="publications/oral-presentations-international.html" class="pub-link-card">
+                        <h3>🌍 Oral Presentations (International)</h3>
+                        <p>国際会議口頭発表（<span data-rm-count="presentations_international">-</span>件）</p>
+                    </a>
+
                     <a href="publications/oral-presentations.html" class="pub-link-card">
                         <h3>🗣️ Oral Presentations</h3>
                         <p>口頭発表（<span data-rm-count="presentations">-</span>件）</p>
@@ -1175,6 +1186,8 @@
       setCount("book_chapters", book_chapters);
       setCount("intl_conf", conf);
       setCount("presentations", pres);
+      setCount("presentations_domestic", Number(d.presentations_domestic_count ?? 0));
+      setCount("presentations_international", Number(d.presentations_international_count ?? 0));
       setCount("papers", papersTotal);
 
       // presentations が counts.json に無い場合だけ API で補完
