@@ -519,6 +519,18 @@ function isConferenceProceedings(item) {
   );
 }
 
+
+// ---------------------
+// Oral presentation sub-classification
+// ---------------------
+function isInternationalPresentation(item) {
+  const t =
+    item?.published_paper_type ||
+    item?.raw_type_fields?.published_paper_type ||
+    "";
+  return String(t).toLowerCase() === "international_conference_proceedings";
+}
+
 function isInvitedPresentation(item) {
   const v1 = item?.invited;
   if (v1 === true || v1 === "true" || v1 === 1) return true;
@@ -785,7 +797,11 @@ async function main() {
   const invitedRaw = allPresentations.filter(isInvitedPresentation);
   const oralRaw = allPresentations.filter((it) => !isInvitedPresentation(it));
 
-  const pres = toNumberedPresentationList(oralRaw);
+  const oralInternationalRaw = oralRaw.filter(isInternationalPresentation);
+  const oralDomesticRaw = oralRaw.filter((it) => !isInternationalPresentation(it));
+
+  const presInternational = toNumberedPresentationList(oralInternationalRaw);
+  const presDomestic = toNumberedPresentationList(oralDomesticRaw);
   const invited = toNumberedPresentationList(invitedRaw);
 
   const updatedAtISO = new Date().toISOString();
@@ -798,7 +814,9 @@ async function main() {
     conference_paper_count: conf.length,
     book_chapter_count: book.length,
     review_article_count: review.length,
-    presentations_count: pres.length,
+    presentations_domestic_count: presDomestic.length,
+    presentations_international_count: presInternational.length,
+    presentations_count: presDomestic.length + presInternational.length,
     invited_presentations_count: invited.length,
     papers_total: journal.length + conf.length + book.length + review.length,
     unclassified_count:
@@ -864,11 +882,23 @@ async function main() {
   );
 
   fs.writeFileSync(
-    OUT_PRES_HTML,
+    path.join("publications", "oral-presentations-domestic.html"),
     htmlPage({
-      title: "Oral Presentations",
+      title: "Oral Presentations (Domestic)",
       updatedAtISO,
-      items: pres,
+      items: presDomestic,
+      permalink: RESEARCHMAP_PERMALINK,
+      kind: "presentation",
+    }),
+    "utf-8"
+  );
+
+  fs.writeFileSync(
+    path.join("publications", "oral-presentations-international.html"),
+    htmlPage({
+      title: "Oral Presentations (International Conference)",
+      updatedAtISO,
+      items: presInternational,
       permalink: RESEARCHMAP_PERMALINK,
       kind: "presentation",
     }),
