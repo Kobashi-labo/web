@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学生募集 | 小橋研究室</title>
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', 'Noto Sans JP', sans-serif;
+  line-height: 1.7;
+  color: #333;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-attachment: fixed;
+}
+
+header {
+  background: rgba(30, 58, 138, 0.95);
+  color: white;
+  padding: 2rem 0;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.header-text h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 1.05rem;
+  opacity: 0.95;
+  margin-top: .35rem;
+}
+
+.lang-switch button {
+  margin-left: .5rem;
+  padding: .5rem 1rem;
+  border-radius: 20px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.lang-switch .active {
+  background: white;
+  color: #1e3a8a;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.25rem 2rem 3rem;
+}
+
+.backlink {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 2rem 0;
+}
+.backlink a {
+  color: #e0e7ff;
+  text-decoration: none;
+  font-weight: 650;
+}
+.backlink a:hover { text-decoration: underline; }
+
+.section {
+  background: rgba(255,255,255,0.95);
+  border-radius: 24px;
+  padding: 3rem;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+}
+
+.section h2 {
+  color: #1e3a8a;
+  font-size: 2rem;
+  margin-bottom: 1.2rem;
+}
+
+.section h3 {
+  color: #1e3a8a;
+  margin-top: 1.6rem;
+  margin-bottom: .7rem;
+}
+
+.ps {
+  background: #fef3c7;
+  padding: 1rem 1.2rem;
+  border-left: 6px solid #f59e0b;
+  border-radius: 12px;
+  margin-top: 1rem;
+}
+
+.ok {
+  background: #ecfeff;
+  padding: 1rem 1.2rem;
+  border-left: 6px solid #06b6d4;
+  border-radius: 12px;
+  margin-top: 1rem;
+}
+
+.notice { color: #b91c1c; font-weight: 800; }
+.small { color:#555; font-size: .95rem; }
+.tag {
+  display:inline-block;
+  padding:.2rem .55rem;
+  border-radius:999px;
+  background:#eef2ff;
+  color:#1e3a8a;
+  font-weight:700;
+  margin-right:.35rem;
+  margin-top:.35rem;
+  font-size:.9rem;
+}
+
+.lang-content { display: none; }
+.lang-content.active { display: block; }
+
+ul { margin-left: 1.4rem; }
+li { margin: .35rem 0; }
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin-top: 1rem;
+}
+@media (max-width: 860px){
+  .grid { grid-template-columns: 1fr; }
+  .section { padding: 2rem; }
+  .header-text h1 { font-size: 1.8rem; }
+}
+
+.link-list a{ color:#2563eb; text-decoration:none; font-weight:650; }
+.link-list a:hover{ text-decoration:underline; }
+
+footer {
+  background: rgba(30, 41, 59, 0.95);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+}
+
+.lang-ja { display: inline; }
+.lang-en { display: none; }
+body[data-lang="en"] .lang-ja { display: none; }
+body[data-lang="en"] .lang-en { display: inline; }
+body[data-lang="ja"] .lang-ja { display: inline; }
+body[data-lang="ja"] .lang-en { display: none; }
+
+</style>
+
+<script>
+function switchLang(lang){
+  document.body.setAttribute('data-lang', lang);
+  document.querySelectorAll('.lang-content').forEach(el=>el.classList.remove('active'));
+  document.getElementById(lang).classList.add('active');
+  document.querySelectorAll('.lang-switch button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('btn-'+lang).classList.add('active');
+
+  // ★ 任意だが強くおすすめ：URLも更新（共有用）
+  history.replaceState(null, "", "?lang=" + lang);
+}
+
+// ★ 追加：URL ?lang=en / ?lang=ja を初期表示に反映
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const lang = params.get("lang");
+  if (lang === "en" || lang === "ja") {
+    switchLang(lang);
+  }
+});
+</script>
+
+
+</head>
+
+<body data-lang="ja">
+
+<header>
+  <div class="header-content">
+    <div class="header-text">
+      <h1><span class="lang-ja">学生募集</span><span class="lang-en">Student Recruitment</span> | Kobashi Laboratory</h1>
+      <p class="subtitle"><span class="lang-ja">医用画像 × AI を「医療現場で使える形」にする研究</span><span class="lang-en">Research on translating Medical Imaging × AI into clinically usable systems</span></p>
+    </div>
+    <div class="lang-switch">
+      <button id="btn-ja" class="active" onclick="switchLang('ja')">日本語</button>
+      <button id="btn-en" onclick="switchLang('en')">English</button>
+    </div>
+  </div>
+</header>
+
+<div class="backlink">
+  <a href="index.html"><span class="lang-ja">← 研究室トップへ戻る</span><span class="lang-en">← Back to Home</span></a>
+</div>
+
+<div class="container">
+
+<!-- ===== Japanese ===== -->
+<div id="ja" class="lang-content active">
+
+<div class="section">
+  <h2>この研究室でできること</h2>
+  <p>
+    小橋研究室では、<strong>実際の医療データ</strong>を使い、画像・信号処理と深層学習を組み合わせて
+    <strong>診断支援・予測医療・手術支援</strong>につながるAIを研究開発します。
+    「作って終わり」ではなく、臨床側の要件に合わせて、<strong>医療現場で使える形</strong>に落とし込むことを重視しています。
+  </p>
+  <div class="ps">
+    <strong>向いている人</strong><br>
+    ・画像/AIが好き（または興味がある）／・医療や社会課題に貢献したい／・論文や発表まで挑戦したい／・チームで研究を進めたい
+  </div>
+  <div class="ok">
+    <strong>未経験でも大丈夫？</strong><br>
+    プログラミングや医療知識は必須ではありません。配属後に Python から段階的に学べるように進めます。
+  </div>
+</div>
+
+<div class="section">
+  <h2>研究分野（公開できる範囲）</h2>
+  <p class="small">※ 卒研で募集する具体的なテーマは、見学・面談の際に説明します。</p>
+  <div style="margin-top:.6rem">
+    <span class="tag">① 読影診断支援（画像AI）</span>
+    <span class="tag">② 予測医療支援（時系列/多元データ）</span>
+    <span class="tag">③ 手術支援（現場で使うAI）</span>
+  </div>
+  <ul style="margin-top:1rem">
+    <li>臨床画像（MRI・CT等）や生体信号などの実データを用いたAI解析</li>
+    <li>CAD（Computer-Aided Diagnosis）開発：画像処理＋深層学習</li>
+    <li>治療効果・術後経過の予測、可視化、説明可能AI（XAI）</li>
+    <li>術中データ解析による手術支援システム開発</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>研究室の場所</h2>
+  <p>
+    小橋研究室は<strong><a href="https://ame-hyogo.org/" target="_blank" rel="noopener">先端医療工学研究所</a></strong>に所属し、
+    <strong><a href="https://hgmc.hyogo.jp/index.html" target="_blank" rel="noopener">はりま姫路総合医療センター</a>内</strong>に研究室があります（姫路駅から徒歩15分程度）。
+    <span class="small">※ 姫路工学キャンパス（書写）とは場所が異なります。</span>
+  </p>
+  <div class="ps">
+    <strong>ポイント：</strong>病院の中にある研究室なので、医師と一緒に医療機器・AIの研究開発を進めやすい環境です。
+  </div>
+</div>
+
+<div class="section">
+  <h2>研究室の体制と雰囲気</h2>
+  <div class="grid">
+    <div>
+      <h3>指導・サポート</h3>
+      <ul>
+        <li>学部生は <strong>大学院生メンター＋教員</strong> が一緒に指導</li>
+        <li>2週に1回程度、個別進捗ミーティング（対面/Zoom）</li>
+        <li>Slack等のツールを活用（相談歓迎）</li>
+      </ul>
+    </div>
+    <div>
+      <h3>研究室行事（例）</h3>
+      <ul>
+        <li>4月：新B4配属</li>
+        <li>5–6月：輪講（論文紹介）</li>
+        <li>8–9月：Fall seminar（研究提案/進捗）</li>
+        <li>12月：Winter seminar（発表形式/ポスター）</li>
+        <li>2月：卒研発表・修論発表</li>
+      </ul>
+    </div>
+  </div>
+  <h3>働き方（コアタイムの考え方）</h3>
+  <ul>
+    <li>基本は 10–15時を目安（個人の裁量を尊重）</li>
+    <li>講義（姫路工学キャンパス）を最優先</li>
+    <li>在宅は「データ持ち出し可」の場合に限り可</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>最近の成果（2025年の実績）</h2>
+  <ul>
+    <li>論文：7本</li>
+    <li>国際会議論文：9本</li>
+    <li>学会発表：28回</li>
+    <li>受賞：2件</li>
+  </ul>
+  <p class="small">※ 詳細は <a href="index.html#recent-ja">研究業績（トップページ）</a> をご覧ください。</p>
+</div>
+
+<div class="section">
+  <h2>卒業研究（学部生）</h2>
+  <p class="ps">
+    <strong>スケジュール（例年）：</strong>
+    学部3年<strong>1月にテーマ紹介</strong>、<strong>2月末に配属希望提出</strong>です。<br>
+    <span class="notice">希望提出までに研究室見学・面談を行うことを推奨します。</span>
+  </p>
+  <h3>初期導入（4–5月）</h3>
+  <ul>
+    <li>Pythonの基礎から丁寧に学習</li>
+    <li>医用画像・画像処理・信号処理・統計解析の基礎を体系的に</li>
+  </ul>
+  <h3>共同研究の進め方</h3>
+  <ul>
+    <li>医師・企業研究者との共同研究ミーティングに参加</li>
+    <li>発表内容は教員・先輩と一緒に準備（初めてでも安心）</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>大学院（博士前期課程：修士）</h2>
+  <p>
+    修士課程では、より主体的にテーマを深掘りし、国際会議・論文投稿を目指します。
+    修士・博士進学も視野に入れてじっくり成長したい学生を歓迎します。
+  </p>
+  <ul>
+    <li><strong>7月末：</strong>出願</li>
+    <li><strong>8月末：</strong>入学試験</li>
+  </ul>
+  <p class="ps"><strong>推奨：</strong>出願準備のため、<strong>6月頃までに面談（研究相談）</strong>を行うことを推奨します。</p>
+</div>
+
+<div class="section">
+  <h2>学生の活動（例）</h2>
+  <ul>
+    <li>学生主体で国際学会（IEEE）学生組織の活動運営（勉強会・イベント・交流）</li>
+    <li>KaggleなどAIコンペに挑戦（例：金メダル相当の成績）</li>
+    <li>留学生のメンタリング（学業・生活の支援）</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>FAQ（抜粋）</h2>
+  <h3>医療の知識がないですが、大丈夫ですか？</h3>
+  <p>問題ありません。医工連携の共同研究なので、医療の専門知識は医師が担当します。必要な内容は共同研究先の医師から教えていただけるため、工学・AIの研究に集中できます。</p>
+
+  <h3>講義と研究は両立できますか？</h3>
+  <p>はい。講義を最優先とし、研究室への出入りは各自の都合に合わせて調整します。ミーティングもZoom等で実施可能です。</p>
+
+  <h3>就職先は医療関係に限定されますか？</h3>
+  <p>いいえ。IT・メーカー・データ分析など医療以外の企業に進むケースも多いです。医工学を題材に、実践的な研究開発力を身につけることを目指します。</p>
+</div>
+
+
+<div class="section">
+  <h2>研究室見学・面談（問い合わせ）</h2>
+  <p>
+    興味を持った方を対象に<strong>個別の研究室見学</strong>を行います。
+    実際の研究環境や卒業研究の進め方・雰囲気を直接説明します。
+  </p>
+  <div class="ps">
+    <strong>連絡の目安</strong><br>
+    学部生：配属希望提出（2月末）までに見学・相談することを推奨<br>
+    修士志望者：出願前（目安：6月）までに面談することを推奨
+  </div>
+  <h3>連絡先</h3>
+  <p class="small">見学希望はメールでご連絡ください： <strong>kobashi@eng.u-hyogo.ac.jp</strong></p>
+</div>
+
+<div class="section">
+  <h2>参考リンク</h2>
+  <ul class="link-list">
+    <li><a href="index.html">研究室トップ（Home）</a></li>
+    <li><a href="https://www.ame.u-hyogo.ac.jp/" target="_blank" rel="noopener">兵庫県立大学 工学部・工学研究科</a></li>
+    <li><a href="https://hgmc.hyogo.jp/index.html" target="_blank" rel="noopener">はりま姫路総合医療センター</a></li>
+    <li><a href="https://sites.google.com/jsmbe.org/menavi/%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%A0%94%E7%A9%B6%E8%80%85%E5%90%91%E3%81%91" target="_blank" rel="noopener">日本生体医工学会（JSMBE）大学生研究者向け</a></li>
+  </ul>
+</div>
+
+</div><!-- end ja -->
+
+<!-- ===== English ===== -->
+<div id="en" class="lang-content">
+
+<div class="section">
+  <h2>For Prospective International Students</h2>
+  <p>
+    The Kobashi Laboratory conducts research at the intersection of <strong>medical imaging</strong>
+    and <strong>artificial intelligence</strong>, in close collaboration with clinicians.
+    We focus on building AI that is validated with real clinical data and can be translated into practice.
+    Prior medical knowledge is <strong>not required</strong>.
+  </p>
+  <div class="ps">
+    <strong>Good fit if you want:</strong>
+    applied research with real clinical data, teamwork with clinicians, and opportunities to publish/present.
+  </div>
+</div>
+
+<div class="section">
+  <h2>Research Areas (Public)</h2>
+  <p class="small">Note: the four specific undergraduate recruitment themes are not publicly listed. We explain them during interviews/lab visits.</p>
+  <div style="margin-top:.6rem">
+    <span class="tag">Image-AI for diagnosis</span>
+    <span class="tag">Predictive modeling (time-series)</span>
+    <span class="tag">Surgical assistance AI</span>
+  </div>
+  <ul style="margin-top:1rem">
+    <li>Medical image analysis (CT/MRI/ultrasound/X-ray) with deep learning</li>
+    <li>Computer-aided diagnosis (CAD) with clinicians</li>
+    <li>Outcome prediction and explainable AI (XAI)</li>
+    <li>Intraoperative data analysis and surgical support systems</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>Location</h2>
+  <p>
+    Our laboratory is located <strong>inside <a href="https://hgmc.hyogo.jp/index.html" target="_blank" rel="noopener">Harima-Himeji General Medical Center</a></strong> (about a 15-minute walk from Himeji Station).
+    <span class="small">Note: this is different from the Shosha (Engineering) campus.</span>
+  </p>
+</div>
+
+<div class="section">
+  <h2>Research Style & Support</h2>
+  <ul>
+    <li>Mentoring: undergraduate students are supported by graduate-student mentors and faculty</li>
+    <li>Progress meetings about once every two weeks (in-person or online)</li>
+    <li>Paper reading sessions in May–June</li>
+    <li>Seminars (Fall/Winter) with proposal, progress, and presentation practice</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>Master’s Program (Graduate School)</h2>
+  <ul>
+    <li><strong>Application deadline:</strong> Late July (every year)</li>
+    <li><strong>Entrance examination:</strong> Late August</li>
+  </ul>
+  <p class="ps"><strong>We recommend contacting us by around June</strong> to discuss research interests and preparation.</p>
+<p class="small">For publications and presentations, see <a href="index.html#recent-en">Research Achievements (Home)</a>.</p>
+</div>
+
+
+<div class="section">
+  <h2>Research Internship</h2>
+  <p>
+    We may accept <strong>research internship</strong> students (typically a few weeks to a few months),
+    depending on supervision availability and project fit.
+    Interns usually work on data preprocessing, baseline model implementation, evaluation, or literature surveys.
+  </p>
+  <div class="ps">
+    <strong>How to inquire</strong>
+    <ul style="margin-top:.6rem">
+      <li>Your CV (PDF)</li>
+      <li>Short statement of interests (5–10 lines) and relevant skills</li>
+      <li>Preferred period and availability</li>
+      <li>Funding plan (self-funded / scholarship / home-university support)</li>
+    </ul>
+    <p class="small">Please contact us early (at least 1–2 months in advance) to discuss feasibility.</p>
+  </div>
+</div>
+
+<div class="section">
+  <h2>MEXT Scholarship (Japanese Government)</h2>
+  <p>
+    MEXT is a major scholarship route for international students in Japan.
+    We recommend early communication so we can align your research plan and timeline.
+  </p>
+  <div class="ps">
+    <strong>Summary</strong>
+    <ul style="margin-top:.6rem">
+      <li><strong>University Recommendation:</strong> Apply through the university (internal deadlines may be early).</li>
+      <li><strong>Embassy Recommendation (MOFA route):</strong> Apply through the Japanese embassy in your country.</li>
+    </ul>
+  </div>
+  <h3>Official links</h3>
+  <ul class="link-list">
+    <li><a href="https://www.studyinjapan.go.jp/en/smap-stopj-applications-scholarships-mext/" target="_blank" rel="noopener">Study in Japan — MEXT Scholarship</a></li>
+    <li><a href="https://www.mext.go.jp/en/" target="_blank" rel="noopener">MEXT — Official website</a></li>
+    <li><a href="https://www.mofa.go.jp/" target="_blank" rel="noopener">MOFA — Official website</a></li>
+  </ul>
+</div>
+
+
+<div class="section">
+  <h2>Doctoral Program (PhD)</h2>
+  <p>
+    The Kobashi Laboratory actively welcomes motivated students for the
+    <strong>Doctoral (PhD) program</strong> who aim to pursue
+    <strong>advanced, original research</strong> in medical imaging,
+    artificial intelligence, and medical engineering.
+    PhD students are expected not only to improve predictive performance,
+    but also to contribute to <strong>scientific understanding,
+    interpretability, and clinical relevance</strong>.
+  </p>
+  <p>
+    Our research environment is particularly suitable for doctoral studies
+    that bridge <strong>engineering innovation</strong> and
+    <strong>real clinical problems</strong>, supported by daily interaction
+    with clinicians and access to real-world hospital data.
+  </p>
+  <div class="ps">
+    <strong>This PhD program is a good fit if you want to:</strong><br>
+    • Conduct original, hypothesis-driven research<br>
+    • Publish first-author papers in international journals and conferences<br>
+    • Develop interpretable and clinically grounded AI<br>
+    • Work closely with clinicians in a hospital-embedded environment
+  </div>
+  <h3>Funding & Support</h3>
+  <ul>
+    <li>MEXT Scholarship (University / Embassy Recommendation)</li>
+    <li>JSPS Research Fellowship for Young Scientists (DC)</li>
+    <li>Other competitive fellowships and project-based funding</li>
+  </ul>
+  <div class="ps">
+    <strong>Recommended contact timing:</strong>
+    Please contact us at least <strong>6–9 months in advance</strong>.
+  </div>
+</div>
+
+
+<div class="section">
+  <h2>Contact / Lab Visit</h2>
+  <p>
+    Since the lab is located inside a hospital, we do not offer a large group tour on the general assignment day.
+    Instead, we provide <strong>individual lab visits</strong> for interested students.
+  </p>
+  <div class="ps">
+    <strong>Recommended timing</strong><br>
+    Master’s applicants: by around June
+  </div>
+  <p class="small">Email: <strong>kobashi@eng.u-hyogo.ac.jp</strong></p>
+  <ul class="link-list" style="margin-top:1rem">
+    <li><a href="index.html">← Back to Home</a></li>
+  </ul>
+</div>
+
+</div><!-- end en -->
+
+</div><!-- container -->
+
+<footer>
+  <p>&copy; 2026 Kobashi Laboratory, University of Hyogo</p>
+</footer>
+
+</body>
+</html>
