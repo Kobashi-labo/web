@@ -1284,8 +1284,27 @@
     return primary || fallback || plain || "(no title)";
   }
 
+  function pickYearFromAnyDate(value) {
+    if (!value) return "";
+    const match = String(value).match(/^(\d{4})/);
+    return match ? match[1] : "";
+  }
+
   function pickYear(item) {
-    return item?.publication_year || item?.year || item?.published_year || "";
+    return (
+      pickYearFromAnyDate(
+        item?.publication_date ||
+        item?.rm_publication_date ||
+        item?.presented_date ||
+        item?.presentation_date ||
+        item?.start_date ||
+        item?.date
+      ) ||
+      item?.publication_year ||
+      item?.year ||
+      item?.published_year ||
+      ""
+    );
   }
 
   function pickDoi(item) {

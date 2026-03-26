@@ -190,7 +190,12 @@ function pickYearFromAnyDate(d) {
 }
 
 function pickPaperYear(item) {
-  const d = item?.publication_date || item?.rm_publication_date || item?.year;
+  const d =
+    item?.publication_date ||
+    item?.rm_publication_date ||
+    item?.publication_year ||
+    item?.published_year ||
+    item?.year;
   return pickYearFromAnyDate(d);
 }
 
@@ -405,6 +410,8 @@ function pickPresentationYear(item) {
     item?.presented_date ||
     item?.presentation_date ||
     item?.start_date ||
+    item?.publication_year ||
+    item?.published_year ||
     item?.date ||
     item?.year;
   return pickYearFromAnyDate(d);
